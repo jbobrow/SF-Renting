@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Source for the site's share image (og:image), 1200x630 drawn at 2x.
+     Same layout as the Cookbo, NYC Rent and Now Departing previews:
+     icon and name, the tagline big, one line on what it does, the signature,
+     and the site's watercolor block (in fall) on the right. Re-render with ./render.sh -->
+<title>SF Rent share image</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=block">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: #F4F3F1;
+    color: #16171B;
+    font-family: ui-rounded, "SF Pro Rounded", Nunito, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+  .copy {
+    position: absolute; left: 88px; top: 0; bottom: 0; width: 470px;
+    display: flex; flex-direction: column; justify-content: center; gap: 26px;
+  }
+  .app { display: flex; align-items: center; gap: 22px; }
+  .app .icon {
+    width: 84px; height: 84px; border-radius: 19px; background: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(0,0,0,.12), 0 6px 18px rgba(0,0,0,.10);
+    display: grid; place-items: center;
+    font-family: "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", sans-serif; font-size: 52px; line-height: 1;
+  }
+  .app span { font-size: 40px; font-weight: 700; letter-spacing: -0.01em; }
+  h1 {
+    font-family: ui-rounded, "SF Pro Rounded", Nunito, system-ui, -apple-system, sans-serif;
+    font-size: 68px; font-weight: 800;
+    line-height: 1.02; letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .pitch { font-size: 25px; line-height: 1.38; color: #5d5e64; font-weight: 500; max-width: 420px; }
+  .sig { width: 214px; height: auto; color: #16171B; margin-top: 6px; }
+
+  /* The site's watercolor block in fall, standing on the bottom edge */
+  .art { position: absolute; right: 12px; bottom: 8px; width: 640px; }
+  .art .block-art { display: block; width: 100%; height: auto; overflow: visible; }
+.wc-ik { fill: none; stroke: #2E2B28; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.wc-ik.wc-f { stroke-width: 2.2; stroke: #2B2F35; }
+.wc-ik.wc-t { stroke-width: .6; opacity: .7; }
+.wc-ik.wc-r { stroke-width: 1.7; stroke: #26292D; }
+.s-c1 { fill: var(--c1); } .s-c2 { fill: var(--c2); } .s-c3 { fill: var(--c3); } .s-c4 { fill: var(--c4); } .s-c5 { fill: var(--c5); }
+.s-f1 { fill: var(--f1); } .s-f2 { fill: var(--f2); } .s-grass { fill: var(--grass); }
+.s-canopy { opacity: var(--canopy); } .s-fall { opacity: var(--leaves); } .s-blossom { opacity: var(--blossom); } .s-snow { opacity: var(--snow); }
+.season-fall { --c1: #E8A33B; --c2: #D9652B; --c3: #F2C14E; --c4: #C2452D; --c5: #EFB45A; --canopy: 1; --leaves: 1; --blossom: 0; --snow: 0; --grass: #D6B75C; --f1: #D9652B; --f2: #E8A33B; }
+.season-winter { --c1: #A9B4AE; --c2: #A9B4AE; --c3: #A9B4AE; --c4: #A9B4AE; --c5: #A9B4AE; --canopy: 0; --leaves: 0; --blossom: 0; --snow: .95; --grass: #E6E3DA; --f1: #3F6B45; --f2: #2E5536; }
+.season-spring { --c1: #BFD98F; --c2: #9CC46E; --c3: #E7B3C4; --c4: #F2CFDA; --c5: #A9CC7C; --canopy: 1; --leaves: 0; --blossom: 1; --snow: 0; --grass: #A9C77A; --f1: #D9668B; --f2: #F2D04F; }
+.season-summer { --c1: #7FA65A; --c2: #5E8B44; --c3: #A3C474; --c4: #4C7538; --c5: #8DB563; --canopy: 1; --leaves: 0; --blossom: 0; --snow: 0; --grass: #8CB36A; --f1: #8A5BC0; --f2: #E25C7A; }
+</style>
+</head>
+<body>
+  <div class="copy">
+    <div class="app"><div class="icon" aria-hidden="true">🏡</div><span>SF Rent</span></div>
+    <h1>Know before you sign.</h1>
+    <p class="pitch">See what the city knows about any San Francisco building before you rent it. Free, from public records.</p>
+    <!-- The same signature as the site footers and the other previews -->
+    <svg class="sig" aria-label="App by Jon Bobrow" viewBox="0 0 3087.29 681.93" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"><path d="M1610.11,335.11c0,17.82,19.8,77.22,3.96,110.89M15,537.47C23.66,136.35,107.34,18.04,136.2,15.15c28.86-2.89,86.57,31.74,86.57,484.8M80.58,356.55c65.34-37.62,178.21-25.74,178.21-25.74M320.17,330.81c81.18-15.84,176.23,73.26,47.52,142.57M466.7,328.83c81.18-15.84,160.39,71.28,67.32,134.65M353.83,396.15c-5.94,104.95,29.7,241.57,29.7,241.57M490.46,378.33c-5.94,104.95,13.86,211.87,13.86,211.87M788.37,148.98c-11.88,49.5-26.16,130.64-33.66,199.99-7.92,73.26,38.68,123.77,86.2,90.1s12.8-101.98-40.66-98.06M923.02,537.08c-35.64,27.72-53.4,109.67,2.96,126.69,69.81,21.08,80.2-67.28,76.24-138.57s-19.8-194.05-19.8-194.05M982.42,331.15c1.98,75.24-9.9,118.81-51.48,110.89s-31.68-85.14-23.76-128.71M1388.34,55.92c29.7,142.57,55.95,373.41-47.52,407.9-71.28,23.76-100.98-51.48-93.06-83.16M1507.15,321.25c-45.54-3.96-56.51,138.61,9.9,138.61,73.26,0,47.85-133.59-9.9-138.61ZM2225.92,343.03c-72.62,9.68-56.39,142.67,9.9,138.61,97.02-5.94,49.5-146.53-9.9-138.61ZM2686.12,343.13c-64.18-8.02-87.35,95.19-26.56,112.77,66.28,19.16,73.26-106.93,26.56-112.77ZM1614.07,445.99c19.8-85.14,41.58-116.83,55.44-116.83s37.62,108.91,73.26,128.71M1934.85,172.74c47.52-45.54,186.13-25.74,194.05,33.66,7.92,59.4-39.6,97.02-37.62,122.77s56.36,69.3,38.54,120.79-66.26,57.42-137.55,25.74M2002.17,198.48c-5.94,47.52-1.98,209.89,7.92,241.57M2352.65,182.64c-7.92,55.44-9.84,280.18,67.32,277.21,51.48-1.98,57.42-116.83-17.82-122.77M2590.26,305.41c-35.64,13.86-59.4,27.56-59.4,134.65,0,9.9-15.84-93.06-19.8-116.83M2881.33,392.53s-9.9,67.32,39.6,65.34c69.28-2.77,130.89-59.33,148.51-138.61,15.84-71.28-39.6-83.16-39.6-83.16M2778.37,360.85c-7.92,49.5-1.85,92.77,17.82,95.04,51.48,5.94,85.14-63.36,85.14-63.36"/></svg>
+  </div>
+  <div class="art"><svg class="block-art season-fall" viewBox="0 0 590 342" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="wc-paint" x="-4%" y="-4%" width="108%" height="108%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="3" result="warp"></feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="wob"></feDisplacementMap>
+          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="11" result="blot"></feTurbulence>
+          <feColorMatrix in="blot" type="matrix" values="0 0 0 0 0.22  0 0 0 0 0.16  0 0 0 0 0.12  0 0 0 0.55 -0.12" result="blot2"></feColorMatrix>
+          <feComposite in="blot2" in2="wob" operator="in" result="blot3"></feComposite>
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="5" result="grain"></feTurbulence>
+          <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.27  0 0 0 0 0.24  0 0 0 0.28 0" result="grain2"></feColorMatrix>
+          <feComposite in="grain2" in2="wob" operator="in" result="grain3"></feComposite>
+          <feMerge><feMergeNode in="wob"></feMergeNode><feMergeNode in="blot3"></feMergeNode><feMergeNode in="grain3"></feMergeNode></feMerge>
+        </filter>
+        <filter id="wc-bloom" x="-15%" y="-15%" width="130%" height="130%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="9" result="w2"></feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="w2" scale="14" xChannelSelector="R" yChannelSelector="G" result="d2"></feDisplacementMap>
+          <feGaussianBlur in="d2" stdDeviation="0.6"></feGaussianBlur>
+        </filter>
+        <filter id="wc-ink">
+          <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="4" result="w3"></feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="w3" scale="1.3" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        </filter>
+        <pattern id="wc-brick" width="12" height="6" patternUnits="userSpaceOnUse">
+          <path d="M0,6 H12 M3,0 V3 M9,3 V6" fill="none" stroke="#7E2E22" stroke-width="0.6" stroke-opacity="0.55"></path>
+        </pattern>
+        <linearGradient id="wc-bow" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#5A4632" stop-opacity="0.35"></stop>
+          <stop offset="0.22" stop-color="#5A4632" stop-opacity="0"></stop>
+          <stop offset="0.78" stop-color="#5A4632" stop-opacity="0"></stop>
+          <stop offset="1" stop-color="#5A4632" stop-opacity="0.35"></stop>
+        </linearGradient>
+        <symbol id="wc-wg" viewBox="0 0 20 30" preserveAspectRatio="none"><rect width="20" height="30" fill="#C6D1DB"></rect><rect width="20" height="5" fill="#97A8B8" fill-opacity="0.6"></rect><rect x="2.5" y="6" width="5" height="10" fill="#EEF2F5" fill-opacity="0.7"></rect><rect x="12" y="17" width="5" height="9" fill="#EEF2F5" fill-opacity="0.45"></rect></symbol>
+        <symbol id="wc-wf" viewBox="0 0 20 30" preserveAspectRatio="none"><rect width="20" height="30" class="wc-ik wc-f" vector-effect="non-scaling-stroke"></rect><path d="M10,0 V30 M0,15 H20" class="wc-ik" style="stroke-width: 1.3" vector-effect="non-scaling-stroke"></path></symbol>
+        <symbol id="wc-wga" viewBox="0 0 20 30" preserveAspectRatio="none"><path d="M0,30 V10 A10,10 0 0 1 20,10 V30 Z" fill="#C6D1DB"></path><path d="M3,8 A7,7 0 0 1 9,3 V16 H3 Z" fill="#EEF2F5" fill-opacity="0.7"></path></symbol>
+        <symbol id="wc-wfa" viewBox="0 0 20 30" preserveAspectRatio="none"><path d="M0,30 V10 A10,10 0 0 1 20,10 V30 Z" class="wc-ik wc-f" vector-effect="non-scaling-stroke"></path><path d="M10,0 V30 M0,18 H20" class="wc-ik" style="stroke-width: 1.3" vector-effect="non-scaling-stroke"></path></symbol>
+
+
+        <pattern id="wc-scale" width="8" height="6" patternUnits="userSpaceOnUse">
+          <path d="M0,6 A4,4 0 0 1 8,6 M-4,3 A4,4 0 0 1 4,3 M4,3 A4,4 0 0 1 12,3" fill="none" stroke="#9A5E55" stroke-width="0.6" stroke-opacity="0.55"></path>
+        </pattern>
+
+        <!-- A: Italianate, flat front with a bracketed cornice and a two-story slanted bay -->
+        <symbol id="wc-hA" viewBox="0 0 130 278" overflow="visible">
+          <g filter="url(#wc-paint)">
+            <rect x="4" y="34" width="122" height="228" fill="#E6C27A"></rect>
+            <rect x="4" y="34" width="122" height="228" fill="url(#wc-bow)"></rect>
+            <rect x="4" y="226" width="122" height="36" fill="#D3AE66"></rect>
+            <rect x="0" y="14" width="130" height="21" fill="#F2ECDD"></rect>
+            <rect x="-3" y="9" width="136" height="6" fill="#56636B"></rect>
+            <rect x="4" y="35" width="122" height="5" fill="#3F6E6A" fill-opacity="0.55"></rect>
+            <rect x="57" y="46" width="68" height="178" fill="#EDCC8B"></rect>
+            <rect x="57" y="46" width="13" height="178" fill="#B98F4D" fill-opacity="0.45"></rect>
+            <rect x="112" y="46" width="13" height="178" fill="#C9A35F" fill-opacity="0.35"></rect>
+            <rect x="54" y="41" width="74" height="6" fill="#F2ECDD"></rect>
+            <rect x="54" y="141" width="74" height="7" fill="#F2ECDD"></rect>
+            <rect x="54" y="222" width="74" height="6" fill="#F2ECDD"></rect>
+            <rect x="4" y="146" width="53" height="6" fill="#F2ECDD"></rect>
+            <path d="M13,50 L29,41 L45,50 Z" fill="#F2ECDD"></path>
+            <rect x="14" y="50" width="30" height="5" fill="#F2ECDD"></rect>
+            <use href="#wc-wg" x="18" y="56" width="22" height="58"></use>
+            <use href="#wc-wg" x="76" y="56" width="30" height="78"></use><use href="#wc-wg" x="60" y="58" width="7" height="74"></use><use href="#wc-wg" x="115" y="58" width="7" height="74"></use>
+            <use href="#wc-wg" x="76" y="158" width="30" height="58"></use><use href="#wc-wg" x="60" y="160" width="7" height="56"></use><use href="#wc-wg" x="115" y="160" width="7" height="56"></use>
+            <path d="M11,161 L29,150 L47,161 Z" fill="#F2ECDD"></path>
+            <rect x="17" y="161" width="24" height="9" fill="#C6D1DB"></rect>
+            <rect x="17" y="170" width="24" height="56" fill="#3F6E6A"></rect>
+            <rect x="20" y="174" width="7" height="22" fill="#5E8C87" fill-opacity="0.8"></rect><rect x="31" y="174" width="7" height="22" fill="#5E8C87" fill-opacity="0.8"></rect>
+            <path d="M13,226 H45 L51,262 H7 Z" fill="#EFE6D3"></path>
+            <path d="M45,226 L51,262 H46 L41,226 Z" fill="#B9AA8E" fill-opacity="0.6"></path>
+            <rect x="66" y="238" width="14" height="9" fill="#8A6E45" fill-opacity="0.6"></rect><rect x="100" y="238" width="14" height="9" fill="#8A6E45" fill-opacity="0.6"></rect>
+            <rect x="16" y="114" width="26" height="6" fill="#5B4636"></rect>
+            <circle cx="19" cy="113" r="3" class="s-f1"></circle><circle cx="25" cy="111" r="3.2" class="s-f2"></circle><circle cx="31" cy="113" r="3" class="s-f1"></circle><circle cx="37" cy="111" r="3" class="s-f2"></circle>
+            <path d="M0,262 H130 V277.6 Z" fill="#BDB5A6"></path>
+          </g>
+          <g filter="url(#wc-ink)">
+            <use href="#wc-wf" x="18" y="56" width="22" height="58"></use>
+            <use href="#wc-wf" x="76" y="56" width="30" height="78"></use><use href="#wc-wf" x="60" y="58" width="7" height="74"></use><use href="#wc-wf" x="115" y="58" width="7" height="74"></use>
+            <use href="#wc-wf" x="76" y="158" width="30" height="58"></use><use href="#wc-wf" x="60" y="160" width="7" height="56"></use><use href="#wc-wf" x="115" y="160" width="7" height="56"></use>
+            <path class="wc-ik" d="M4,262 V35 M126,35 V262 M-3,9 H133 M0,15 H130 M0,35 H130 M57,47 V222 M70,47 V222 M112,47 V222 M125,47 V222 M54,41 H128 M54,47 H128 M54,141 H128 M54,148 H128 M54,222 H128 M54,228 H128 M4,146 H57 M4,152 H57 M4,226 H126"></path>
+            <path class="wc-ik wc-t" d="M8,15 V35 M24,15 V35 M40,15 V35 M56,15 V35 M72,15 V35 M88,15 V35 M104,15 V35 M120,15 V35 M5,24 H11 M21,24 H27 M37,24 H43 M53,24 H59 M69,24 H75 M85,24 H91 M101,24 H107 M117,24 H123"></path>
+            <path class="wc-ik" d="M13,50 L29,41 L45,50 Z M14,50 H44 V55 H14 Z M11,161 L29,150 L47,161 Z"></path>
+            <path class="wc-ik wc-f" d="M17,226 V161 H41 V226 M17,170 H41 M29,170 V226"></path>
+            <path class="wc-ik" d="M13,226 H45 M12.2,231 H45.8 M11.3,236 H46.7 M10.5,241 H47.5 M9.7,246 H48.3 M8.8,251 H49.2 M8,256 H50 M7,262 H51"></path>
+            <path class="wc-ik wc-r" d="M13,214 V226 L7,258 M45,214 V226 L51,258"></path>
+            <path class="wc-ik wc-t" d="M66,238 h14 v9 h-14 Z M100,238 h14 v9 h-14 Z M70,238 V247 M74,238 V247 M104,238 V247 M108,238 V247"></path>
+            <path class="wc-ik" d="M16,114 h26 v6 h-26 Z"></path>
+            <path class="wc-ik" d="M0,262 L130,277.6"></path>
+          </g>
+        </symbol>
+
+        <!-- B: Queen Anne, a shingled gable over a square bay, arched door up a side stair -->
+        <symbol id="wc-hB" viewBox="0 0 130 278" overflow="visible">
+          <g filter="url(#wc-paint)">
+            <rect x="4" y="62" width="122" height="200" fill="#B7A3CA"></rect>
+            <rect x="4" y="62" width="122" height="200" fill="url(#wc-bow)"></rect>
+            <rect x="4" y="226" width="122" height="36" fill="#A592B8"></rect>
+            <polygon points="-5,66 65,4 135,66" fill="#5D5767"></polygon>
+            <polygon points="8,62 65,15 122,62" fill="#EDC2B0"></polygon>
+            <polygon points="8,62 65,15 122,62" fill="url(#wc-scale)"></polygon>
+            <circle cx="65" cy="42" r="8.5" fill="#C6D1DB"></circle>
+            <rect x="4" y="62" width="122" height="9" fill="#F1EADC"></rect>
+            <rect x="22" y="76" width="86" height="72" fill="#C4B3D6"></rect>
+            <rect x="19" y="73" width="92" height="6" fill="#F1EADC"></rect>
+            <rect x="19" y="144" width="92" height="7" fill="#F1EADC"></rect>
+            <use href="#wc-wg" x="29" y="84" width="20" height="52"></use><use href="#wc-wg" x="55" y="84" width="20" height="52"></use><use href="#wc-wg" x="81" y="84" width="20" height="52"></use>
+            <rect x="4" y="156" width="122" height="5" fill="#F1EADC"></rect>
+            <path d="M9,172 L34,164 L59,172 Z" fill="#F1EADC"></path>
+            <use href="#wc-wg" x="12" y="174" width="20" height="46"></use><use href="#wc-wg" x="36" y="174" width="20" height="46"></use>
+            <path d="M86,228 V184 A15,15 0 0 1 116,184 V228 Z" fill="#F1EADC"></path>
+            <path d="M90,226 V185 A11,11 0 0 1 112,185 V226 Z" fill="#7A3B4E"></path>
+            <path d="M92,186 A9,9 0 0 1 110,186 V192 H92 Z" fill="#C6D1DB" fill-opacity="0.85"></path>
+            <path d="M82,228 H120 L126,262 H76 Z" fill="#E9DFCC"></path>
+            <path d="M82,228 L76,262 H81 L86,228 Z" fill="#AFA08A" fill-opacity="0.55"></path>
+            <rect x="12" y="220" width="44" height="6" fill="#5B4636"></rect>
+            <circle cx="15" cy="219" r="3" class="s-f2"></circle><circle cx="21" cy="217" r="3.2" class="s-f1"></circle><circle cx="27" cy="219" r="3" class="s-f2"></circle><circle cx="33" cy="217" r="3" class="s-f1"></circle><circle cx="40" cy="219" r="3" class="s-f2"></circle><circle cx="46" cy="217" r="3.2" class="s-f1"></circle><circle cx="52" cy="219" r="3" class="s-f2"></circle>
+            <rect x="14" y="238" width="14" height="9" fill="#6E5E80" fill-opacity="0.6"></rect><rect x="40" y="238" width="14" height="9" fill="#6E5E80" fill-opacity="0.6"></rect>
+            <path d="M0,262 H130 V277.6 Z" fill="#BDB5A6"></path>
+          </g>
+          <g filter="url(#wc-ink)">
+            <use href="#wc-wf" x="29" y="84" width="20" height="52"></use><use href="#wc-wf" x="55" y="84" width="20" height="52"></use><use href="#wc-wf" x="81" y="84" width="20" height="52"></use>
+            <use href="#wc-wf" x="12" y="174" width="20" height="46"></use><use href="#wc-wf" x="36" y="174" width="20" height="46"></use>
+            <path class="wc-ik" d="M-5,66 L65,4 L135,66 M8,62 L65,15 L122,62 M4,62 V262 M126,62 V262 M4,71 H126 M22,79 V144 M108,79 V144 M19,73 H111 M19,79 H111 M19,144 H111 M19,151 H111 M4,156 H126 M4,161 H126 M4,226 H126"></path>
+            <circle class="wc-ik wc-f" cx="65" cy="42" r="8.5"></circle>
+            <path class="wc-ik wc-t" d="M57,42 H73 M65,34 V50 M8,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M24,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M40,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M56,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M72,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M88,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M104,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M118,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"></path>
+            <path class="wc-ik wc-t" d="M26,151 l3,6 l3,-6 M98,151 l3,6 l3,-6 M30,138 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0"></path>
+            <path class="wc-ik" d="M9,172 L34,164 L59,172 Z"></path>
+            <path class="wc-ik wc-f" d="M86,228 V184 A15,15 0 0 1 116,184 V228 M90,226 V185 A11,11 0 0 1 112,185 V226 M101,174 V226 M90,192 H112"></path>
+            <path class="wc-ik" d="M82,228 H120 M81.1,233 H120.9 M80.3,238 H121.7 M79.4,243 H122.6 M78.5,248 H123.5 M77.7,253 H124.3 M76.8,258 H125.2 M76,262 H126"></path>
+            <path class="wc-ik wc-r" d="M82,216 V228 L76,258 M120,216 V228 L126,258"></path>
+            <path class="wc-ik" d="M12,220 h44 v6 h-44 Z"></path>
+            <path class="wc-ik wc-t" d="M14,238 h14 v9 h-14 Z M40,238 h14 v9 h-14 Z M18,238 V247 M22,238 V247 M44,238 V247 M48,238 V247"></path>
+            <path class="wc-ik" d="M0,262 L130,277.6"></path>
+          </g>
+        </symbol>
+
+        <!-- C: Edwardian over a garage, with a full-height bay and an arched entry -->
+        <symbol id="wc-hC" viewBox="0 0 130 278" overflow="visible">
+          <g filter="url(#wc-paint)">
+            <rect x="4" y="32" width="122" height="230" fill="#A6C8BE"></rect>
+            <rect x="4" y="32" width="122" height="230" fill="url(#wc-bow)"></rect>
+            <rect x="0" y="18" width="130" height="15" fill="#F3EEE2"></rect>
+            <rect x="-3" y="13" width="136" height="6" fill="#4F5F67"></rect>
+            <rect x="7" y="42" width="78" height="150" fill="#B3D3C9"></rect>
+            <rect x="7" y="42" width="13" height="150" fill="#7FA79B" fill-opacity="0.45"></rect>
+            <rect x="72" y="42" width="13" height="150" fill="#8DB3A8" fill-opacity="0.35"></rect>
+            <rect x="4" y="37" width="84" height="6" fill="#F3EEE2"></rect>
+            <rect x="4" y="113" width="84" height="7" fill="#F3EEE2"></rect>
+            <rect x="4" y="189" width="84" height="6" fill="#F3EEE2"></rect>
+            <use href="#wc-wg" x="25" y="50" width="42" height="56"></use><use href="#wc-wg" x="10" y="52" width="7" height="52"></use><use href="#wc-wg" x="75" y="52" width="7" height="52"></use>
+            <use href="#wc-wg" x="25" y="126" width="42" height="56"></use><use href="#wc-wg" x="10" y="128" width="7" height="52"></use><use href="#wc-wg" x="75" y="128" width="7" height="52"></use>
+            <rect x="94" y="48" width="26" height="5" fill="#F3EEE2"></rect><rect x="94" y="122" width="26" height="5" fill="#F3EEE2"></rect>
+            <use href="#wc-wg" x="96" y="53" width="22" height="52"></use><use href="#wc-wg" x="96" y="127" width="22" height="52"></use>
+            <rect x="4" y="198" width="122" height="6" fill="#F3EEE2"></rect>
+            <rect x="9" y="210" width="68" height="52" fill="#A07A53"></rect>
+            <rect x="9" y="210" width="68" height="10" fill="#C6D1DB" fill-opacity="0.7"></rect>
+            <path d="M88,262 V222 A15,15 0 0 1 118,222 V262 Z" fill="#F3EEE2"></path>
+            <path d="M92,262 V223 A11,11 0 0 1 114,223 V262 Z" fill="#3E4D54"></path>
+            <rect x="97" y="226" width="12" height="20" fill="#2F5D74"></rect>
+            <rect x="99" y="228" width="8" height="8" fill="#C6D1DB" fill-opacity="0.8"></rect>
+            <path d="M0,262 H130 V277.6 Z" fill="#BDB5A6"></path>
+          </g>
+          <g filter="url(#wc-ink)">
+            <use href="#wc-wf" x="25" y="50" width="42" height="56"></use><use href="#wc-wf" x="10" y="52" width="7" height="52"></use><use href="#wc-wf" x="75" y="52" width="7" height="52"></use>
+            <use href="#wc-wf" x="25" y="126" width="42" height="56"></use><use href="#wc-wf" x="10" y="128" width="7" height="52"></use><use href="#wc-wf" x="75" y="128" width="7" height="52"></use>
+            <use href="#wc-wf" x="96" y="53" width="22" height="52"></use><use href="#wc-wf" x="96" y="127" width="22" height="52"></use>
+            <path class="wc-ik" d="M4,262 V33 M126,33 V262 M-3,13 H133 M0,19 H130 M0,33 H130 M7,43 V189 M20,43 V189 M72,43 V189 M85,43 V189 M4,37 H88 M4,43 H88 M4,113 H88 M4,120 H88 M4,189 H88 M4,195 H88 M94,48 h26 v5 h-26 Z M94,122 h26 v5 h-26 Z M4,198 H126 M4,204 H126"></path>
+            <path class="wc-ik wc-t" d="M6,30 h4 M14,30 h4 M22,30 h4 M30,30 h4 M38,30 h4 M46,30 h4 M54,30 h4 M62,30 h4 M70,30 h4 M78,30 h4 M86,30 h4 M94,30 h4 M102,30 h4 M110,30 h4 M118,30 h4 M6,30 V33 M10,30 V33 M14,30 V33 M18,30 V33 M22,30 V33 M26,30 V33 M30,30 V33 M34,30 V33 M38,30 V33 M42,30 V33 M46,30 V33 M50,30 V33 M54,30 V33 M58,30 V33 M62,30 V33 M66,30 V33 M70,30 V33 M74,30 V33 M78,30 V33 M82,30 V33 M86,30 V33 M90,30 V33 M94,30 V33 M98,30 V33 M102,30 V33 M106,30 V33 M110,30 V33 M114,30 V33 M118,30 V33 M122,30 V33"></path>
+            <path class="wc-ik wc-f" d="M9,262 V210 H77 V262"></path>
+            <path class="wc-ik" d="M9,220 H77 M9,234 H77 M9,248 H77 M26,220 V262 M43,220 V262 M60,220 V262 M26,210 V220 M43,210 V220 M60,210 V220"></path>
+            <path class="wc-ik wc-f" d="M88,262 V222 A15,15 0 0 1 118,222 V262 M92,262 V223 A11,11 0 0 1 114,223 V262"></path>
+            <path class="wc-ik" d="M97,226 h12 v20 h-12 Z M92,250 H114 M92,256 H114"></path>
+            <path class="wc-ik" d="M0,262 L130,277.6"></path>
+          </g>
+        </symbol>
+
+      </defs>
+      <path d="M-6,263.3 L596,335.5 L596,341 L-6,268.8 Z" fill="#CFC8BB" fill-opacity="0.55" filter="url(#wc-paint)"></path>
+      <path class="wc-ik wc-t" d="M-6,263.3 L596,335.5"></path>
+      <g transform="translate(6,10)">
+        <path d="M57,262 C58,222 56,192 59,160 L64,160 C62,192 64,222 66,262 Z" fill="#6B5140" filter="url(#wc-paint)"></path>
+        <path class="wc-ik" d="M60,176 C52,156 40,146 28,128 M61,164 C70,146 82,134 94,116 M61,150 C58,124 60,104 58,80 M46,144 C40,132 28,122 18,114 M78,140 C88,130 98,120 106,108 M58,114 C50,100 44,90 40,74 M60,106 C68,94 76,84 82,70 M40,74 C36,68 32,62 30,56 M82,70 C86,64 88,58 90,52 M28,128 C22,124 16,122 10,122 M94,116 C100,114 106,114 112,116" style="stroke: #4B392C; stroke-width: 1.8"></path>
+        <g class="s-canopy" filter="url(#wc-bloom)">
+          <circle cx="34" cy="122" r="22" class="s-c2" fill-opacity="0.8"></circle>
+          <circle cx="86" cy="120" r="24" class="s-c1" fill-opacity="0.8"></circle>
+          <circle cx="58" cy="94" r="28" class="s-c3" fill-opacity="0.75"></circle>
+          <circle cx="28" cy="94" r="18" class="s-c1" fill-opacity="0.75"></circle>
+          <circle cx="92" cy="90" r="20" class="s-c4" fill-opacity="0.7"></circle>
+          <circle cx="60" cy="64" r="22" class="s-c5" fill-opacity="0.75"></circle>
+          <circle cx="38" cy="70" r="16" class="s-c2" fill-opacity="0.7"></circle>
+          <circle cx="82" cy="64" r="16" class="s-c1" fill-opacity="0.7"></circle>
+          <circle cx="16" cy="112" r="12" class="s-c3" fill-opacity="0.7"></circle>
+          <circle cx="106" cy="110" r="13" class="s-c3" fill-opacity="0.7"></circle>
+          <circle cx="60" cy="126" r="20" class="s-c4" fill-opacity="0.65"></circle>
+          <circle cx="72" cy="100" r="16" class="s-c5" fill-opacity="0.7"></circle>
+          <circle cx="48" cy="46" r="11" class="s-c3" fill-opacity="0.6"></circle>
+          <circle cx="74" cy="44" r="10" class="s-c2" fill-opacity="0.6"></circle>
+        </g>
+        <g class="s-blossom" fill="#F2C4D2">
+          <circle cx="30" cy="80" r="4"></circle><circle cx="70" cy="58" r="4"></circle><circle cx="90" cy="96" r="3.5"></circle><circle cx="48" cy="104" r="4"></circle><circle cx="76" cy="122" r="3.5"></circle><circle cx="22" cy="110" r="3"></circle><circle cx="62" cy="84" r="3"></circle><circle cx="100" cy="80" r="3"></circle><circle cx="40" cy="132" r="3"></circle><circle cx="54" cy="52" r="3"></circle>
+        </g>
+        <g class="s-fall">
+          <circle cx="10" cy="152" r="2.5" class="s-c2"></circle><circle cx="106" cy="146" r="2" class="s-c1"></circle><circle cx="118" cy="176" r="2.5" class="s-c4"></circle><circle cx="-2" cy="194" r="2" class="s-c3"></circle><circle cx="96" cy="206" r="2.2" class="s-c2"></circle><circle cx="22" cy="228" r="2" class="s-c1"></circle><circle cx="112" cy="238" r="2" class="s-c4"></circle><circle cx="6" cy="250" r="2.4" class="s-c3"></circle>
+          <ellipse cx="40" cy="261" rx="4" ry="1.6" class="s-c4"></ellipse><ellipse cx="78" cy="262" rx="4" ry="1.6" class="s-c2"></ellipse><ellipse cx="92" cy="260" rx="3.5" ry="1.4" class="s-c1"></ellipse>
+        </g>
+        <ellipse cx="62" cy="262" rx="52" ry="6" transform="rotate(6.8 62 262)" class="s-grass" fill-opacity="0.7" filter="url(#wc-bloom)"></ellipse>
+        <path class="wc-ik wc-t" d="M24,262 l2,-6 M30,262 l-1,-5 M88,262 l2,-6 M96,262 l-1,-5 M50,262 l1,-4 M70,262 l1,-5"></path>
+      </g>
+
+      <use href="#wc-hA" x="150" y="20" width="130" height="278"></use>
+      <use href="#wc-hB" x="296" y="37.5" width="130" height="278"></use>
+      <use href="#wc-hC" x="442" y="55" width="130" height="278"></use>
+    </svg></div>
+</body>
+</html>

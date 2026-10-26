@@ -1,0 +1,1657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SF Rent · Know before you sign</title>
+<meta name="description" content="Look up any San Francisco address and see the building's record before you sign a lease: rent control, code violations, repairs, pests, evictions, buyouts, earthquake safety, noise and more.">
+<meta property="og:title" content="SF Rent · Know before you sign">
+<meta property="og:description" content="Look up any San Francisco address and see the building's record before you sign a lease: rent control, code violations, repairs, pests, evictions, buyouts, earthquake safety, noise and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sfrent.jonbobrow.com/">
+<meta property="og:site_name" content="SF Rent">
+<meta property="og:image" content="https://sfrent.jonbobrow.com/og-image.png?v=1">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="SF Rent: Know before you sign. See what the city knows about any San Francisco building before you rent it. Three watercolor Victorians stepping down a hill beside a fall street tree.">
+<meta property="og:video" content="https://sfrent.jonbobrow.com/og-video.mp4?v=1">
+<meta property="og:video:secure_url" content="https://sfrent.jonbobrow.com/og-video.mp4?v=1">
+<meta property="og:video:type" content="video/mp4">
+<meta property="og:video:width" content="1200">
+<meta property="og:video:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SF Rent · Know before you sign">
+<meta name="twitter:description" content="See what the city knows about any San Francisco building before you rent it. Free, from public records.">
+<meta name="twitter:image" content="https://sfrent.jonbobrow.com/og-image.png?v=1">
+<meta name="theme-color" content="#16202A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='88'%3E%F0%9F%8F%A1%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: search bar on top, then a building "report card" (twelve checks, 4×3) followed by evidence sections in a two-column grid. */
+:root {
+  --paper: #F1F3EF;
+  --surface: #FFFFFF;
+  --ink: #16202A;
+  --muted: #56636D;
+  --line: #D3D9D3;
+  --accent: #2446A8;
+  --accent-soft: #E3E9F8;
+  --ok: #2B7A4B;
+  --ok-soft: #E2F1E7;
+  --warn: #A86A0F;
+  --warn-soft: #FAEED8;
+  --bad: #BE3328;
+  --bad-soft: #FBE4E1;
+  --none: #7A858D;
+  --none-soft: #E8ECE9;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10151A; --surface: #172028; --ink: #E6EBEE; --muted: #95A2AC; --line: #2A353F;
+    --accent: #8FA9FF; --accent-soft: #1E2A4A;
+    --ok: #5EC48B; --ok-soft: #173326; --warn: #E8B451; --warn-soft: #3A2C12;
+    --bad: #F2786A; --bad-soft: #3D1C19; --none: #8A959D; --none-soft: #222B33;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10151A; --surface: #172028; --ink: #E6EBEE; --muted: #95A2AC; --line: #2A353F;
+  --accent: #8FA9FF; --accent-soft: #1E2A4A;
+  --ok: #5EC48B; --ok-soft: #173326; --warn: #E8B451; --warn-soft: #3A2C12;
+  --bad: #F2786A; --bad-soft: #3D1C19; --none: #8A959D; --none-soft: #222B33;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 15px/1.55 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: max(20px, env(safe-area-inset-top, 0px)) max(40px, env(safe-area-inset-bottom, 0px));
+}
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 28px; }
+#out { display: grid; gap: 28px; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Masthead + search */
+/* Header: a note from a neighbor on the left, a watercolor block on the right that sits right on the page */
+.mast { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 28px; padding-top: 8px; }
+.intro { display: grid; gap: 12px; max-width: 30rem; padding-bottom: 8px; min-width: 0; }
+.brand { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: 1.1rem; letter-spacing: -0.01em; margin: 0; }
+.brand-mark { font-size: 1.35rem; line-height: 1; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+.lede { font-family: var(--display); font-weight: 700; font-stretch: 90%; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1; letter-spacing: -0.015em; margin: 6px 0 0; text-wrap: balance; }
+.tag { color: var(--muted); font-size: 1.06rem; line-height: 1.55; margin: 0; max-width: 56ch; }
+.sig-link { display: inline-block; justify-self: start; color: var(--muted); transition: color .15s; }
+.sig-link:hover { color: var(--ink); }
+.sig-mark { display: block; width: 160px; height: auto; }
+.block-art { flex: none; display: block; width: min(590px, 52%); height: auto; overflow: visible; }
+@media (max-width: 900px) {
+  .mast { flex-direction: column; align-items: stretch; }
+  .block-art { width: 100%; max-width: 590px; align-self: center; }
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .block-art { filter: brightness(.9) saturate(.92); } }
+:root[data-theme="dark"] .block-art { filter: brightness(.9) saturate(.92); }
+/* watercolor ink and seasonal colors (the season class is set from today's date). Unscoped on purpose:
+   Safari matches styles for <use>-drawn shapes against the symbol, not the page around it. */
+.wc-ik { fill: none; stroke: #2E2B28; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.wc-ik.wc-f { stroke-width: 2.2; stroke: #2B2F35; }
+.wc-ik.wc-t { stroke-width: .6; opacity: .7; }
+.wc-ik.wc-r { stroke-width: 1.7; stroke: #26292D; }
+.s-c1 { fill: var(--c1); } .s-c2 { fill: var(--c2); } .s-c3 { fill: var(--c3); } .s-c4 { fill: var(--c4); } .s-c5 { fill: var(--c5); }
+.s-f1 { fill: var(--f1); } .s-f2 { fill: var(--f2); } .s-grass { fill: var(--grass); }
+.s-canopy { opacity: var(--canopy); } .s-fall { opacity: var(--leaves); } .s-blossom { opacity: var(--blossom); } .s-snow { opacity: var(--snow); }
+.season-fall { --c1: #E8A33B; --c2: #D9652B; --c3: #F2C14E; --c4: #C2452D; --c5: #EFB45A; --canopy: 1; --leaves: 1; --blossom: 0; --snow: 0; --grass: #D6B75C; --f1: #D9652B; --f2: #E8A33B; }
+.season-winter { --c1: #A9B4AE; --c2: #A9B4AE; --c3: #A9B4AE; --c4: #A9B4AE; --c5: #A9B4AE; --canopy: 0; --leaves: 0; --blossom: 0; --snow: 0; --grass: #9DC27A; --f1: #E2A93B; --f2: #D9668B; }
+.season-spring { --c1: #BFD98F; --c2: #9CC46E; --c3: #E7B3C4; --c4: #F2CFDA; --c5: #A9CC7C; --canopy: 1; --leaves: 0; --blossom: 1; --snow: 0; --grass: #A9C77A; --f1: #D9668B; --f2: #F2D04F; }
+.season-summer { --c1: #7FA65A; --c2: #5E8B44; --c3: #A3C474; --c4: #4C7538; --c5: #8DB563; --canopy: 1; --leaves: 0; --blossom: 0; --snow: 0; --grass: #8CB36A; --f1: #8A5BC0; --f2: #E25C7A; }
+.search { position: relative; }
+.search label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+.field { display: flex; gap: 8px; }
+.field .addrbox { flex: 1; min-width: 0; position: relative; }
+.field .aptbox { width: 6.5rem; flex: none; }
+.field input {
+  width: 100%; font: 600 1.15rem/1.2 var(--body); color: var(--ink);
+  background: var(--surface); border: 2px solid var(--ink); border-radius: 4px; padding: 14px 14px;
+}
+.field input::placeholder { color: var(--muted); font-weight: 400; }
+.field button {
+  font: 700 0.95rem var(--body); background: var(--ink); color: var(--paper); border: 0; border-radius: 4px; padding: 0 18px; cursor: pointer; align-self: flex-end; height: 52px;
+}
+.suggest { position: absolute; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,.12); z-index: 5; }
+.suggest li { padding: 10px 12px; border-radius: 3px; cursor: pointer; display: flex; justify-content: space-between; gap: 12px; }
+.suggest li small { color: var(--muted); white-space: nowrap; }
+.suggest li[aria-selected="true"], .suggest li:hover { background: var(--accent-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 10px; align-items: center; font-size: 0.85rem; color: var(--muted); }
+.chips button { font: 500 0.85rem var(--body); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 99px; padding: 4px 11px; cursor: pointer; }
+.chips button:hover { border-color: var(--ink); }
+
+/* Building header */
+.bldg { display: grid; gap: 14px; }
+.eyebrow { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0; }
+.addr { font-family: var(--display); font-weight: 800; font-stretch: 78%; font-size: clamp(2.2rem, 7vw, 4.2rem); line-height: 0.95; letter-spacing: -0.01em; margin: 0; text-transform: uppercase; text-wrap: balance; overflow-wrap: anywhere; }
+.addr small { font-size: 0.45em; font-stretch: 90%; color: var(--accent); letter-spacing: 0; white-space: nowrap; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding: 0; list-style: none; color: var(--muted); font-size: 0.9rem; align-items: center; }
+.facts b { color: var(--ink); font-weight: 600; }
+.facts .stab a { display: inline-block; font-weight: 600; font-size: 0.8rem; text-decoration: none; padding: 2px 10px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+.mono { font-family: var(--mono); font-size: 0.85em; }
+
+/* Verdict */
+.verdict { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.verdict-head { padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.verdict-head .vt { display: grid; gap: 2px; min-width: 0; flex: 1 1 22rem; }
+.verdict-head h2 { font-family: var(--display); font-weight: 700; font-stretch: 100%; font-size: 1.5rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+.verdict-head p { margin: 0; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.actions button { font: 600 0.82rem var(--body); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: 7px 11px; cursor: pointer; }
+.actions button:hover { border-color: var(--ink); }
+.aptline { padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--accent-soft); font-size: 0.92rem; }
+.aptline b { font-weight: 700; }
+.checks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.check { padding: 16px 20px 18px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); display: grid; gap: 5px; align-content: start; grid-template-rows: auto auto auto 1fr auto; text-decoration: none; color: inherit; position: relative; }
+.check:hover { background: var(--paper); }
+.check:nth-child(-n+3) { border-top: 0; }
+.check:nth-child(3n+1) { border-left: 0; }
+.check::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--s); }
+.check h3 { margin: 0; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.check .big { font-family: var(--display); font-weight: 700; font-stretch: 90%; font-size: 1.7rem; line-height: 1.05; }
+.check p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.check p.cmp { font-size: 0.8rem; color: var(--ink); }
+.check .pill { margin-top: 4px; }
+.pill { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 99px; color: var(--s); background: var(--s-soft); white-space: nowrap; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.s-ok { --s: var(--ok); --s-soft: var(--ok-soft); }
+.s-warn { --s: var(--warn); --s-soft: var(--warn-soft); }
+.s-bad { --s: var(--bad); --s-soft: var(--bad-soft); }
+.s-none { --s: var(--none); --s-soft: var(--none-soft); }
+
+/* Sections */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 36px; }
+.sec { display: grid; gap: 12px; align-content: start; min-width: 0; scroll-margin-top: 16px; }
+.sec.wide { grid-column: 1 / -1; }
+.sec h2 { font-family: var(--display); font-weight: 700; font-stretch: 100%; font-size: 1.2rem; margin: 0; padding-top: 12px; border-top: 2px solid var(--ink); display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.sec h2 .pill { font-family: var(--body); }
+.sec h3 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 6px 0 0; }
+.sec p { margin: 0; max-width: 65ch; }
+.sec.apt h2 { border-top-color: var(--accent); }
+.note { color: var(--muted); font-size: 0.85rem; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 36px; }
+.cols > div { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.classbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.cls { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; display: grid; gap: 2px; align-content: start; }
+.cls .k { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+.cls .v { font-family: var(--display); font-weight: 700; font-size: 1.6rem; line-height: 1.1; }
+.cls .d { font-size: 0.78rem; color: var(--muted); line-height: 1.3; }
+.cls.hot { border-color: var(--bad); }
+.list { list-style: none; margin: 0; padding: 0; display: grid; }
+.list li { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+.list li:first-child { border-top: 1px solid var(--line); }
+.list .tagc { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; padding: 1px 6px; border-radius: 3px; align-self: start; margin-top: 2px; }
+.tagc.C { background: var(--bad-soft); color: var(--bad); }
+.tagc.B { background: var(--warn-soft); color: var(--warn); }
+.tagc.A, .tagc.x { background: var(--none-soft); color: var(--muted); }
+.tagc.ok { background: var(--ok-soft); color: var(--ok); }
+.tagc.wide { min-width: 4.9em; text-align: center; }
+.list .meta { grid-column: 2; color: var(--muted); font-size: 0.8rem; }
+.hbars { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.hbars li { display: grid; grid-template-columns: minmax(0, 1fr) 3.2rem; gap: 2px 10px; font-size: 0.86rem; align-items: center; }
+.hbars .lab { overflow-wrap: anywhere; }
+.hbars .n { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.hbars .bar { grid-column: 1 / -1; height: 6px; background: var(--none-soft); border-radius: 3px; overflow: hidden; }
+.hbars .bar i { display: block; height: 100%; background: var(--b, var(--accent)); border-radius: 3px; }
+.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.chart text { font-family: var(--body); fill: var(--muted); font-size: 11px; }
+.chart .val { fill: var(--ink); font-weight: 600; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; font-size: 0.9rem; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.links a { display: inline-block; padding: 7px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); text-decoration: none; font-weight: 600; font-size: 0.88rem; }
+.links a:hover { border-color: var(--accent); }
+.ask { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.ask li { max-width: 70ch; }
+.watch { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.watch li { display: grid; grid-template-columns: 8.4rem minmax(0, 1fr); gap: 2px 12px; align-items: start; font-size: 0.9rem; }
+.watch li .pill { margin-top: 1px; }
+.watch li b { display: block; }
+.watch li span.t { color: var(--muted); font-size: 0.85rem; }
+.loading { color: var(--muted); }
+.skel { height: 14px; border-radius: 3px; background: linear-gradient(90deg, var(--line), var(--paper), var(--line)); background-size: 200% 100%; animation: sh 1.2s infinite linear; }
+@keyframes sh { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .skel { animation: none; } }
+.err { color: var(--bad); font-size: 0.88rem; }
+.example { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 3px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 16px; border-radius: 4px; font-weight: 600; font-size: 0.88rem; z-index: 20; }
+footer { color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 6px; }
+footer p { margin: 0; max-width: 90ch; }
+.sig { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 16px; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+/* "App by Jon Bobrow", the same signature as Cookbo and the other apps */
+.by-jon { display: inline-block; color: var(--muted); transition: color 0.15s; }
+.by-jon:hover { color: var(--ink); }
+.by-jon svg { display: block; width: 150px; height: auto; }
+.sig .src a { color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.sig .src a:hover { color: var(--ink); }
+.sig .ico { width: 15px; height: 15px; flex: none; }
+
+@media (max-width: 760px) {
+  .grid, .cols { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .checks { grid-template-columns: minmax(0, 1fr); }
+  .check:nth-child(n) { border-left: 0; border-top: 1px solid var(--line); }
+  .check:first-child { border-top: 0; }
+  .check { padding: 14px 16px 14px 20px; }
+  .check .big { font-size: 1.45rem; }
+}
+@media (max-width: 440px) {
+  .field { flex-wrap: wrap; }
+  .field .addrbox { flex: 1 1 100%; }
+  .field .aptbox { flex: 1 1 0; width: auto; min-width: 0; }
+  .field button { flex: 0 0 auto; }
+  .classbar { gap: 6px; }
+  .cls { padding: 8px; }
+  .cls .v { font-size: 1.3rem; }
+}
+@media print {
+  body { background: #fff; color: #000; }
+  .search, .actions, .links, .mast .tag, .mast .lede, .sig-link, .block-art, footer > p { display: none !important; }
+  .sig .src { display: none; }
+  .verdict, .cls { border-color: #999; }
+  .sec { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="intro">
+      <p class="brand"><span class="brand-mark" aria-hidden="true">🏡</span>SF Rent</p>
+      <h1 class="lede">Know before you sign.</h1>
+      <p class="tag">Hi neighbor. Before you sign a lease, type in the address and see what the city knows about the building: rent control, repairs, evictions, earthquake safety and more. It's free, and it all comes from public records.</p>
+      <a class="sig-link" href="https://apps.jonbobrow.com" target="_blank" rel="noopener" aria-label="App by Jon Bobrow"><svg class="sig-mark" viewBox="0 0 3087.29 681.93" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="App by Jon Bobrow"><path d="M1610.11,335.11c0,17.82,19.8,77.22,3.96,110.89M15,537.47C23.66,136.35,107.34,18.04,136.2,15.15c28.86-2.89,86.57,31.74,86.57,484.8M80.58,356.55c65.34-37.62,178.21-25.74,178.21-25.74M320.17,330.81c81.18-15.84,176.23,73.26,47.52,142.57M466.7,328.83c81.18-15.84,160.39,71.28,67.32,134.65M353.83,396.15c-5.94,104.95,29.7,241.57,29.7,241.57M490.46,378.33c-5.94,104.95,13.86,211.87,13.86,211.87M788.37,148.98c-11.88,49.5-26.16,130.64-33.66,199.99-7.92,73.26,38.68,123.77,86.2,90.1s12.8-101.98-40.66-98.06M923.02,537.08c-35.64,27.72-53.4,109.67,2.96,126.69,69.81,21.08,80.2-67.28,76.24-138.57s-19.8-194.05-19.8-194.05M982.42,331.15c1.98,75.24-9.9,118.81-51.48,110.89s-31.68-85.14-23.76-128.71M1388.34,55.92c29.7,142.57,55.95,373.41-47.52,407.9-71.28,23.76-100.98-51.48-93.06-83.16M1507.15,321.25c-45.54-3.96-56.51,138.61,9.9,138.61,73.26,0,47.85-133.59-9.9-138.61ZM2225.92,343.03c-72.62,9.68-56.39,142.67,9.9,138.61,97.02-5.94,49.5-146.53-9.9-138.61ZM2686.12,343.13c-64.18-8.02-87.35,95.19-26.56,112.77,66.28,19.16,73.26-106.93,26.56-112.77ZM1614.07,445.99c19.8-85.14,41.58-116.83,55.44-116.83s37.62,108.91,73.26,128.71M1934.85,172.74c47.52-45.54,186.13-25.74,194.05,33.66,7.92,59.4-39.6,97.02-37.62,122.77s56.36,69.3,38.54,120.79-66.26,57.42-137.55,25.74M2002.17,198.48c-5.94,47.52-1.98,209.89,7.92,241.57M2352.65,182.64c-7.92,55.44-9.84,280.18,67.32,277.21,51.48-1.98,57.42-116.83-17.82-122.77M2590.26,305.41c-35.64,13.86-59.4,27.56-59.4,134.65,0,9.9-15.84-93.06-19.8-116.83M2881.33,392.53s-9.9,67.32,39.6,65.34c69.28-2.77,130.89-59.33,148.51-138.61,15.84-71.28-39.6-83.16-39.6-83.16M2778.37,360.85c-7.92,49.5-1.85,92.77,17.82,95.04,51.48,5.94,85.14-63.36,85.14-63.36"></path></svg></a>
+    </div>
+    <svg class="block-art season-fall" viewBox="0 0 590 342" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="wc-paint" x="-4%" y="-4%" width="108%" height="108%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="3" result="warp"></feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="wob"></feDisplacementMap>
+          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="11" result="blot"></feTurbulence>
+          <feColorMatrix in="blot" type="matrix" values="0 0 0 0 0.22  0 0 0 0 0.16  0 0 0 0 0.12  0 0 0 0.55 -0.12" result="blot2"></feColorMatrix>
+          <feComposite in="blot2" in2="wob" operator="in" result="blot3"></feComposite>
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="5" result="grain"></feTurbulence>
+          <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.27  0 0 0 0 0.24  0 0 0 0.28 0" result="grain2"></feColorMatrix>
+          <feComposite in="grain2" in2="wob" operator="in" result="grain3"></feComposite>
+          <feMerge><feMergeNode in="wob"></feMergeNode><feMergeNode in="blot3"></feMergeNode><feMergeNode in="grain3"></feMergeNode></feMerge>
+        </filter>
+        <filter id="wc-bloom" x="-15%" y="-15%" width="130%" height="130%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="9" result="w2"></feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="w2" scale="14" xChannelSelector="R" yChannelSelector="G" result="d2"></feDisplacementMap>
+          <feGaussianBlur in="d2" stdDeviation="0.6"></feGaussianBlur>
+        </filter>
+        <filter id="wc-ink">
+          <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="4" result="w3"></feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="w3" scale="1.3" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        </filter>
+        <pattern id="wc-brick" width="12" height="6" patternUnits="userSpaceOnUse">
+          <path d="M0,6 H12 M3,0 V3 M9,3 V6" fill="none" stroke="#7E2E22" stroke-width="0.6" stroke-opacity="0.55"></path>
+        </pattern>
+        <linearGradient id="wc-bow" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#5A4632" stop-opacity="0.35"></stop>
+          <stop offset="0.22" stop-color="#5A4632" stop-opacity="0"></stop>
+          <stop offset="0.78" stop-color="#5A4632" stop-opacity="0"></stop>
+          <stop offset="1" stop-color="#5A4632" stop-opacity="0.35"></stop>
+        </linearGradient>
+        <symbol id="wc-wg" viewBox="0 0 20 30" preserveAspectRatio="none"><rect width="20" height="30" fill="#C6D1DB"></rect><rect width="20" height="5" fill="#97A8B8" fill-opacity="0.6"></rect><rect x="2.5" y="6" width="5" height="10" fill="#EEF2F5" fill-opacity="0.7"></rect><rect x="12" y="17" width="5" height="9" fill="#EEF2F5" fill-opacity="0.45"></rect></symbol>
+        <symbol id="wc-wf" viewBox="0 0 20 30" preserveAspectRatio="none"><rect width="20" height="30" class="wc-ik wc-f" vector-effect="non-scaling-stroke"></rect><path d="M10,0 V30 M0,15 H20" class="wc-ik" style="stroke-width: 1.3" vector-effect="non-scaling-stroke"></path></symbol>
+        <symbol id="wc-wga" viewBox="0 0 20 30" preserveAspectRatio="none"><path d="M0,30 V10 A10,10 0 0 1 20,10 V30 Z" fill="#C6D1DB"></path><path d="M3,8 A7,7 0 0 1 9,3 V16 H3 Z" fill="#EEF2F5" fill-opacity="0.7"></path></symbol>
+        <symbol id="wc-wfa" viewBox="0 0 20 30" preserveAspectRatio="none"><path d="M0,30 V10 A10,10 0 0 1 20,10 V30 Z" class="wc-ik wc-f" vector-effect="non-scaling-stroke"></path><path d="M10,0 V30 M0,18 H20" class="wc-ik" style="stroke-width: 1.3" vector-effect="non-scaling-stroke"></path></symbol>
+
+
+        <pattern id="wc-scale" width="8" height="6" patternUnits="userSpaceOnUse">
+          <path d="M0,6 A4,4 0 0 1 8,6 M-4,3 A4,4 0 0 1 4,3 M4,3 A4,4 0 0 1 12,3" fill="none" stroke="#9A5E55" stroke-width="0.6" stroke-opacity="0.55"></path>
+        </pattern>
+
+        <!-- A: Italianate, flat front with a bracketed cornice and a two-story slanted bay -->
+        <symbol id="wc-hA" viewBox="0 0 130 278" overflow="visible">
+          <g filter="url(#wc-paint)">
+            <rect x="4" y="34" width="122" height="228" fill="#E6C27A"></rect>
+            <rect x="4" y="34" width="122" height="228" fill="url(#wc-bow)"></rect>
+            <rect x="4" y="226" width="122" height="36" fill="#D3AE66"></rect>
+            <rect x="0" y="14" width="130" height="21" fill="#F2ECDD"></rect>
+            <rect x="-3" y="9" width="136" height="6" fill="#56636B"></rect>
+            <rect x="4" y="35" width="122" height="5" fill="#3F6E6A" fill-opacity="0.55"></rect>
+            <rect x="57" y="46" width="68" height="178" fill="#EDCC8B"></rect>
+            <rect x="57" y="46" width="13" height="178" fill="#B98F4D" fill-opacity="0.45"></rect>
+            <rect x="112" y="46" width="13" height="178" fill="#C9A35F" fill-opacity="0.35"></rect>
+            <rect x="54" y="41" width="74" height="6" fill="#F2ECDD"></rect>
+            <rect x="54" y="141" width="74" height="7" fill="#F2ECDD"></rect>
+            <rect x="54" y="222" width="74" height="6" fill="#F2ECDD"></rect>
+            <rect x="4" y="146" width="53" height="6" fill="#F2ECDD"></rect>
+            <path d="M13,50 L29,41 L45,50 Z" fill="#F2ECDD"></path>
+            <rect x="14" y="50" width="30" height="5" fill="#F2ECDD"></rect>
+            <use href="#wc-wg" x="18" y="56" width="22" height="58"></use>
+            <use href="#wc-wg" x="76" y="56" width="30" height="78"></use><use href="#wc-wg" x="60" y="58" width="7" height="74"></use><use href="#wc-wg" x="115" y="58" width="7" height="74"></use>
+            <use href="#wc-wg" x="76" y="158" width="30" height="58"></use><use href="#wc-wg" x="60" y="160" width="7" height="56"></use><use href="#wc-wg" x="115" y="160" width="7" height="56"></use>
+            <path d="M11,161 L29,150 L47,161 Z" fill="#F2ECDD"></path>
+            <rect x="17" y="161" width="24" height="9" fill="#C6D1DB"></rect>
+            <rect x="17" y="170" width="24" height="56" fill="#3F6E6A"></rect>
+            <rect x="20" y="174" width="7" height="22" fill="#5E8C87" fill-opacity="0.8"></rect><rect x="31" y="174" width="7" height="22" fill="#5E8C87" fill-opacity="0.8"></rect>
+            <path d="M13,226 H45 L51,262 H7 Z" fill="#EFE6D3"></path>
+            <path d="M45,226 L51,262 H46 L41,226 Z" fill="#B9AA8E" fill-opacity="0.6"></path>
+            <rect x="66" y="238" width="14" height="9" fill="#8A6E45" fill-opacity="0.6"></rect><rect x="100" y="238" width="14" height="9" fill="#8A6E45" fill-opacity="0.6"></rect>
+            <rect x="16" y="114" width="26" height="6" fill="#5B4636"></rect>
+            <circle cx="19" cy="113" r="3" class="s-f1"></circle><circle cx="25" cy="111" r="3.2" class="s-f2"></circle><circle cx="31" cy="113" r="3" class="s-f1"></circle><circle cx="37" cy="111" r="3" class="s-f2"></circle>
+            <path d="M0,262 H130 V277.6 Z" fill="#BDB5A6"></path>
+          </g>
+          <g filter="url(#wc-ink)">
+            <use href="#wc-wf" x="18" y="56" width="22" height="58"></use>
+            <use href="#wc-wf" x="76" y="56" width="30" height="78"></use><use href="#wc-wf" x="60" y="58" width="7" height="74"></use><use href="#wc-wf" x="115" y="58" width="7" height="74"></use>
+            <use href="#wc-wf" x="76" y="158" width="30" height="58"></use><use href="#wc-wf" x="60" y="160" width="7" height="56"></use><use href="#wc-wf" x="115" y="160" width="7" height="56"></use>
+            <path class="wc-ik" d="M4,262 V35 M126,35 V262 M-3,9 H133 M0,15 H130 M0,35 H130 M57,47 V222 M70,47 V222 M112,47 V222 M125,47 V222 M54,41 H128 M54,47 H128 M54,141 H128 M54,148 H128 M54,222 H128 M54,228 H128 M4,146 H57 M4,152 H57 M4,226 H126"></path>
+            <path class="wc-ik wc-t" d="M8,15 V35 M24,15 V35 M40,15 V35 M56,15 V35 M72,15 V35 M88,15 V35 M104,15 V35 M120,15 V35 M5,24 H11 M21,24 H27 M37,24 H43 M53,24 H59 M69,24 H75 M85,24 H91 M101,24 H107 M117,24 H123"></path>
+            <path class="wc-ik" d="M13,50 L29,41 L45,50 Z M14,50 H44 V55 H14 Z M11,161 L29,150 L47,161 Z"></path>
+            <path class="wc-ik wc-f" d="M17,226 V161 H41 V226 M17,170 H41 M29,170 V226"></path>
+            <path class="wc-ik" d="M13,226 H45 M12.2,231 H45.8 M11.3,236 H46.7 M10.5,241 H47.5 M9.7,246 H48.3 M8.8,251 H49.2 M8,256 H50 M7,262 H51"></path>
+            <path class="wc-ik wc-r" d="M13,214 V226 L7,258 M45,214 V226 L51,258"></path>
+            <path class="wc-ik wc-t" d="M66,238 h14 v9 h-14 Z M100,238 h14 v9 h-14 Z M70,238 V247 M74,238 V247 M104,238 V247 M108,238 V247"></path>
+            <path class="wc-ik" d="M16,114 h26 v6 h-26 Z"></path>
+            <path class="wc-ik" d="M0,262 L130,277.6"></path>
+          </g>
+        </symbol>
+
+        <!-- B: Queen Anne, a shingled gable over a square bay, arched door up a side stair -->
+        <symbol id="wc-hB" viewBox="0 0 130 278" overflow="visible">
+          <g filter="url(#wc-paint)">
+            <rect x="4" y="62" width="122" height="200" fill="#B7A3CA"></rect>
+            <rect x="4" y="62" width="122" height="200" fill="url(#wc-bow)"></rect>
+            <rect x="4" y="226" width="122" height="36" fill="#A592B8"></rect>
+            <polygon points="-5,66 65,4 135,66" fill="#5D5767"></polygon>
+            <polygon points="8,62 65,15 122,62" fill="#EDC2B0"></polygon>
+            <polygon points="8,62 65,15 122,62" fill="url(#wc-scale)"></polygon>
+            <circle cx="65" cy="42" r="8.5" fill="#C6D1DB"></circle>
+            <rect x="4" y="62" width="122" height="9" fill="#F1EADC"></rect>
+            <rect x="22" y="76" width="86" height="72" fill="#C4B3D6"></rect>
+            <rect x="19" y="73" width="92" height="6" fill="#F1EADC"></rect>
+            <rect x="19" y="144" width="92" height="7" fill="#F1EADC"></rect>
+            <use href="#wc-wg" x="29" y="84" width="20" height="52"></use><use href="#wc-wg" x="55" y="84" width="20" height="52"></use><use href="#wc-wg" x="81" y="84" width="20" height="52"></use>
+            <rect x="4" y="156" width="122" height="5" fill="#F1EADC"></rect>
+            <path d="M9,172 L34,164 L59,172 Z" fill="#F1EADC"></path>
+            <use href="#wc-wg" x="12" y="174" width="20" height="46"></use><use href="#wc-wg" x="36" y="174" width="20" height="46"></use>
+            <path d="M86,228 V184 A15,15 0 0 1 116,184 V228 Z" fill="#F1EADC"></path>
+            <path d="M90,226 V185 A11,11 0 0 1 112,185 V226 Z" fill="#7A3B4E"></path>
+            <path d="M92,186 A9,9 0 0 1 110,186 V192 H92 Z" fill="#C6D1DB" fill-opacity="0.85"></path>
+            <path d="M82,228 H120 L126,262 H76 Z" fill="#E9DFCC"></path>
+            <path d="M82,228 L76,262 H81 L86,228 Z" fill="#AFA08A" fill-opacity="0.55"></path>
+            <rect x="12" y="220" width="44" height="6" fill="#5B4636"></rect>
+            <circle cx="15" cy="219" r="3" class="s-f2"></circle><circle cx="21" cy="217" r="3.2" class="s-f1"></circle><circle cx="27" cy="219" r="3" class="s-f2"></circle><circle cx="33" cy="217" r="3" class="s-f1"></circle><circle cx="40" cy="219" r="3" class="s-f2"></circle><circle cx="46" cy="217" r="3.2" class="s-f1"></circle><circle cx="52" cy="219" r="3" class="s-f2"></circle>
+            <rect x="14" y="238" width="14" height="9" fill="#6E5E80" fill-opacity="0.6"></rect><rect x="40" y="238" width="14" height="9" fill="#6E5E80" fill-opacity="0.6"></rect>
+            <path d="M0,262 H130 V277.6 Z" fill="#BDB5A6"></path>
+          </g>
+          <g filter="url(#wc-ink)">
+            <use href="#wc-wf" x="29" y="84" width="20" height="52"></use><use href="#wc-wf" x="55" y="84" width="20" height="52"></use><use href="#wc-wf" x="81" y="84" width="20" height="52"></use>
+            <use href="#wc-wf" x="12" y="174" width="20" height="46"></use><use href="#wc-wf" x="36" y="174" width="20" height="46"></use>
+            <path class="wc-ik" d="M-5,66 L65,4 L135,66 M8,62 L65,15 L122,62 M4,62 V262 M126,62 V262 M4,71 H126 M22,79 V144 M108,79 V144 M19,73 H111 M19,79 H111 M19,144 H111 M19,151 H111 M4,156 H126 M4,161 H126 M4,226 H126"></path>
+            <circle class="wc-ik wc-f" cx="65" cy="42" r="8.5"></circle>
+            <path class="wc-ik wc-t" d="M57,42 H73 M65,34 V50 M8,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M24,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M40,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M56,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M72,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M88,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M104,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0 M118,66 a2,2 0 1 0 4,0 a2,2 0 1 0 -4,0"></path>
+            <path class="wc-ik wc-t" d="M26,151 l3,6 l3,-6 M98,151 l3,6 l3,-6 M30,138 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0 c3,3 6,-3 9,0"></path>
+            <path class="wc-ik" d="M9,172 L34,164 L59,172 Z"></path>
+            <path class="wc-ik wc-f" d="M86,228 V184 A15,15 0 0 1 116,184 V228 M90,226 V185 A11,11 0 0 1 112,185 V226 M101,174 V226 M90,192 H112"></path>
+            <path class="wc-ik" d="M82,228 H120 M81.1,233 H120.9 M80.3,238 H121.7 M79.4,243 H122.6 M78.5,248 H123.5 M77.7,253 H124.3 M76.8,258 H125.2 M76,262 H126"></path>
+            <path class="wc-ik wc-r" d="M82,216 V228 L76,258 M120,216 V228 L126,258"></path>
+            <path class="wc-ik" d="M12,220 h44 v6 h-44 Z"></path>
+            <path class="wc-ik wc-t" d="M14,238 h14 v9 h-14 Z M40,238 h14 v9 h-14 Z M18,238 V247 M22,238 V247 M44,238 V247 M48,238 V247"></path>
+            <path class="wc-ik" d="M0,262 L130,277.6"></path>
+          </g>
+        </symbol>
+
+        <!-- C: Edwardian over a garage, with a full-height bay and an arched entry -->
+        <symbol id="wc-hC" viewBox="0 0 130 278" overflow="visible">
+          <g filter="url(#wc-paint)">
+            <rect x="4" y="32" width="122" height="230" fill="#A6C8BE"></rect>
+            <rect x="4" y="32" width="122" height="230" fill="url(#wc-bow)"></rect>
+            <rect x="0" y="18" width="130" height="15" fill="#F3EEE2"></rect>
+            <rect x="-3" y="13" width="136" height="6" fill="#4F5F67"></rect>
+            <rect x="7" y="42" width="78" height="150" fill="#B3D3C9"></rect>
+            <rect x="7" y="42" width="13" height="150" fill="#7FA79B" fill-opacity="0.45"></rect>
+            <rect x="72" y="42" width="13" height="150" fill="#8DB3A8" fill-opacity="0.35"></rect>
+            <rect x="4" y="37" width="84" height="6" fill="#F3EEE2"></rect>
+            <rect x="4" y="113" width="84" height="7" fill="#F3EEE2"></rect>
+            <rect x="4" y="189" width="84" height="6" fill="#F3EEE2"></rect>
+            <use href="#wc-wg" x="25" y="50" width="42" height="56"></use><use href="#wc-wg" x="10" y="52" width="7" height="52"></use><use href="#wc-wg" x="75" y="52" width="7" height="52"></use>
+            <use href="#wc-wg" x="25" y="126" width="42" height="56"></use><use href="#wc-wg" x="10" y="128" width="7" height="52"></use><use href="#wc-wg" x="75" y="128" width="7" height="52"></use>
+            <rect x="94" y="48" width="26" height="5" fill="#F3EEE2"></rect><rect x="94" y="122" width="26" height="5" fill="#F3EEE2"></rect>
+            <use href="#wc-wg" x="96" y="53" width="22" height="52"></use><use href="#wc-wg" x="96" y="127" width="22" height="52"></use>
+            <rect x="4" y="198" width="122" height="6" fill="#F3EEE2"></rect>
+            <rect x="9" y="210" width="68" height="52" fill="#A07A53"></rect>
+            <rect x="9" y="210" width="68" height="10" fill="#C6D1DB" fill-opacity="0.7"></rect>
+            <path d="M88,262 V222 A15,15 0 0 1 118,222 V262 Z" fill="#F3EEE2"></path>
+            <path d="M92,262 V223 A11,11 0 0 1 114,223 V262 Z" fill="#3E4D54"></path>
+            <rect x="97" y="226" width="12" height="20" fill="#2F5D74"></rect>
+            <rect x="99" y="228" width="8" height="8" fill="#C6D1DB" fill-opacity="0.8"></rect>
+            <path d="M0,262 H130 V277.6 Z" fill="#BDB5A6"></path>
+          </g>
+          <g filter="url(#wc-ink)">
+            <use href="#wc-wf" x="25" y="50" width="42" height="56"></use><use href="#wc-wf" x="10" y="52" width="7" height="52"></use><use href="#wc-wf" x="75" y="52" width="7" height="52"></use>
+            <use href="#wc-wf" x="25" y="126" width="42" height="56"></use><use href="#wc-wf" x="10" y="128" width="7" height="52"></use><use href="#wc-wf" x="75" y="128" width="7" height="52"></use>
+            <use href="#wc-wf" x="96" y="53" width="22" height="52"></use><use href="#wc-wf" x="96" y="127" width="22" height="52"></use>
+            <path class="wc-ik" d="M4,262 V33 M126,33 V262 M-3,13 H133 M0,19 H130 M0,33 H130 M7,43 V189 M20,43 V189 M72,43 V189 M85,43 V189 M4,37 H88 M4,43 H88 M4,113 H88 M4,120 H88 M4,189 H88 M4,195 H88 M94,48 h26 v5 h-26 Z M94,122 h26 v5 h-26 Z M4,198 H126 M4,204 H126"></path>
+            <path class="wc-ik wc-t" d="M6,30 h4 M14,30 h4 M22,30 h4 M30,30 h4 M38,30 h4 M46,30 h4 M54,30 h4 M62,30 h4 M70,30 h4 M78,30 h4 M86,30 h4 M94,30 h4 M102,30 h4 M110,30 h4 M118,30 h4 M6,30 V33 M10,30 V33 M14,30 V33 M18,30 V33 M22,30 V33 M26,30 V33 M30,30 V33 M34,30 V33 M38,30 V33 M42,30 V33 M46,30 V33 M50,30 V33 M54,30 V33 M58,30 V33 M62,30 V33 M66,30 V33 M70,30 V33 M74,30 V33 M78,30 V33 M82,30 V33 M86,30 V33 M90,30 V33 M94,30 V33 M98,30 V33 M102,30 V33 M106,30 V33 M110,30 V33 M114,30 V33 M118,30 V33 M122,30 V33"></path>
+            <path class="wc-ik wc-f" d="M9,262 V210 H77 V262"></path>
+            <path class="wc-ik" d="M9,220 H77 M9,234 H77 M9,248 H77 M26,220 V262 M43,220 V262 M60,220 V262 M26,210 V220 M43,210 V220 M60,210 V220"></path>
+            <path class="wc-ik wc-f" d="M88,262 V222 A15,15 0 0 1 118,222 V262 M92,262 V223 A11,11 0 0 1 114,223 V262"></path>
+            <path class="wc-ik" d="M97,226 h12 v20 h-12 Z M92,250 H114 M92,256 H114"></path>
+            <path class="wc-ik" d="M0,262 L130,277.6"></path>
+          </g>
+        </symbol>
+
+      </defs>
+      <path d="M-6,263.3 L596,335.5 L596,341 L-6,268.8 Z" fill="#CFC8BB" fill-opacity="0.55" filter="url(#wc-paint)"></path>
+      <path class="wc-ik wc-t" d="M-6,263.3 L596,335.5"></path>
+      <g transform="translate(6,10)">
+        <path d="M57,262 C58,222 56,192 59,160 L64,160 C62,192 64,222 66,262 Z" fill="#6B5140" filter="url(#wc-paint)"></path>
+        <path class="wc-ik" d="M60,176 C52,156 40,146 28,128 M61,164 C70,146 82,134 94,116 M61,150 C58,124 60,104 58,80 M46,144 C40,132 28,122 18,114 M78,140 C88,130 98,120 106,108 M58,114 C50,100 44,90 40,74 M60,106 C68,94 76,84 82,70 M40,74 C36,68 32,62 30,56 M82,70 C86,64 88,58 90,52 M28,128 C22,124 16,122 10,122 M94,116 C100,114 106,114 112,116" style="stroke: #4B392C; stroke-width: 1.8"></path>
+        <g class="s-canopy" filter="url(#wc-bloom)">
+          <circle cx="34" cy="122" r="22" class="s-c2" fill-opacity="0.8"></circle>
+          <circle cx="86" cy="120" r="24" class="s-c1" fill-opacity="0.8"></circle>
+          <circle cx="58" cy="94" r="28" class="s-c3" fill-opacity="0.75"></circle>
+          <circle cx="28" cy="94" r="18" class="s-c1" fill-opacity="0.75"></circle>
+          <circle cx="92" cy="90" r="20" class="s-c4" fill-opacity="0.7"></circle>
+          <circle cx="60" cy="64" r="22" class="s-c5" fill-opacity="0.75"></circle>
+          <circle cx="38" cy="70" r="16" class="s-c2" fill-opacity="0.7"></circle>
+          <circle cx="82" cy="64" r="16" class="s-c1" fill-opacity="0.7"></circle>
+          <circle cx="16" cy="112" r="12" class="s-c3" fill-opacity="0.7"></circle>
+          <circle cx="106" cy="110" r="13" class="s-c3" fill-opacity="0.7"></circle>
+          <circle cx="60" cy="126" r="20" class="s-c4" fill-opacity="0.65"></circle>
+          <circle cx="72" cy="100" r="16" class="s-c5" fill-opacity="0.7"></circle>
+          <circle cx="48" cy="46" r="11" class="s-c3" fill-opacity="0.6"></circle>
+          <circle cx="74" cy="44" r="10" class="s-c2" fill-opacity="0.6"></circle>
+        </g>
+        <g class="s-blossom" fill="#F2C4D2">
+          <circle cx="30" cy="80" r="4"></circle><circle cx="70" cy="58" r="4"></circle><circle cx="90" cy="96" r="3.5"></circle><circle cx="48" cy="104" r="4"></circle><circle cx="76" cy="122" r="3.5"></circle><circle cx="22" cy="110" r="3"></circle><circle cx="62" cy="84" r="3"></circle><circle cx="100" cy="80" r="3"></circle><circle cx="40" cy="132" r="3"></circle><circle cx="54" cy="52" r="3"></circle>
+        </g>
+        <g class="s-fall">
+          <circle cx="10" cy="152" r="2.5" class="s-c2"></circle><circle cx="106" cy="146" r="2" class="s-c1"></circle><circle cx="118" cy="176" r="2.5" class="s-c4"></circle><circle cx="-2" cy="194" r="2" class="s-c3"></circle><circle cx="96" cy="206" r="2.2" class="s-c2"></circle><circle cx="22" cy="228" r="2" class="s-c1"></circle><circle cx="112" cy="238" r="2" class="s-c4"></circle><circle cx="6" cy="250" r="2.4" class="s-c3"></circle>
+          <ellipse cx="40" cy="261" rx="4" ry="1.6" class="s-c4"></ellipse><ellipse cx="78" cy="262" rx="4" ry="1.6" class="s-c2"></ellipse><ellipse cx="92" cy="260" rx="3.5" ry="1.4" class="s-c1"></ellipse>
+        </g>
+        <ellipse cx="62" cy="262" rx="52" ry="6" transform="rotate(6.8 62 262)" class="s-grass" fill-opacity="0.7" filter="url(#wc-bloom)"></ellipse>
+        <path class="wc-ik wc-t" d="M24,262 l2,-6 M30,262 l-1,-5 M88,262 l2,-6 M96,262 l-1,-5 M50,262 l1,-4 M70,262 l1,-5"></path>
+      </g>
+
+      <use href="#wc-hA" x="150" y="20" width="130" height="278"></use>
+      <use href="#wc-hB" x="296" y="37.5" width="130" height="278"></use>
+      <use href="#wc-hC" x="442" y="55" width="130" height="278"></use>
+    </svg>
+  </header>
+
+  <form class="search" id="form" autocomplete="off">
+    <div class="field">
+      <div class="addrbox">
+        <label for="q">Building address</label>
+        <input id="q" type="text" placeholder="e.g. 825 Bush St" aria-autocomplete="list" aria-controls="sug" spellcheck="false">
+        <ul class="suggest" id="sug" role="listbox" hidden></ul>
+      </div>
+      <div class="aptbox">
+        <label for="apt">Apt</label>
+        <input id="apt" type="text" placeholder="Optional" spellcheck="false" maxlength="8">
+      </div>
+      <button type="submit">Look up</button>
+    </div>
+    <div class="chips" id="chips"><span>Try:</span></div>
+  </form>
+
+  <main id="out" aria-live="polite"></main>
+
+  <footer>
+    <p>Data comes live from DataSF: Department of Building Inspection complaints, notices of violation and building permits; Fire Department violations; Rent Board eviction notices, buyout agreements, petitions, the housing inventory and allowable increases; the soft-story program; 311 cases; police incident reports; the Assessor's secured roll; historic resource status; residential parking permit eligibility; the 100-year storm flood map, sea level rise maps and state seismic hazard zones; night noise permits; and the city's Enterprise Addressing System.</p>
+    <p>Comparisons use a random sample of 213 San Francisco buildings with three or more units (88 for noise and car break-ins), drawn in October 2026. “The block” means everything within 150 meters, about a block in each direction; Rent Board eviction notices and petitions are published by street block, so those cover both sides of the 100-block the building is on.</p>
+    <p>Rent control here is an estimate from the building's age and type; only the Rent Board can say for sure. A clean record is a good sign, not a guarantee.</p>
+    <div class="sig">
+      <span class="src"><a href="mailto:jbobrow+sfrent@gmail.com?subject=SF%20Rent%20feedback"><svg class="ico" viewBox="0 0 15 15" aria-hidden="true"><path d="M1 2C0.447715 2 0 2.44772 0 3V12C0 12.5523 0.447715 13 1 13H14C14.5523 13 15 12.5523 15 12V3C15 2.44772 14.5523 2 14 2H1ZM1 3L14 3V3.92494C13.9174 3.92486 13.8338 3.94751 13.7589 3.99505L7.5 7.96703L1.24112 3.99505C1.16621 3.94751 1.0826 3.92486 1 3.92494V3ZM1 4.90797V12H14V4.90797L7.74112 8.87995C7.59394 8.97335 7.40606 8.97335 7.25888 8.87995L1 4.90797Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/></svg>Send feedback</a></span>
+      <span class="src"><a href="https://github.com/jbobrow/SF-Renting" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 15 15" aria-hidden="true"><path d="M7.49933 0.25C3.49635 0.25 0.25 3.49593 0.25 7.50024C0.25 10.703 2.32715 13.4206 5.2081 14.3797C5.57084 14.446 5.70302 14.2222 5.70302 14.0299C5.70302 13.8576 5.69679 13.4019 5.69323 12.797C3.67661 13.235 3.25112 11.825 3.25112 11.825C2.92132 10.9874 2.44599 10.7644 2.44599 10.7644C1.78773 10.3149 2.49584 10.3238 2.49584 10.3238C3.22353 10.375 3.60629 11.0711 3.60629 11.0711C4.25298 12.1788 5.30335 11.8588 5.71638 11.6732C5.78225 11.205 5.96962 10.8854 6.17658 10.7043C4.56675 10.5209 2.87415 9.89918 2.87415 7.12104C2.87415 6.32925 3.15677 5.68257 3.62053 5.17563C3.54576 4.99226 3.29697 4.25521 3.69174 3.25691C3.69174 3.25691 4.30015 3.06196 5.68522 3.99973C6.26337 3.83906 6.8838 3.75895 7.50022 3.75583C8.1162 3.75895 8.73619 3.83906 9.31523 3.99973C10.6994 3.06196 11.3069 3.25691 11.3069 3.25691C11.7026 4.25521 11.4538 4.99226 11.3795 5.17563C11.8441 5.68257 12.1245 6.32925 12.1245 7.12104C12.1245 9.9063 10.4292 10.5192 8.81452 10.6985C9.07444 10.9224 9.30633 11.3648 9.30633 12.0413C9.30633 13.0102 9.29742 13.7922 9.29742 14.0299C9.29742 14.2239 9.42828 14.4496 9.79591 14.3788C12.6746 13.4179 14.75 10.7025 14.75 7.50024C14.75 3.49593 11.5036 0.25 7.49933 0.25Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/></svg>Source on GitHub</a></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ---------- baselines (random sample of San Francisco buildings with 3+ apartments, Oct 2026) ---------- */
+/* V: open DBI notices of violation per unit · HC: housing complaints to DBI per unit, past 2 years · EV: eviction notices on the block, past 2 years
+   TP: tenant petitions on the block, past 3 years · NOISE / BRK / PEST: 311 noise reports, car break-ins, 311 pest reports within 150 m, past year.
+   Only non-zero values listed; n = sample size. */
+const BASE = {"V":{"n":213,"v":[0.005,0.015,0.016,0.026,0.034,0.035,0.056,0.077,0.083,0.125,0.167,0.167,0.167,0.25,0.25,0.25,0.25,0.25,0.333,0.333,0.5,0.5,0.667,0.667]},"HC":{"n":213,"v":[0.019,0.019,0.023,0.026,0.029,0.033,0.034,0.048,0.05,0.051,0.062,0.073,0.074,0.076,0.077,0.078,0.083,0.093,0.095,0.111,0.118,0.125,0.158,0.167,0.2,0.25,0.25,0.25,0.25,0.25,0.267,0.333,0.333,0.333,0.333,0.333,0.333,0.364,0.476,0.667,0.667,0.667]},"EV":{"n":213,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,4,4,4,4,5,16,30]},"TP":{"n":213,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,7,8,10,14,18,26]},"NOISE":{"n":88,"v":[1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,7,7,7,7,7,7,8,8,8,8,8,8,9,9,9,9,10,11,11,13,13,13,14,14,15,16,16,18,18,19,19,20,21,21,21,23,24,25,28,28,32,32,34,36,36,37,38,39,39,40,44,45,50,52,59,60,111,119,122,365]},"BRK":{"n":88,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,6,6,6,6,7,8,9,9,10,10,12,12,12,13,14,17,19,21]},"PEST":{"n":88,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,5,5,5,5,7,9]}};
+function shareBelow(v, b) { const zeros = b.n - b.v.length; if (v <= 0) return 0; return (zeros + b.v.filter(x => x < v).length) / b.n; }
+function medianOf(b) { const zeros = b.n - b.v.length, i = Math.floor(b.n / 2); return i < zeros ? 0 : b.v[i - zeros]; }
+function shareAbove(v, b) { return b.v.filter(x => x > v).length / b.n; }
+
+/* ---------- facts that change on a schedule (check each year) ---------- */
+const AB1482 = { pct: 8.8, from: "Aug 1, 2026", to: "Jul 31, 2027" };   // sf.gov, 5% + 3.8% CPI
+const DEPOSIT_INTEREST = { pct: 4.2, from: "Mar 1, 2026", to: "Feb 28, 2027" };
+const SCREENING_FEE = 65.86;  // California cap for 2026, Civil Code 1950.6
+
+/* ---------- data layer ---------- */
+const SODA = "https://data.sf.gov/resource/";
+
+async function soda(id, params, timeoutMs = 45000) {
+  const u = new URL(SODA + id + ".json");
+  for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
+  let lastErr;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ac = new AbortController(), t = setTimeout(() => ac.abort(), timeoutMs);
+    try {
+      const r = await fetch(u, { signal: ac.signal });
+      if (r.status >= 500 && attempt === 0) { lastErr = new Error("DataSF returned " + r.status); continue; }
+      if (!r.ok) throw new Error("DataSF returned " + r.status + " for " + id);
+      return await r.json();
+    } catch (e) {
+      lastErr = e.name === "AbortError" ? new Error("DataSF took too long to answer.") : e;
+      if (e.name === "AbortError" || attempt === 1) throw lastErr;
+    } finally { clearTimeout(t); }
+  }
+  throw lastErr;
+}
+const skip = Promise.resolve(null);
+const sq = s => String(s == null ? "" : s).replace(/'/g, "''");
+const sqlList = arr => arr.map(x => `'${sq(x)}'`).join(",");
+
+function iso(d) { return d.toISOString().slice(0, 10) + "T00:00:00"; }
+function yearsAgo(n, now) { const d = new Date(now); d.setFullYear(d.getFullYear() - n); return d; }
+function monthsAgo(n, now) { const d = new Date(now); d.setMonth(d.getMonth() - n); return d; }
+
+function normApt(a) { return String(a || "").toUpperCase().replace(/^\s*(APT\.?|APARTMENT|UNIT|STE\.?|SUITE|#)\s*/, "").replace(/[\s#.]/g, ""); }
+const aptKey = a => normApt(a).replace(/-/g, "").replace(/^0+(?=\d)/, "");
+
+/* The Rent Board publishes eviction notices and petitions by block, e.g. "800 Block Of Bush Street" */
+function blockOf(place) { return Math.floor(N(place.num) / 100) * 100; }
+function blockLike(place) { return `${blockOf(place)} BLOCK OF ${sq(place.st)} %`; }
+function blockLabel(place) { return `the ${blockOf(place) ? fmt(blockOf(place)) : "0"} block of ${titleCase(place.st.replace(/^0(\d)/, "$1"))} ${titleCase(SUFFIX_WORD[place.type] || place.type || "")}`.replace(/\s+$/, ""); }
+const SUFFIX_WORD = { ST: "Street", AVE: "Avenue", BLVD: "Boulevard", DR: "Drive", PL: "Place", TER: "Terrace", CT: "Court", LN: "Lane", RD: "Road", WAY: "Way", ALY: "Alley", CIR: "Circle", HWY: "Highway", PLZ: "Plaza", WALK: "Walk", STWY: "Stairway", PARK: "Park", ROW: "Row", LOOP: "Loop", HL: "Hill" };
+
+/* Which records each check needs; a check shows "Loading" until all of its records are in. */
+const NEEDS = {
+  rentctl: ["assessor", "hist", "inv", "eas", "allow"], viol: ["nov", "fire", "comp"], repairs: ["comp", "r311"], pests: ["comp", "r311"],
+  evict: ["evict", "buyout"], petit: ["petition"], quake: ["soft", "seis", "assessor"], legal: ["assessor", "eas", "comp", "inv"],
+  flood: ["f100", "slr24", "slr66", "nearby"], build: ["permits", "night"], noise: ["nearby"], brk: ["brk"],
+  apt: ["comp", "nov", "fire", "eas"], prop: ["assessor", "hist", "rpp"],
+};
+const isPending = (R, k) => (NEEDS[k] || []).some(x => R.raw[x] && R.raw[x].pending);
+
+/* Fires every query at once and calls onUpdate (throttled) as answers arrive. Resolves with the final report. */
+function fetchReport(place, now, onUpdate) {
+  const B = place.block, L = place.lot, hasParcel = !!(B && L);
+  const Bn = String(B || "").replace(/^0+(?=\w)/, ""), Ln = String(L || "").replace(/^0+(?=\w)/, "");
+  // DBI files records by assessor block and lot; condo buildings spread over many lots, so also match the street address
+  const W = `block='${sq(B)}' AND (lot='${sq(L)}' OR (street_number='${sq(place.num)}' AND upper(street_name)='${sq(place.st)}'))`;
+  const y2 = iso(yearsAgo(2, now)), y1 = iso(yearsAgo(1, now)), y3 = iso(yearsAgo(3, now));
+  const c = place.lat ? { lat: place.lat, lon: place.lon } : null;
+  const pt = `'POINT(${c ? c.lon : 0} ${c ? c.lat : 0})'`;
+  const geo = fn => c ? fn() : Promise.reject(new Error("No map location for this address."));
+  const q = {
+    assessor: hasParcel ? soda("wv5m-vpq2", { $where: `parcel_number='${sq(place.blklot)}'`, $order: "closed_roll_year DESC", $limit: 1 }) : skip,
+    eas: place.eas ? soda("ramy-di5m", { $where: `eas_baseid='${sq(place.eas)}'`, $select: "unit_number,parcel_number", $limit: 5000 }) : skip,
+    hist: hasParcel ? soda("3tsw-4idn", { $where: `apn='${sq(place.blklot)}'`, $select: "name,ceqacode,ceqacodereason,yearbuilt", $limit: 1 }) : skip,
+    inv: hasParcel ? soda("gdc7-dmcn", { $where: `block_num='${sq(B)}' AND upper(block_address) like '${blockLike(place)}'`, $select: "unit_count,year_property_built,submission_year,signature_date,bedroom_count,monthly_rent,occupancy_type,occupancy_or_vacancy_date_year", $limit: 20000 }) : skip,
+    nov: hasParcel ? soda("nbtm-fbw5", { $where: W, $select: "complaint_number,date_filed,status,nov_category_description,item,nov_item_description,unit,work_without_permit,unsafe_building,expired_permit", $order: "date_filed DESC", $limit: 3000 }) : skip,
+    comp: hasParcel ? soda("gm2e-bten", { $where: W, $select: "complaint_number,date_filed,status,complaint_description,unit,assigned_division,receiving_division,nov_type,date_referred_to_city_attorney,director_hearing_date,closed_date", $order: "date_filed DESC", $limit: 3000 }) : skip,
+    fire: place.eas ? soda("4zuq-2cbe", { $where: `starts_with(eas_id,'${sq(place.eas)}-')`, $select: "violation_date,violation_item_description,status,close_date,eas_unit_no", $order: "violation_date DESC", $limit: 2000 }) : skip,
+    r311: soda("vw6y-z8j6", { $where: `starts_with(address,'${sq(place.street)},') AND service_name in('Residential Building','Residential Building Request') AND requested_datetime>='${y3}'`, $select: "requested_datetime,service_subtype,agency_responsible", $order: "requested_datetime DESC", $limit: 2000 }),
+    soft: hasParcel ? soda("beah-shgi", { $where: `(block='${sq(B)}' OR block='${sq(Bn)}') AND (lot='${sq(L)}' OR lot='${sq(Ln)}')`, $select: "tier,status,property_address", $limit: 3 }) : skip,
+    evict: place.num ? soda("5cei-gny5", { $where: `upper(address) like '${blockLike(place)}' AND file_date>='2017-01-01'`, $limit: 5000 }) : skip,
+    buyout: place.num ? soda("wmam-7g8d", { $where: `upper(address) like '${sq(place.num)} ${sq(place.st)} %'`, $select: "pre_buyout_disclosure_declaration_date,buyout_agreement_date,buyout_amount,number_of_tenants,address", $limit: 200 }) : skip,
+    petition: place.num ? soda("6swy-cmkq", { $where: `upper(address) like '${blockLike(place)}' AND date_filed>='2017-01-01'`, $limit: 5000 }) : skip,
+    allow: soda("hsxb-ci7b", { $order: "effective_starting_date DESC", $limit: 1 }),
+    rpp: hasParcel ? soda("i886-hxz9", { $where: `blklot='${sq(place.blklot)}'`, $select: "rppeligib", $limit: 1 }) : skip,
+    seis: geo(() => soda("re79-p8j5", { $where: `intersects(the_geom,${pt})`, $select: "id", $limit: 5 })),
+    f100: geo(() => soda("jzu3-4yxp", { $where: `intersects(the_geom,${pt})`, $select: "shape_area", $limit: 1 })),
+    slr24: geo(() => soda("esku-ejgv", { $where: `intersects(the_geom,${pt})`, $select: "depth_ft", $limit: 3 })),
+    slr66: geo(() => soda("6ann-usi8", { $where: `intersects(the_geom,${pt})`, $select: "slr108", $limit: 1 })),
+    nearby: geo(() => soda("vw6y-z8j6", { $where: `within_circle(point,${c.lat},${c.lon},150) AND requested_datetime>='${y1}'`, $select: "service_name,service_subtype,count(*) as n", $group: "service_name,service_subtype", $order: "n DESC", $limit: 500 }, 60000)),
+    brk: geo(() => soda("wg3w-h783", { $where: `within_circle(point,${c.lat},${c.lon},150) AND incident_date>='${y1}' AND incident_subcategory='Larceny - From Vehicle'`, $select: "incident_id,incident_description,incident_date", $limit: 5000 })),
+    permits: geo(() => soda("i98e-djp9", { $where: `within_circle(location,${c.lat},${c.lon},160) AND status in('issued','approved','filed','reinstated','plancheck') AND (issued_date>='${y2}' OR filed_date>='${y2}') AND permit_type in('1','2','3','5','6','8')`, $select: "permit_number,permit_type,status,filed_date,issued_date,description,street_number,street_name,street_suffix,block,lot,estimated_cost,revised_cost,existing_units,proposed_units,location", $limit: 2000 })),
+    night: geo(() => soda("e7pr-36bt", { $where: `within_circle(point,${c.lat},${c.lon},160) AND end_date>='${iso(now)}'`, $select: "type_of_work,start_date,end_date,start_end_time_each_day,address", $limit: 100 })),
+  };
+  const raw = {};
+  const keys = Object.keys(q);
+  keys.forEach(k => raw[k] = { ok: false, pending: true });
+  let timer = null;
+  const flush = () => { timer = null; onUpdate(analyze(raw, now, place)); };
+  const schedule = () => { if (!timer) timer = setTimeout(flush, 200); };
+  return Promise.all(keys.map(k => q[k].then(
+    v => { raw[k] = v === null ? { ok: false, skipped: true } : { ok: true, rows: v }; },
+    e => { raw[k] = { ok: false, error: String(e && e.message || e) }; }
+  ).then(schedule))).then(() => { clearTimeout(timer); timer = null; return analyze(raw, now, place); });
+}
+
+/* ---------- analysis ---------- */
+const N = x => +x || 0;
+const RANK = { none: 0, ok: 1, warn: 2, bad: 3 };
+const worst = list => list.reduce((a, b) => RANK[b] > RANK[a] ? b : a, "ok");
+const rows = r => r && r.ok ? r.rows : [];
+const within = (d, from) => d && new Date(d) >= from;
+
+/* DBI complaint text sorted into plain-language groups (first match wins) */
+const CATS = [
+  ["Illegal unit", /illegal (unit|dwelling|apartment|in-?law|living)|unwarranted|in-?law unit|unpermitted (unit|dwelling)|illegal conversion/],
+  ["Pests", /roach|rodent|\brats?\b|\bmice\b|mouse|vermin|bed ?bug|infest|\bpests?\b/],
+  ["Mold or dampness", /mold|mildew|damp|moisture/],
+  ["Heat or hot water", /\bheat|hot water|boiler|furnace|heater/],
+  ["Leaks or plumbing", /leak|plumb|sewage|sewer|toilet|drain|water damage|flood|pipe/],
+  ["Peeling or lead paint", /paint|\blead\b/],
+  ["Elevator", /elevator/],
+  ["Electrical", /electric|wiring|outlet|breaker/],
+  ["Doors, windows or locks", /window|door|lock/],
+  ["Fire safety", /smoke|alarm|sprinkler|\bexits?\b|fire escape|extinguisher|carbon monoxide/],
+  ["Structure, stairs or facade", /fa[cç]ade|structur|balcon|stair|deck|crack|retaining|foundation|collapse/],
+  ["Garbage or common areas", /garbage|trash|common area|sanitation|debris|refuse/],
+  ["Work without a permit", /without (a )?permit|no permit|unpermitted|beyond (the )?scope|exceed.*permit|construction|remodel|demoli/],
+];
+const HABIT = new Set(["Mold or dampness", "Heat or hot water", "Leaks or plumbing", "Peeling or lead paint", "Elevator", "Electrical", "Doors, windows or locks", "Garbage or common areas"]);
+function catOf(t) { const s = String(t || "").toLowerCase(); for (const [k, re] of CATS) if (re.test(s)) return k; return "Other"; }
+const ADMIN = /vacant (store|commercial|building|lot)|storefront|routine|registration|affidavit|auur|survey|no violations|annual unit usage|hco violation|chapter 5f|tier iv|soft story program|fa[cç]ade program/i;
+
+const R311 = {
+  infestation_bed_bugs: "Bedbugs", infestation_rodent_insect: "Rodents or insects",
+  "building - infestation_bed_bugs": "Bedbugs", "building - infestation_rodent_insect": "Rodents or insects",
+};
+const r311Label = s => String(s || "").replace(/^Building - /i, "").replace(/_/g, " ").replace(/\beverthing\b/i, "everything").toLowerCase().replace(/^\w/, c => c.toUpperCase());
+
+const REASONS = [
+  ["owner_move_in", "Owner move-in", true], ["ellis_act_withdrawal", "Ellis Act (owner leaving the rental business)", true], ["demolition", "Demolition", true],
+  ["capital_improvement", "Capital improvement", true], ["substantial_rehab", "Substantial rehab", true], ["condo_conversion", "Condo conversion", true],
+  ["lead_remediation", "Lead remediation", true], ["development", "Development agreement", true], ["roommate_same_unit", "Roommate living with the landlord", false],
+  ["non_payment", "Nonpayment of rent", false], ["late_payments", "Late payments", false], ["breach", "Breach of lease", false], ["nuisance", "Nuisance", false],
+  ["illegal_use", "Illegal use", false], ["failure_to_sign_renewal", "Didn't sign a renewal", false], ["access_denial", "Denied the landlord access", false],
+  ["unapproved_subtenant", "Unapproved subtenant", false], ["good_samaritan_ends", "Good Samaritan period ended", false], ["other_cause", "Other", false],
+];
+const TGROUNDS = [
+  ["ground_tenant_decrease_in_housing_services", "Decrease in services"], ["ground_tenant_failure_to_repair_and_maintain", "Failure to repair"],
+  ["ground_tenant_unlawful_rent_increase", "Unlawful rent increase"], ["ground_tenant_wrongful_eviction_report", "Wrongful eviction report"],
+  ["ground_tenant_wrongful_severance_of_housing_service", "Services taken away"], ["ground_tenant_passthrough_challenge", "Challenged a passthrough"],
+  ["ground_tenant_capital_improvement_passthrough_hardship_petition", "Passthrough hardship"], ["ground_tenant_utility_passthrough_hardship", "Utility passthrough hardship"],
+];
+
+function analyze(raw, now, place) {
+  const R = { raw, now, place };
+  const a = raw.assessor.ok && raw.assessor.rows[0];
+  R.a = a || null;
+  const cls = a ? String(a.property_class_code || "") : "";
+  R.condo = /^(Z|ZBM|ZEU|LZ)$/.test(cls);
+  R.tic = /^TIC/.test(cls);
+  R.sfh = /^(D|TH|THBM)$/.test(cls) && N(a && a.number_of_units) <= 1;
+  const easUnits = new Set(rows(raw.eas).map(r => r.unit_number).filter(Boolean));
+  R.easUnits = easUnits.size;
+  R.easUnitSet = new Set([...easUnits].map(aptKey));
+  R.assessorUnits = a ? Math.round(N(a.number_of_units)) : 0;
+  const hist = raw.hist.ok && raw.hist.rows[0];
+  R.hist = hist || null;
+  R.yb = (a && N(a.year_property_built) > 1800 && N(a.year_property_built)) || (hist && N(hist.yearbuilt) > 1800 && N(hist.yearbuilt)) || 0;
+
+  // Rent Board housing inventory: the block's rows that match this building's unit count and year built
+  if (raw.inv.ok) {
+    const all = raw.inv.rows.map(r => ({ ...r, u: Math.round(N(r.unit_count)), y: N(r.year_property_built) }));
+    const want = new Set([R.assessorUnits, R.easUnits].filter(x => x > 0));
+    let mine = all.filter(r => want.has(r.u) && (!R.yb || r.y === R.yb));
+    if (!mine.length && R.yb) { const byU = new Set(all.filter(r => r.y === R.yb).map(r => r.u)); if (byU.size === 1) mine = all.filter(r => r.y === R.yb); }
+    const latestYear = Math.max(0, ...mine.map(r => N(r.submission_year)));
+    // owners sometimes file a second, partial report in the same year; use the fullest filing
+    const filings = {}; mine.filter(r => N(r.submission_year) === latestYear).forEach(r => { const k = String(r.signature_date || "").slice(0, 10); (filings[k] = filings[k] || []).push(r); });
+    const latest = Object.values(filings).sort((x, y) => y.length - x.length)[0] || [];
+    R.inv = { rows: latest, year: latestYear, units: latest.length ? latest[0].u : 0, blockRows: all };
+  }
+  R.units = R.condo ? (R.easUnits || R.assessorUnits) : (R.assessorUnits || R.easUnits || (R.inv && R.inv.units) || 0);
+  R.unitsKnown = R.units > 0;
+  const u = Math.max(R.units, 1);
+
+  // DBI complaints, sorted into groups
+  const comps = rows(raw.comp).map(r => ({ ...r, d: r.date_filed ? new Date(r.date_filed) : null, cat: catOf(r.complaint_description), admin: ADMIN.test(r.complaint_description || "") }));
+  R.comps = comps;
+  const two = yearsAgo(2, now), five = yearsAgo(5, now);
+
+  // Code violations: DBI notices of violation (grouped by notice), fire violations, city attorney referrals
+  if (raw.nov.ok || raw.fire.ok) {
+    const notices = new Map();
+    rows(raw.nov).forEach(r => {
+      const k = r.complaint_number;
+      const n = notices.get(k) || { id: k, d: r.date_filed ? new Date(r.date_filed) : null, items: [], active: false, unsafe: false, wwp: false, unit: null };
+      if (r.status === "active") n.active = true;
+      if (r.unsafe_building === true || r.unsafe_building === "true") n.unsafe = true;
+      if (r.work_without_permit === true || r.work_without_permit === "true") n.wwp = true;
+      if (r.unit && r.unit !== "0") n.unit = r.unit;
+      const t = cleanNov(r.nov_item_description || r.item);
+      if (t && !/^(this notice includes|inspector comments|\d+ \w+ (st|street|ave))/i.test(r.item || "") && !/^\d+ [a-z]/i.test(t)) n.items.push(t);
+      notices.set(k, n);
+    });
+    const list = [...notices.values()].sort((x, y) => (y.d || 0) - (x.d || 0));
+    const open = list.filter(n => n.active);
+    const recent = list.filter(n => within(n.d, two));
+    const fire = rows(raw.fire);
+    const fireOpen = fire.filter(r => /open|pending/i.test(r.status || ""));
+    const enforce = comps.filter(r => (r.date_referred_to_city_attorney && within(r.date_referred_to_city_attorney, five)) || (r.director_hearing_date && within(r.director_hearing_date, five)));
+    const attorney = enforce.filter(r => r.date_referred_to_city_attorney);
+    const unsafe = open.filter(n => n.unsafe);
+    let s = "ok";
+    if (unsafe.length || attorney.some(r => within(r.date_referred_to_city_attorney, yearsAgo(3, now))) || open.length >= 4 || (R.unitsKnown && open.length / u >= 0.5 && open.length >= 2)) s = "bad";
+    else if (open.length || fireOpen.length >= 2 || enforce.length || recent.length >= 3) s = "warn";
+    R.viol = { list, open, recent, fire, fireOpen, enforce, attorney, unsafe, s, rate: open.length / u };
+  }
+
+  // Repairs: housing complaints to DBI in the past 2 years, by kind
+  if (raw.comp.ok) {
+    const hab = comps.filter(r => within(r.d, two) && !r.admin && (HABIT.has(r.cat) || (r.cat === "Other" && /housing/i.test((r.assigned_division || "") + (r.receiving_division || "")))));
+    const by = {}; hab.forEach(r => { by[r.cat] = (by[r.cat] || 0) + 1; });
+    const heat = hab.filter(r => r.cat === "Heat or hot water").length, mold = hab.filter(r => r.cat === "Mold or dampness").length;
+    const per = hab.length / u;
+    const r311 = rows(raw.r311).filter(r => !/infestation/i.test(r.service_subtype || ""));
+    const by311 = {}; r311.forEach(r => { const k = r311Label(r.service_subtype); by311[k] = (by311[k] || 0) + 1; });
+    let s = "ok";
+    if (hab.length >= 8 || (R.unitsKnown && per >= 0.5 && hab.length >= 3) || heat >= 4 || mold >= 3) s = "bad";
+    else if (hab.length >= 2 || heat >= 1 || mold >= 1) s = "warn";
+    R.repairs = { list: hab, by: Object.entries(by).sort((x, y) => y[1] - x[1]), heat, mold, per, s, r311, by311: Object.entries(by311).sort((x, y) => y[1] - x[1]) };
+  }
+
+  // Pests: 311 reports to the Health Department at this address plus pest complaints to DBI
+  if (raw.r311.ok || raw.comp.ok) {
+    const p311 = rows(raw.r311).filter(r => /infestation/i.test(r.service_subtype || "") && within(r.requested_datetime, two));
+    const bed = p311.filter(r => /bed_?bugs/i.test(r.service_subtype)).length;
+    const rod = p311.length - bed;
+    const dbi = comps.filter(r => within(r.d, two) && r.cat === "Pests");
+    const dbiBed = dbi.filter(r => /bed ?bug/i.test(r.complaint_description || "")).length;
+    const total = p311.length + dbi.length;
+    let s = "ok";
+    if (bed + dbiBed >= Math.max(2, u * 0.06) || total >= Math.max(5, u * 0.15)) s = "bad";
+    else if (total >= 1) s = "warn";
+    R.pests = { p311, bed: bed + dbiBed, rod: rod + dbi.length - dbiBed, dbi, total, s };
+  }
+
+  // Eviction notices filed with the Rent Board on this block, and buyouts at this address
+  if (raw.evict.ok || raw.buyout.ok) {
+    const ev = rows(raw.evict).map(r => ({ ...r, d: new Date(r.file_date), why: REASONS.filter(([k]) => r[k] === true || r[k] === "true") }));
+    const y0 = now.getFullYear() - 1;
+    const recent = ev.filter(r => r.d >= two);
+    const byYear = {}; ev.forEach(r => { const y = r.d.getFullYear(); byYear[y] = (byYear[y] || 0) + 1; });
+    const reasons = {}; recent.forEach(r => r.why.forEach(([, label]) => { reasons[label] = (reasons[label] || 0) + 1; }));
+    const noFault = recent.filter(r => r.why.some(x => x[2])).length;
+    const ellis = ev.filter(r => within(r.d, five) && (r.ellis_act_withdrawal === true || r.ellis_act_withdrawal === "true")).length;
+    const bo = rows(raw.buyout).map(r => ({ ...r, d: new Date(r.buyout_agreement_date || r.pre_buyout_disclosure_declaration_date) })).filter(r => !isNaN(r.d)).sort((x, y) => y.d - x.d);
+    const bo5 = bo.filter(r => r.d >= five);
+    let s = "ok";
+    const bl = BASE.EV ? shareBelow(recent.length, BASE.EV) : 0;
+    // notices are published by block, not building, so the block alone never makes this a concern
+    if (bo5.length >= 2) s = "bad";
+    else if (bo5.length || ellis || bl >= 0.8) s = "warn";
+    R.evict = { ev, recent, y0, byYear, reasons: Object.entries(reasons).sort((x, y) => y[1] - x[1]), noFault, ellis, bo, bo5, s, below: bl, above: BASE.EV ? shareAbove(recent.length, BASE.EV) : 0 };
+  }
+
+  // Petitions to the Rent Board on this block
+  if (raw.petition.ok) {
+    const all = raw.petition.rows.map(r => ({ ...r, d: new Date(r.date_filed) }));
+    const three = yearsAgo(3, now);
+    const ten = all.filter(r => r.filing_party === "tenant" && r.d >= three);
+    const grounds = {}; ten.forEach(r => TGROUNDS.forEach(([k, label]) => { if (r[k] === true || r[k] === "true") grounds[label] = (grounds[label] || 0) + 1; }));
+    const ci = all.filter(r => r.filing_party === "landlord" && r.d >= three && (r.ground_landlord_capital_improvement === true || r.ground_landlord_capital_improvement === "true"));
+    const ll = all.filter(r => r.filing_party === "landlord" && r.d >= three);
+    const below = BASE.TP ? shareBelow(ten.length, BASE.TP) : 0;
+    let s = "ok";
+    if (below >= 0.75 || ci.length) s = "warn";
+    R.petit = { all, ten, ci, ll, grounds: Object.entries(grounds).sort((x, y) => y[1] - x[1]), below, above: BASE.TP ? shareAbove(ten.length, BASE.TP) : 0, s };
+  }
+
+  // Earthquake: soft-story retrofit program and state seismic hazard zones
+  if (raw.soft.ok || raw.seis.ok) {
+    const soft = raw.soft.ok ? raw.soft.rows[0] || null : null;
+    const ids = rows(raw.seis).map(r => N(r.id));
+    const liq = ids.some(i => i >= 308), slide = ids.some(i => i > 0 && i < 308);
+    const softDone = soft && /complete/i.test(soft.status || ""), softBad = soft && /non-?compliant/i.test(soft.status || "");
+    const ct = a ? String(a.construction_type || "") : "";
+    const reasons = [];
+    if (soft) reasons.push(softDone ? "Soft-story retrofit done" : softBad ? "Soft-story retrofit not done" : "In the soft-story program");
+    if (liq) reasons.push("Liquefaction zone");
+    if (slide) reasons.push("Landslide zone");
+    let s = "ok";
+    if (softBad) s = "bad";
+    else if ((soft && !softDone) || liq || slide) s = "warn";
+    R.quake = { soft, softDone, softBad, liq, slide, seisOk: raw.seis.ok, ct, reasons, s, level: softBad ? "Not retrofitted" : softDone ? "Retrofitted" : (liq || slide) ? "Higher" : "Typical" };
+  }
+
+  analyzeExtra(R, raw, now, place);
+  tally(R);
+  return R;
+}
+
+function meters(a, b) {
+  const R = 6371000, t = Math.PI / 180, dLa = (b.lat - a.lat) * t, dLo = (b.lon - a.lon) * t;
+  const x = Math.sin(dLa / 2) ** 2 + Math.cos(a.lat * t) * Math.cos(b.lat * t) * Math.sin(dLo / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(x));
+}
+const isLowerApt = a => /^(B|BSMT|BASEMENT|LL|LOWER|GARDEN|G|GF|0\w*)$/.test(normApt(a).replace(/-/g, ""));
+const HEAVY = new Set(["Demolition", "New building", "Excavation"]);
+
+function analyzeExtra(R, raw, now, place) {
+  const c = place.lat ? { lat: place.lat, lon: place.lon } : null;
+  const a = R.a;
+
+  // Rent control estimate
+  if (!isPending(R, "rentctl")) R.rentctl = rentControl(R, now);
+
+  // Legal units: assessor count vs. the city's address list vs. Rent Board reports, and illegal-unit complaints
+  if (raw.assessor.ok || raw.eas.ok) {
+    const flags = [];
+    const ill = R.comps.filter(r => r.cat === "Illegal unit" && within(r.d, yearsAgo(5, now)));
+    if (!R.condo && R.assessorUnits && R.easUnits > R.assessorUnits + Math.max(1, Math.round(R.assessorUnits * 0.1))) flags.push(`The city's address system lists ${R.easUnits} unit addresses here, more than the ${R.assessorUnits} on the tax roll. The extra ones may be unpermitted in-law units.`);
+    if (!R.condo && R.inv && R.inv.units && R.assessorUnits && R.inv.units > R.assessorUnits) flags.push(`The owner told the Rent Board the building has ${R.inv.units} units, more than the ${R.assessorUnits} on the tax roll.`);
+    if (ill.length) flags.push(`DBI received ${plural(ill.length, "complaint")} about an illegal or unwarranted unit in the past 5 years.`);
+    R.legal = { flags, ill, s: flags.length ? "warn" : (R.units ? "ok" : "none") };
+  }
+
+  // Construction within ~150 m
+  if (c && (raw.permits.ok || raw.night.ok)) {
+    const sites = new Map();
+    rows(raw.permits).forEach(r => {
+      const loc = r.location && r.location.coordinates; if (!loc) return;
+      const d = meters(c, { lat: loc[1], lon: loc[0] }); if (d > 160) return;
+      const cost = Math.max(N(r.estimated_cost), N(r.revised_cost));
+      const addUnits = N(r.proposed_units) - N(r.existing_units);
+      let kind = null;
+      if (r.permit_type === "1" || r.permit_type === "2") kind = "New building";
+      else if (r.permit_type === "6") kind = "Demolition";
+      else if (r.permit_type === "5") kind = "Excavation";
+      else if (/seismic|soft.?story|retrofit/i.test(r.description || "") && cost >= 100000) kind = "Seismic retrofit";
+      else if (addUnits >= 1 && cost >= 50000) kind = addUnits === 1 ? "Adding a unit" : "Adding units";
+      else if (cost >= 1e6) kind = "Major renovation";
+      if (!kind) return;
+      const here = r.block === place.block && r.lot === place.lot;
+      const addr = titleCase(`${r.street_number} ${r.street_name} ${r.street_suffix || ""}`.trim());
+      const k = addr.toUpperCase();
+      const s0 = sites.get(k) || { addr, kinds: new Set(), d, here, since: null, status: r.status };
+      s0.kinds.add(kind); s0.d = Math.min(s0.d, d); s0.here = s0.here || here;
+      const since = r.issued_date ? new Date(r.issued_date) : null;
+      if (since && (!s0.since || since > s0.since)) s0.since = since;
+      if (r.status === "issued") s0.status = "issued";
+      sites.set(k, s0);
+    });
+    const night = rows(raw.night).map(r => ({ addr: titleCase(r.address || ""), work: r.type_of_work, until: new Date(r.end_date) }));
+    const list = [...sites.values()].sort((x, y) => (y.here - x.here) || x.d - y.d);
+    const heavy = list.filter(x => [...x.kinds].some(k => HEAVY.has(k)));
+    const here = list.filter(x => x.here);
+    let s = "ok";
+    if (heavy.some(x => x.d <= 100 && x.status === "issued")) s = "bad";
+    else if (heavy.length || here.length || night.length) s = "warn";
+    R.build = { list, heavy, here, night, s };
+  } else if (!c) R.build = { s: "none", noGeo: true };
+
+  // Flood: 100-year storm flood zone, sea level rise, street flooding reports
+  if (raw.f100.ok || raw.slr24.ok || raw.slr66.ok) {
+    const f100 = raw.f100.ok ? raw.f100.rows.length > 0 : null;
+    const s24 = raw.slr24.ok ? raw.slr24.rows.length > 0 : null;
+    const s66 = raw.slr66.ok ? raw.slr66.rows.length > 0 : null;
+    const nb = rows(raw.nearby);
+    const street = nb.filter(r => r.service_name === "Sewer" && r.service_subtype === "flooding");
+    const streetN = street.reduce((t, r) => t + N(r.n), 0);
+    const reasons = [];
+    if (f100) reasons.push("In the 100-year storm flood zone");
+    if (s24) reasons.push("Floods with 2 ft of sea level rise");
+    if (streetN >= 6) reasons.push(`${plural(streetN, "flooding report")} to 311`);
+    let s = "ok";
+    if (f100 && (!place.apt || isLowerApt(place.apt))) s = "bad";
+    else if (f100 || s24 || streetN >= 6) s = "warn";
+    R.flood = { f100, s24, s66, streetN, reasons, s, level: s === "bad" ? "High" : s === "warn" ? "Some" : "Low" };
+  }
+
+  // The block: 311 noise reports and car break-ins
+  const nb = raw.nearby;
+  R.nearbyError = nb.error || null;
+  if (nb.ok) {
+    const noise = nb.rows.filter(r => r.service_name === "Noise");
+    const total = noise.reduce((t, r) => t + N(r.n), 0);
+    const by = {}; noise.forEach(r => { const k = noiseLabel(r.service_subtype); by[k] = (by[k] || 0) + N(r.n); });
+    const below = shareBelow(total, BASE.NOISE), above = shareAbove(total, BASE.NOISE);
+    const types = {}; nb.rows.forEach(r => { types[r.service_name] = (types[r.service_name] || 0) + N(r.n); });
+    R.noise = { total, top: Object.entries(by).sort((x, y) => y[1] - x[1]).slice(0, 6), below, above, s: below >= 0.9 ? "bad" : below >= 0.75 ? "warn" : "ok",
+      types: Object.entries(types).sort((x, y) => y[1] - x[1]).slice(0, 8) };
+  }
+  if (raw.brk.ok) {
+    const ids = new Set(raw.brk.rows.map(r => r.incident_id));
+    const total = ids.size;
+    const below = shareBelow(total, BASE.BRK), above = shareAbove(total, BASE.BRK);
+    R.brk = { total, below, above, s: below >= 0.9 ? "bad" : below >= 0.75 ? "warn" : "ok" };
+  }
+
+  // One apartment
+  if (place.apt && (raw.comp.ok || raw.nov.ok)) {
+    const k = aptKey(place.apt);
+    const comps = R.comps.filter(r => r.unit && aptKey(r.unit) === k);
+    const novs = R.viol ? R.viol.list.filter(n => n.unit && aptKey(n.unit) === k) : [];
+    const fire = rows(raw.fire).filter(r => r.eas_unit_no && aptKey(r.eas_unit_no) === k);
+    R.apt = { label: normApt(place.apt), comps, novs, novOpen: novs.filter(n => n.active), fire, listed: raw.eas.ok && R.easUnits ? R.easUnitSet.has(k) : null };
+  }
+}
+
+function rentControl(R, now) {
+  const yb = R.yb, age = yb ? now.getFullYear() - yb : null;
+  const units = R.units;
+  const inv = R.inv && R.inv.rows.length;
+  if (!R.a && !yb) return null;
+  if (R.condo || R.sfh) {
+    if (yb && yb < 1979) return { level: "partial", chip: R.condo ? "Condo: eviction rules only" : "House: eviction rules only", s: "warn", big: "Partly",
+      text: `${R.condo ? "Condos" : "Single-family homes"} in older buildings are covered by San Francisco's just-cause eviction rules, but state law (Costa-Hawkins) usually lets the owner raise the rent by any amount. ${AB1482.pct}% may still apply if a corporation owns it.` };
+    return { level: "none", chip: "No rent cap", s: "warn", big: "No cap", text: `${R.condo ? "Condos" : "Single-family homes"} are exempt from San Francisco's rent limits. Just-cause eviction rules still apply to most tenancies, and the state's ${AB1482.pct}% cap applies only if a corporation, REIT or LLC with a corporate member owns it.` };
+  }
+  if (yb && yb < 1979) return { level: "likely", chip: "Likely rent controlled", s: "ok", big: "Likely",
+    text: `Buildings with two or more units built before June 13, 1979 are covered by the Rent Ordinance. This one was built in ${yb}${units ? ` and has ${units} units` : ""}. Rent can go up once a year by the Rent Board's allowable increase, plus any approved passthroughs, and you can only be evicted for one of the reasons the ordinance lists.${inv ? " The owner reports the units to the Rent Board's housing inventory." : ""}` };
+  if (yb === 1979) return { level: "maybe", chip: "Maybe rent controlled", s: "warn", big: "Maybe", text: "Rent control depends on whether the building's first certificate of occupancy came before June 13, 1979. This one dates from 1979, so ask the landlord or the Rent Board." };
+  if (age != null && age >= 15) return { level: "state", chip: "State rent cap", s: "warn", big: "State cap",
+    text: `Built in ${yb}, after San Francisco's rent-control cutoff, so the city's rent limits don't apply. The state cap does: rent can rise at most ${AB1482.pct}% a year (${AB1482.from} to ${AB1482.to}). San Francisco's just-cause eviction rules still protect you.` };
+  if (yb) return { level: "none", chip: "No rent cap", s: "warn", big: "No cap",
+    text: `Built in ${yb}. Buildings less than 15 years old are exempt from both the city's and the state's rent caps, so the rent can go up by any amount at renewal. San Francisco's just-cause eviction rules still apply.` };
+  return null;
+}
+
+function noiseLabel(t) {
+  const M = { other_excessive_noise: "Other loud noise", amplified_sound_electronics: "Amplified music or speakers", entertainment: "Bars, clubs and venues", construction_private_property: "Construction", construction_public: "Street work", mechanical_equipment: "Machinery or equipment", garbage_recycling_collection: "Garbage trucks", major_event_venue: "Big event venue", traffic: "Traffic", sirens: "Sirens", delivery_service_vehicle: "Delivery trucks", vehicle_car_alarm: "Car alarms", home_improvement_maintenance: "Home improvement" };
+  return M[t] || r311Label(t);
+}
+
+const ORDER = ["rentctl", "viol", "repairs", "pests", "evict", "petit", "quake", "legal", "flood", "build", "noise", "brk"];
+function tally(R) {
+  R.counts = { bad: 0, warn: 0, ok: 0, none: 0 };
+  R.pendingChecks = ORDER.filter(k => isPending(R, k)).length;
+  // rent control is a fact about the building, not a mark against it, so it doesn't count toward the headline
+  ORDER.filter(k => k !== "rentctl").forEach(k => { if (isPending(R, k)) return; const s = R[k] ? R[k].s : "none"; R.counts[s]++; });
+}
+
+/* ---------- view helpers ---------- */
+const $ = s => document.querySelector(s);
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+const fmt = n => Number(n).toLocaleString("en-US");
+const money = n => n >= 1e6 ? `$${(n / 1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.?0+$/, "")} million` : `$${fmt(Math.round(n))}`;
+const mfmt = d => new Date(d).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+const dist = m => m < 15 ? "here" : `${Math.round(m / 10) * 10} m away`;
+const dfmt = d => new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+const STATUS = { ok: "Clear", warn: "Ask about it", bad: "Concern", none: "No data" };
+const pill = s => `<span class="pill s-${s}">${STATUS[s]}</span>`;
+const plural = (n, one, many) => `${fmt(n)} ${n === 1 ? one : (many || one + "s")}`;
+function titleCase(s) { return String(s || "").toLowerCase().replace(/(^|[\s/(-])\w/g, c => c.toUpperCase()).replace(/\b0(\d)(st|nd|rd|th)\b/gi, "$1$2"); }
+const pct = x => Math.round(x * 100) + "%";
+const w = (n, one, many) => n === 1 ? one : many;
+function cmpBldg(v, b, s) {
+  if (!b) return "";
+  if (v <= 0) return `None, like ${pct((b.n - b.v.length) / b.n)} of SF rental buildings`;
+  if (s === "ok") return "";
+  return `More than ${pct(shareBelow(v, b))} of SF rental buildings`;
+}
+function cmpBlock(below, above, more, fewer, what = "rental blocks", v) {
+  if (v === 0) return `None, like ${pct(1 - above)} of ${what}`;
+  if (below >= 0.5) return `${more} ${pct(below)} of ${what}`;
+  return `${fewer} ${pct(above)} of ${what}`;
+}
+function cleanNov(t) {
+  let s = String(t || "").replace(/\s+/g, " ").trim();
+  if (!s) return "";
+  s = s.toLowerCase().replace(/(^\w)/, c => c.toUpperCase());
+  return s.length > 150 ? s.slice(0, 147).replace(/\s\S*$/, "") + "…" : s;
+}
+function cleanComp(t) {
+  let s = String(t || "").replace(/\s+/g, " ").trim();
+  s = s.replace(/^date last observed:[^;]*;\s*/i, "").replace(/(time last observed|identity of person performing the work|floor|unit|exact location|building type)\s*:[^;]*;\s*/gi, "").replace(/additional information:\s*/i, "").replace(/;\s*;/g, ";").replace(/^[;\s]+|[;\s]+$/g, "");
+  s = s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+  return s.length > 140 ? s.slice(0, 137).replace(/\s\S*$/, "") + "…" : (s || "No description");
+}
+function bars(data, opts = {}) {
+  const W = 520, H = 150, pad = { t: 18, r: 4, b: 22, l: 4 };
+  const max = Math.max(1, ...data.map(d => d.n));
+  const bw = (W - pad.l - pad.r) / data.length;
+  const ih = H - pad.t - pad.b;
+  const col = opts.color || "var(--accent)";
+  let g = `<line x1="${pad.l}" x2="${W - pad.r}" y1="${H - pad.b}" y2="${H - pad.b}" stroke="var(--line)"/>`;
+  data.forEach((d, i) => {
+    const h = d.n ? Math.max(2, (d.n / max) * ih) : 0;
+    const x = pad.l + i * bw + bw * 0.18, wd = bw * 0.64, y = H - pad.b - h;
+    g += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${wd.toFixed(1)}" height="${h.toFixed(1)}" fill="${d.ghost ? "none" : col}" ${d.ghost ? `stroke="${col}" stroke-width="1.5" stroke-dasharray="4 3"` : ""} rx="2"/>`;
+    g += `<text class="val" x="${(x + wd / 2).toFixed(1)}" y="${(y - 5).toFixed(1)}" text-anchor="middle">${fmt(d.n)}</text>`;
+    g += `<text x="${(x + wd / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(d.label)}</text>`;
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label || "")}">${g}</svg>`;
+}
+function hbars(entries, color) {
+  const max = Math.max(1, ...entries.map(e => e[1]));
+  return `<ul class="hbars">${entries.map(([k, n]) => `<li><span class="lab">${esc(k)}</span><span class="n">${fmt(n)}</span><span class="bar"><i style="width:${(n / max * 100).toFixed(1)}%;${color ? `--b:${color}` : ""}"></i></span></li>`).join("")}</ul>`;
+}
+
+/* Rent Board housing inventory: rents are reported in $250 bands */
+function bedroomOf(s) {
+  const t = String(s || "").toLowerCase();
+  if (/studio|^0|efficien|sro|^none/.test(t)) return 0;
+  const m = t.match(/\d/); if (m) return Math.min(4, +m[0]);
+  const words = { one: 1, two: 2, three: 3, four: 4, five: 4, six: 4 };
+  for (const [k, v] of Object.entries(words)) if (t.includes(k)) return v;
+  return null;
+}
+const BR = ["Studios", "1 bedroom", "2 bedrooms", "3 bedrooms", "4+ bedrooms"];
+function rentBand(s) { const m = String(s || "").replace(/,/g, "").match(/\$(\d+)\s*-\s*\$(\d+)/); if (m) return [+m[1], +m[2]]; const o = String(s || "").replace(/,/g, "").match(/\$(\d+)\s*\+|over \$(\d+)|more than \$(\d+)/i); if (o) { const v = +(o[1] || o[2] || o[3]); return [v, null]; } return null; }
+function rentStats(rows) {
+  const out = [];
+  for (let b = 0; b <= 4; b++) {
+    const r = rows.filter(x => bedroomOf(x.bedroom_count) === b).map(x => rentBand(x.monthly_rent)).filter(Boolean).sort((p, q) => p[0] - q[0]);
+    if (!r.length) continue;
+    const mid = r[Math.floor((r.length - 1) / 2)];
+    out.push({ label: BR[b], n: r.length, low: r[0], high: r[r.length - 1], mid });
+  }
+  return out;
+}
+const band = b => b[1] ? `$${fmt(b[0])}–$${fmt(b[1])}` : `over $${fmt(b[0])}`;
+
+/* ---------- render ---------- */
+function placeTitle(place) { return esc(titleCase(place.street)) + (place.apt ? ` <small>Apt ${esc(normApt(place.apt))}</small>` : ""); }
+
+function renderLoading(place) {
+  $("#out").innerHTML = `
+    <section class="bldg">
+      <p class="eyebrow">${esc(place.hood || "San Francisco")}</p>
+      <h1 class="addr">${placeTitle(place)}</h1>
+      <p class="loading">Pulling city records${place.blklot ? ` for parcel <span class="mono">${esc(place.block)}/${esc(place.lot)}</span>` : ""}…</p>
+    </section>
+    <section class="verdict"><div class="verdict-head"><div class="skel" style="width:60%"></div></div>
+      <div class="checks">${Array(9).fill('<div class="check s-none"><div class="skel" style="width:50%"></div><div class="skel" style="width:30%;height:26px"></div><div class="skel"></div></div>').join("")}</div>
+    </section>`;
+}
+
+function headline(R) {
+  const { bad, warn, ok, none } = R.counts;
+  if (!R.pendingChecks && bad + warn + ok === 0) return ["Couldn't load the city's records", "DataSF isn't answering right now. Try again in a minute."];
+  const more = R.pendingChecks ? ` Still loading ${plural(R.pendingChecks, "check")}.` : "";
+  if (R.pendingChecks && bad + warn + ok === 0) return ["Pulling the city's records", more.trim()];
+  if (R.pendingChecks && bad + warn === 0) return ["Nothing alarming so far", more.trim()];
+  const [h, sub] = headlineCore(R);
+  return [h, sub + (none ? ` ${plural(none, "check")} couldn't load.` : "") + more];
+}
+function headlineCore(R) {
+  const { bad, warn, ok } = R.counts;
+  if (bad >= 2) return ["Serious red flags in the city's records", warn ? `${bad} concerns and ${plural(warn, "thing")} to ask about.` : `${bad} concerns.`];
+  if (bad === 1) return ["One concern worth a follow-up", warn ? `Plus ${plural(warn, "thing")} to ask about.` : "Everything else looks clear."];
+  if (warn >= 3) return ["A mixed record. Ask before you sign", `${plural(warn, "thing")} to ask the landlord about.`];
+  if (warn) return ["Mostly clean, with something to ask about", `${plural(warn, "thing")} worth raising, ${ok} clear.`];
+  return ["Nothing alarming in the city's records", "Every check came back clear. Still visit at night, and ask the neighbors about the fog and the parking."];
+}
+
+function cards(R) {
+  const C = [];
+  const card = (id, title, s, big, line, cmp) => C.push(`<a class="check s-${s}" href="#${id}" data-jump="${id}"><h3>${title}</h3><span class="big num">${big}</span><p>${line}</p>${cmp ? `<p class="cmp">${cmp}</p>` : "<span></span>"}${pill(s)}</a>`);
+  const na = (id, title, why) => card(id, title, "none", "—", why || "Couldn't load this record.");
+  const pend = (id, title) => C.push(`<a class="check s-none" href="#${id}" data-jump="${id}"><h3>${title}</h3><span class="big">…</span><p>${id === "block" ? "Checking reports around the building." : "Loading city records…"}</p><span></span><span class="pill s-none">Loading</span></a>`);
+  const P = (k, id, title) => isPending(R, k) ? (pend(id, title), true) : false;
+  const rc = R.rentctl;
+  P("rentctl", "rent", "Rent control") || (rc ? card("rent", "Rent control", rc.s, rc.big, esc(rc.chip) + (rc.level === "likely" && R.allow ? ` · up to ${R.allow.pct}% a year` : rc.level === "state" ? ` · up to ${AB1482.pct}% a year` : ""), R.inv && R.inv.rows.length ? `${plural(R.inv.rows.length, "unit")} reported to the Rent Board` : "") : na("rent", "Rent control", "Couldn't find the building's age on the tax roll."));
+  P("viol", "violations", "Code violations") || (R.viol ? card("violations", "Code violations", R.viol.s, fmt(R.viol.open.length), `open DBI ${w(R.viol.open.length, "notice", "notices")} of violation${R.viol.fireOpen.length ? ` · ${plural(R.viol.fireOpen.length, "open fire violation")}` : ""}`,
+    R.viol.unsafe.length ? "Flagged as an unsafe building" : R.viol.attorney.length ? "Referred to the City Attorney" : R.viol.enforce.length ? "Sent to a director's hearing" : (R.unitsKnown && BASE.V ? cmpBldg(R.viol.rate, BASE.V, R.viol.s) : "")) : na("violations", "Code violations", R.raw.nov.skipped ? "No parcel number for this address." : ""));
+  P("repairs", "repairs", "Repairs") || (R.repairs ? card("repairs", "Repairs", R.repairs.s, fmt(R.repairs.list.length), `housing ${w(R.repairs.list.length, "complaint", "complaints")} to DBI in 2 years${R.repairs.by.length && R.repairs.by[0][0] !== "Other" ? ` · mostly ${esc(R.repairs.by[0][0].toLowerCase())}` : ""}`, R.unitsKnown && BASE.HC ? cmpBldg(R.repairs.per, BASE.HC, R.repairs.s) : "") : na("repairs", "Repairs"));
+  P("pests", "pests", "Bedbugs & pests") || (R.pests ? card("pests", "Bedbugs & pests", R.pests.s, fmt(R.pests.total), `pest ${w(R.pests.total, "report", "reports")} at this address in 2 years`, R.pests.bed ? `${plural(R.pests.bed, "bedbug report")}` : R.pests.total ? "Rodents or insects" : "") : na("pests", "Bedbugs & pests"));
+  P("evict", "evictions", "Evictions") || (R.evict ? card("evictions", "Evictions", R.evict.s, R.evict.bo5.length ? plural(R.evict.bo5.length, "buyout") : fmt(R.evict.recent.length),
+    R.evict.bo5.length ? `at this address in 5 years · ${plural(R.evict.recent.length, "eviction notice")} on the block in 2 years` : `eviction ${w(R.evict.recent.length, "notice", "notices")} on this block in 2 years${R.evict.noFault ? ` · ${fmt(R.evict.noFault)} no-fault` : ""}`,
+    R.evict.ellis ? `Ellis Act ${w(R.evict.ellis, "eviction", "evictions")} on the block in 5 years` : BASE.EV ? cmpBlock(R.evict.below, R.evict.above, "More than", "Fewer than", "SF rental blocks", R.evict.recent.length) : "") : na("evictions", "Evictions"));
+  P("petit", "petitions", "Rent Board petitions") || (R.petit ? card("petitions", "Rent Board petitions", R.petit.s, fmt(R.petit.ten.length), `tenant ${w(R.petit.ten.length, "petition", "petitions")} on this block in 3 years${R.petit.grounds.length ? ` · mostly ${esc(R.petit.grounds[0][0].toLowerCase())}` : ""}`,
+    R.petit.ci.length ? `${plural(R.petit.ci.length, "capital improvement passthrough")} sought` : BASE.TP ? cmpBlock(R.petit.below, R.petit.above, "More than", "Fewer than", "SF rental blocks", R.petit.ten.length) : "") : na("petitions", "Rent Board petitions"));
+  P("quake", "quake", "Earthquake") || (R.quake ? card("quake", "Earthquake", R.quake.s, R.quake.level, R.quake.reasons.length ? esc(R.quake.reasons.join(" · ")) : "Not on the soft-story list · outside mapped hazard zones") : na("quake", "Earthquake"));
+  P("legal", "legal", "Legal units") || (R.legal && R.units ? card("legal", "Legal units", R.legal.s, fmt(R.units), `${w(R.units, "unit", "units")} on city records${R.condo ? " (condo building)" : ""}`, R.legal.flags.length ? esc(R.legal.flags[0].split(". ")[0].replace(/\.$/, "")) : "Records agree") : na("legal", "Legal units", "No unit count on the city's records for this address."));
+  P("flood", "flood", "Flood risk") || (R.flood ? card("flood", "Flood risk", R.flood.s, R.flood.level, R.flood.reasons.length ? R.flood.reasons.slice(0, 2).join(" · ") : "Outside the city's flood maps · no recent street flooding") : na("flood", "Flood risk"));
+  P("build", "build", "Construction nearby") || (R.build && !R.build.noGeo ? card("build", "Construction nearby", R.build.s, fmt(R.build.list.length), `major construction ${w(R.build.list.length, "project", "projects")} within 150 m`,
+    R.build.here.length ? `${[...R.build.here[0].kinds][0]} at this building` : R.build.heavy.length ? `${plural(R.build.heavy.length, "site")} with demolition or a new building` : R.build.night.length ? "Night work permitted nearby" : "") : na("build", "Construction nearby"));
+  P("noise", "block", "Noise on the block") || (R.noise ? card("block", "Noise on the block", R.noise.s, fmt(R.noise.total), `311 noise ${w(R.noise.total, "report", "reports")} within 150 m, past year`, cmpBlock(R.noise.below, R.noise.above, "Louder than", "Quieter than")) : na("block", "Noise on the block", R.nearbyError ? "Couldn't load 311 records nearby." : ""));
+  P("brk", "block", "Car break-ins") || (R.brk ? card("block", "Car break-ins", R.brk.s, fmt(R.brk.total), `${w(R.brk.total, "break-in", "break-ins")} reported to police within 150 m, past year`, cmpBlock(R.brk.below, R.brk.above, "More than", "Fewer than")) : na("block", "Car break-ins"));
+  return C.join("");
+}
+
+function render(R, place) {
+  CUR_R = R;
+  R.allow = R.raw.allow.ok && R.raw.allow.rows[0] ? { pct: N(R.raw.allow.rows[0].annual_allowable_increase), from: R.raw.allow.rows[0].effective_starting_date } : null;
+  const a = R.a;
+  const [h1, sub] = headline(R);
+  const facts = [];
+  if (R.units) facts.push(`<li><b class="num">${fmt(R.units)}</b> ${w(R.units, "unit", "units")}</li>`);
+  if (a && N(a.number_of_stories)) facts.push(`<li><b class="num">${Math.round(N(a.number_of_stories))}</b> ${w(Math.round(N(a.number_of_stories)), "story", "stories")}</li>`);
+  if (R.yb) facts.push(`<li>Built <b class="num">${R.yb}</b></li>`);
+  if (place.blklot) facts.push(`<li>Parcel <b class="mono">${esc(place.block)}/${esc(place.lot)}</b></li>`);
+  if (R.rentctl) facts.push(`<li class="stab"><a href="#rent" data-jump="rent">${esc(R.rentctl.chip)}</a></li>`);
+  const rpp = R.raw.rpp.ok && R.raw.rpp.rows[0] && String(R.raw.rpp.rows[0].rppeligib || "").trim();
+  if (rpp && /^[A-Z]{1,2}$/.test(rpp)) facts.push(`<li class="stab"><a href="#prop" data-jump="prop">Parking permit area ${esc(rpp)}</a></li>`);
+  if (R.quake && R.quake.softDone) facts.push(`<li class="stab"><a href="#quake" data-jump="quake">Seismically retrofitted</a></li>`);
+
+  let aptline = "";
+  if (R.apt) {
+    const x = R.apt;
+    aptline = `<div class="aptline"><b>Apartment ${esc(x.label)}:</b> ${plural(x.novOpen.length, "open notice")} of violation, ${plural(x.comps.length, "complaint")} to DBI${x.fire.length ? `, ${plural(x.fire.length, "fire violation")}` : ""}${x.listed === false ? ". It isn't in the city's address list for this building" : ""}. <a href="#unit" data-jump="unit">See details</a></div>`;
+  }
+
+  $("#out").innerHTML = `
+    <section class="bldg">
+      <p class="eyebrow">${place.example ? '<span class="example">Example</span> · ' : ""}${esc(place.hood || "San Francisco")}${place.zip ? " · " + esc(place.zip) : ""}</p>
+      <h1 class="addr">${placeTitle(place)}</h1>
+      <ul class="facts">${facts.join("")}</ul>
+    </section>
+    <section class="verdict" aria-label="Summary">
+      <div class="verdict-head">
+        <div class="vt"><h2>${h1}</h2><p>${sub}</p></div>
+        <div class="actions">
+          <button type="button" id="copySum">Copy summary</button>
+          ${/^https?:$/.test(location.protocol) ? '<button type="button" id="copyLink">Copy link</button>' : ""}
+          <button type="button" id="printBtn">Print</button>
+        </div>
+      </div>
+      ${aptline}
+      <div class="checks">${cards(R)}</div>
+    </section>
+    <div class="grid">
+      ${place.apt ? S("apt", "unit", `Apartment ${esc(normApt(place.apt))}`, true, secApt) : ""}
+      ${S("rentctl", "rent", "Rent control and rents", true, secRent)}
+      ${S("viol", "violations", "Code violations", true, secViolations)}
+      ${S("repairs", "repairs", "Repairs", false, secRepairs)}
+      ${S("pests", "pests", "Bedbugs and pests", false, secPests)}
+      ${S("evict", "evictions", "Evictions and buyouts", false, secEvict)}
+      ${S("petit", "petitions", "Rent Board petitions", false, secPetit)}
+      ${S("quake", "quake", "Earthquake safety", false, secQuake)}
+      ${S("legal", "legal", "Legal units", false, secLegal)}
+      ${S("flood", "flood", "Flood risk", false, secFlood)}
+      ${S("prop", "prop", "The property", false, secProp)}
+      ${S("build", "build", "Construction nearby", true, secBuild)}
+      ${secBlock(R)}
+      ${secRights(R)}
+      ${secAsk(R)}
+    </div>`;
+  $("#copySum").onclick = () => copyText(summaryText(R, place), "Summary copied");
+  const cl = $("#copyLink"); if (cl) cl.onclick = () => copyText(location.href, "Link copied");
+  $("#printBtn").onclick = () => window.print();
+}
+
+function S(k, id, title, wide, fn) {
+  if (!isPending(CUR_R, k)) return fn(CUR_R, CUR_R.place);
+  return `<section class="sec${wide ? " wide" : ""}" id="${id}"><h2>${title}<span class="pill s-none">Loading</span></h2><div class="skel" style="width:80%"></div><div class="skel" style="width:55%"></div></section>`;
+}
+let CUR_R = null;
+function errSec(id, title, raw, wide) { return `<section class="sec${wide ? " wide" : ""}" id="${id}"><h2>${title}${pill("none")}</h2><p class="err">${raw && raw.skipped ? "This address has no parcel number in the city's address system, so building records can't be matched to it." : `Couldn't load this from DataSF. ${esc(raw && raw.error || "")} Try again in a minute.`}</p></section>`; }
+
+function secApt(R) {
+  if (!R.place.apt) return "";
+  if (!R.apt) return `<section class="sec wide apt" id="unit"><h2>Apartment ${esc(normApt(R.place.apt))}</h2><p class="err">Couldn't load apartment records. Try again in a minute.</p></section>`;
+  const x = R.apt;
+  const none = !x.comps.length && !x.novs.length && !x.fire.length;
+  return `<section class="sec wide apt" id="unit">
+    <h2>Apartment ${esc(x.label)}</h2>
+    ${x.listed === false ? `<p><b>Unit ${esc(x.label)} isn't in the city's address list for this building</b>, which has ${plural(R.easUnits, "unit address", "unit addresses")}. It may be written differently, or it may be an unpermitted unit. Ask the landlord.</p>` : x.listed ? `<p class="note">Unit ${esc(x.label)} is one of the building's ${fmt(R.easUnits)} unit addresses in the city's address system.</p>` : ""}
+    ${none ? `<p>No DBI complaints, notices of violation or fire violations name apartment ${esc(x.label)}. Most complaints don't list a unit, so check the building as a whole below.</p>` : `
+    <div class="classbar">
+      <div class="cls ${x.novOpen.length ? "hot" : ""}"><span class="k">OPEN NOTICES</span><span class="v num">${fmt(x.novOpen.length)}</span><span class="d">${fmt(x.novs.length)} DBI notices of violation ever</span></div>
+      <div class="cls"><span class="k">COMPLAINTS</span><span class="v num">${fmt(x.comps.length)}</span><span class="d">to DBI naming this unit</span></div>
+      <div class="cls"><span class="k">FIRE</span><span class="v num">${fmt(x.fire.length)}</span><span class="d">fire department violations</span></div>
+    </div>
+    ${x.comps.length ? `<ul class="list">${x.comps.slice(0, 6).map(r => `<li><span class="tagc ${r.status === "Active" ? "B" : "x"} wide">${r.status === "Active" ? "OPEN" : "CLOSED"}</span><span>${esc(cleanComp(r.complaint_description))}</span><span class="meta">${r.d ? dfmt(r.d) : ""}</span></li>`).join("")}</ul>` : ""}`}
+  </section>`;
+}
+
+function secRent(R) {
+  const rc = R.rentctl;
+  const inv = R.inv;
+  const st = inv && inv.rows.length ? rentStats(inv.rows) : [];
+  const occ = inv && inv.rows.length ? inv.rows : [];
+  const vacant = occ.filter(r => /vacant/i.test(r.occupancy_type || "")).length;
+  const owner = occ.filter(r => /by owner/i.test(r.occupancy_type || "")).length;
+  const since = occ.map(r => N(r.occupancy_or_vacancy_date_year)).filter(y => y > 1950).sort((p, q) => p - q);
+  const medSince = since.length ? since[Math.floor((since.length - 1) / 2)] : null;
+  const allow = R.allow;
+  return `<section class="sec wide" id="rent">
+    <h2>Rent control and rents ${rc ? `<span class="pill s-${rc.s === "ok" ? "ok" : "warn"}">${esc(rc.chip)}</span>` : ""}</h2>
+    ${rc ? `<p>${esc(rc.text)}</p>` : `<p>The tax roll doesn't list when this building was built, so rent control can't be estimated. Ask the Rent Board.</p>`}
+    ${rc && rc.level === "likely" && allow ? `<p class="note">The allowable increase is <b>${allow.pct}%</b> for increases starting ${dfmt(allow.from)} through the following February. When a tenant moves out, the landlord can reset the rent to any amount for the next tenant.</p>` : ""}
+    ${st.length ? `<h3>What units in this building rent for</h3>
+      <div class="cols"><div><dl class="kv">${st.map(x => `<dt>${x.label}</dt><dd>${band(x.mid)} <span class="note">typical · ${plural(x.n, "unit")}${x.n > 2 && x.high[1] ? `, from $${fmt(x.low[0])} to $${fmt(x.high[1])}` : ""}</span></dd>`).join("")}</dl></div>
+      <div><p class="note">From the owner's ${inv.year} report to the Rent Board's housing inventory, in $250 bands. ${medSince ? `Half the current tenancies started in ${medSince} or earlier; long-time tenants under rent control often pay well below what a new lease costs.` : ""}${vacant ? ` ${plural(vacant, "unit was", "units were")} reported vacant.` : ""}${owner ? ` ${plural(owner, "unit is", "units are")} owner-occupied.` : ""}</p></div></div>` : R.inv && R.inv.blockRows.length ? `<p class="note">The block has Rent Board inventory reports, but none could be matched to this building's size and age.</p>` : `<p class="note">No Rent Board housing inventory report could be matched to this building. Owners of units under the Rent Ordinance must report each unit every March.</p>`}
+    <div class="links">
+      <a href="https://www.sf.gov/departments/rent-board" target="_blank" rel="noopener">Rent Board ↗</a>
+      <a href="https://www.sf.gov/information/annual-allowable-rent-increases-units-under-rent-control" target="_blank" rel="noopener">Allowable increases ↗</a>
+    </div>
+  </section>`;
+}
+
+function secViolations(R) {
+  if (!R.viol) return errSec("violations", "Code violations", R.raw.nov, true);
+  const v = R.viol;
+  const showList = v.open.length ? v.open : v.recent;
+  return `<section class="sec wide" id="violations">
+    <h2>Code violations ${pill(v.s)}</h2>
+    <p>The Department of Building Inspection issues a notice of violation when an inspector confirms a problem; it stays open until the owner fixes it. ${plural(v.list.length, "notice")} on record, ${fmt(v.recent.length)} in the past 2 years.</p>
+    <div class="classbar">
+      <div class="cls ${v.open.length ? "hot" : ""}"><span class="k">OPEN NOTICES</span><span class="v num">${fmt(v.open.length)}</span><span class="d">DBI notices of violation not yet fixed${v.unsafe.length ? ` · <b>${fmt(v.unsafe.length)} unsafe building</b>` : ""}</span></div>
+      <div class="cls ${v.fireOpen.length ? "hot" : ""}"><span class="k">FIRE</span><span class="v num">${fmt(v.fireOpen.length)}</span><span class="d">open fire department violations · ${fmt(v.fire.length)} ever</span></div>
+      <div class="cls ${v.attorney.length ? "hot" : ""}"><span class="k">ENFORCEMENT</span><span class="v num">${fmt(v.enforce.length)}</span><span class="d">director's hearings or City Attorney referrals, 5 years</span></div>
+    </div>
+    ${showList.length ? `<ul class="list">${showList.slice(0, 6).map(n => `<li><span class="tagc ${n.active ? (n.unsafe ? "C" : "B") : "x"} wide">${n.active ? "OPEN" : "FIXED"}</span><span>${esc(n.items[0] || "Notice of violation")}${n.items.length > 1 ? ` <span class="note">+${n.items.length - 1} more</span>` : ""}</span><span class="meta">${n.d ? dfmt(n.d) : ""}${n.unit ? ` · Unit ${esc(n.unit)}` : ""}${n.wwp ? " · work without a permit" : ""}</span></li>`).join("")}</ul>` : `<p class="note">No notices of violation in the past 2 years.</p>`}
+    ${v.fireOpen.length ? `<p><b>Open fire violations:</b> ${[...new Set(v.fireOpen.map(r => String(r.violation_item_description || "").toLowerCase()))].slice(0, 4).map(esc).join(" · ")}.</p>` : ""}
+    ${v.attorney.length ? `<p><b>The city referred this property to the City Attorney</b> ${v.attorney.length > 1 ? `${v.attorney.length} times` : `on ${dfmt(v.attorney[0].date_referred_to_city_attorney)}`}, which happens when an owner ignores repeated orders to fix code violations.</p>` : ""}
+  </section>`;
+}
+
+function secRepairs(R) {
+  if (!R.repairs) return errSec("repairs", "Repairs", R.raw.comp);
+  const r = R.repairs;
+  return `<section class="sec" id="repairs">
+    <h2>Repairs ${pill(r.s)}</h2>
+    <p>Complaints to DBI's Housing Inspection Services about conditions in the building in the past 2 years. San Francisco landlords must provide heat that can keep every room at 70°F, and keep units free of mold and leaks.</p>
+    ${r.by.length ? hbars(r.by.slice(0, 6).map(([k, n]) => [k === "Other" ? "Other housing issues" : k, n])) : `<p class="note">No housing complaints in the past 2 years.</p>`}
+    ${r.list.length ? `<ul class="list">${r.list.slice(0, 4).map(x => `<li><span class="tagc ${x.status === "Active" ? "B" : "x"} wide">${x.status === "Active" ? "OPEN" : "CLOSED"}</span><span>${esc(cleanComp(x.complaint_description))}</span><span class="meta">${x.d ? dfmt(x.d) : ""}${x.unit && x.unit !== "0" ? ` · Unit ${esc(x.unit)}` : ""}</span></li>`).join("")}</ul>` : ""}
+    ${r.by311.length ? `<p class="note"><b>Also reported to 311 in 3 years:</b> ${r.by311.slice(0, 5).map(([k, n]) => `${esc(k)} (${fmt(n)})`).join(" · ")}. Most of these reach DBI and appear above too.</p>` : ""}
+  </section>`;
+}
+
+function secPests(R) {
+  if (!R.pests) return errSec("pests", "Bedbugs and pests", R.raw.r311);
+  const p = R.pests;
+  return `<section class="sec" id="pests">
+    <h2>Bedbugs and pests ${pill(p.s)}</h2>
+    <p>Reports to the Health Department through 311 and pest complaints to DBI at this address in the past 2 years.</p>
+    <dl class="kv">
+      <dt>Bedbugs</dt><dd class="num">${fmt(p.bed)}</dd>
+      <dt>Rodents, roaches or other insects</dt><dd class="num">${fmt(p.rod)}</dd>
+    </dl>
+    ${p.p311.length ? `<p class="note">Latest 311 report: ${dfmt(p.p311[0].requested_datetime)}.</p>` : ""}
+    <p class="note">California landlords must give new tenants a notice about bedbugs and can't rent a unit they know has them. 311 reports by address go back to mid-2024.</p>
+  </section>`;
+}
+
+function secEvict(R) {
+  if (!R.evict) return errSec("evictions", "Evictions and buyouts", R.raw.evict);
+  const e = R.evict, y1 = R.now.getFullYear();
+  const data = []; for (let y = 2017; y <= y1; y++) data.push({ label: "’" + String(y).slice(2), n: e.byYear[y] || 0 });
+  return `<section class="sec" id="evictions">
+    <h2>Evictions and buyouts ${pill(e.s)}</h2>
+    <p>Eviction notices landlords filed with the Rent Board on ${esc(blockLabel(R.place))}, both sides of the street. The Rent Board publishes them by block, not building.</p>
+    ${bars(data, { label: "Eviction notices on the block by year" })}
+    ${e.reasons.length ? `<p><b>Reasons in the past 2 years:</b> ${e.reasons.slice(0, 5).map(([k, n]) => `${esc(k)} (${fmt(n)})`).join(" · ")}</p>` : ""}
+    <p><b>Buyouts at this address:</b> ${e.bo.length ? `${plural(e.bo.length, "buyout")} filed${e.bo[0] ? `, most recently ${dfmt(e.bo[0].d)}` : ""}${e.bo[0] && N(e.bo[0].buyout_amount) ? ` (${money(N(e.bo[0].buyout_amount))})` : ""}. Landlords pay tenants to leave a rent-controlled unit, often before raising the rent or selling.` : "none on file since 2015."}</p>
+    <p class="note">A notice isn't an eviction: many are settled or withdrawn. Owner move-in and Ellis Act evictions are “no-fault”: the tenant did nothing wrong.</p>
+  </section>`;
+}
+
+function secPetit(R) {
+  if (!R.petit) return errSec("petitions", "Rent Board petitions", R.raw.petition);
+  const p = R.petit;
+  return `<section class="sec" id="petitions">
+    <h2>Rent Board petitions ${pill(p.s)}</h2>
+    <p>Petitions filed on ${esc(blockLabel(R.place))} in the past 3 years. Tenants petition when services are cut or repairs aren't made; landlords petition to pass costs on to tenants.</p>
+    <dl class="kv">
+      <dt>Tenant petitions</dt><dd class="num">${fmt(p.ten.length)}</dd>
+      <dt>Landlord petitions</dt><dd class="num">${fmt(p.ll.length)}${p.ci.length ? ` (${plural(p.ci.length, "capital improvement passthrough", "capital improvement passthroughs")})` : ""}</dd>
+    </dl>
+    ${p.grounds.length ? `<h3>What tenants petitioned about</h3>${hbars(p.grounds.slice(0, 5), "var(--warn)")}` : ""}
+    ${p.ci.length ? `<p class="note">A capital improvement passthrough adds part of the cost of work like a new roof or seismic retrofit to tenants' rent, on top of the yearly increase. Ask whether any apply to this unit.</p>` : ""}
+  </section>`;
+}
+
+function secQuake(R) {
+  const Q = R.quake;
+  if (!Q) return errSec("quake", "Earthquake safety", R.raw.soft);
+  const softTxt = Q.soft ? (Q.softDone ? `On the city's soft-story list (tier ${esc(Q.soft.tier)}), and the retrofit is done.` : Q.softBad ? `On the city's soft-story list (tier ${esc(Q.soft.tier)}) and <b>marked non-compliant</b>: the required retrofit hasn't been finished.` : `On the city's soft-story list (tier ${esc(Q.soft.tier)}), status: ${esc(Q.soft.status)}.`) : "Not on the city's mandatory soft-story retrofit list.";
+  return `<section class="sec" id="quake">
+    <h2>Earthquake safety ${pill(Q.s)}</h2>
+    <dl class="kv">
+      <dt>Soft-story retrofit</dt><dd>${softTxt}</dd>
+      <dt>Liquefaction</dt><dd>${Q.seisOk ? (Q.liq ? "Inside a state liquefaction zone, where loose, wet soil can turn to liquid in a strong quake" : "Outside the state's liquefaction zones") : "Couldn't check"}</dd>
+      <dt>Landslide</dt><dd>${Q.seisOk ? (Q.slide ? "Inside a state earthquake-induced landslide zone" : "Outside the state's landslide zones") : "Couldn't check"}</dd>
+      ${R.yb ? `<dt>Built</dt><dd>${R.yb}${R.yb < 1978 ? ", before modern seismic codes" : ""}</dd>` : ""}
+    </dl>
+    <p class="note">Soft-story buildings are wood-frame buildings with three or more stories and five or more units, built before 1978, with a weak ground floor such as a garage. The city required them to be strengthened. Renters insurance doesn't cover earthquakes unless you add it.</p>
+  </section>`;
+}
+
+function secLegal(R) {
+  const L = R.legal;
+  if (!L) return errSec("legal", "Legal units", R.raw.assessor);
+  const rows = [];
+  if (R.assessorUnits) rows.push(["On the tax roll", `${plural(R.assessorUnits, "unit")}${R.a && R.a.property_class_code_definition ? ` (${titleCase(R.a.property_class_code_definition)})` : ""}`]);
+  if (R.easUnits) rows.push(["In the city's address system", plural(R.easUnits, "unit address", "unit addresses")]);
+  if (R.inv && R.inv.units) rows.push(["Reported to the Rent Board", `${plural(R.inv.units, "unit")} in the building`]);
+  return `<section class="sec" id="legal">
+    <h2>Legal units ${pill(L.s)}</h2>
+    <p>San Francisco has thousands of unpermitted in-law units in garages and basements. Comparing the city's counts can hint at one.</p>
+    ${rows.length ? `<dl class="kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : ""}
+    ${L.flags.length ? `<ul class="watch">${L.flags.map(f => `<li>${pill("warn")}<div><span class="t">${esc(f)}</span></div></li>`).join("")}</ul>` : `<p class="note">Nothing suggests extra or unpermitted units.</p>`}
+    <p class="note">Tenants of unwarranted units are still covered by rent control and eviction protections, and the city runs a program to legalize them. They're more likely to lack a second exit, so check.</p>
+  </section>`;
+}
+
+function secFlood(R) {
+  const F = R.flood;
+  if (!F) return errSec("flood", "Flood risk", R.raw.f100);
+  const yn = (v, y, n) => v == null ? "Couldn't check" : v ? y : n;
+  return `<section class="sec" id="flood">
+    <h2>Flood risk ${pill(F.s)}</h2>
+    <dl class="kv">
+      <dt>100-year storm</dt><dd>${yn(F.f100, "Inside the zone likely to see deep flooding in a 100-year storm", "Outside the city's 100-year storm flood zone")}</dd>
+      <dt>Sea level rise</dt><dd>${yn(F.s24, "Floods in a 100-year storm with 2 feet of sea level rise", F.s66 ? "Floods only with 5½ feet of sea level rise, the late-century worst case" : "Stays dry even with 5½ feet of sea level rise")}</dd>
+      <dt>311 flooding reports</dt><dd>${F.streetN ? `${plural(F.streetN, "report")} of street flooding within 150 m in the past year` : "None within 150 m in the past year"}</dd>
+    </dl>
+    <p class="note">California landlords must tell you before you sign if the unit is in a flood hazard area. Renters insurance doesn't cover floods; you can buy separate coverage for your things.</p>
+  </section>`;
+}
+
+function secProp(R) {
+  const a = R.a, h = R.hist;
+  const rows = [];
+  if (a && a.use_definition) rows.push(["Use", `${a.use_definition}${a.property_class_code_definition ? `, ${titleCase(a.property_class_code_definition).toLowerCase()}` : ""}`]);
+  if (a && a.current_sales_date) rows.push(["Last sold", dfmt(a.current_sales_date)]);
+  if (a && (N(a.assessed_land_value) + N(a.assessed_improvement_value)) > 0) rows.push(["Assessed value", `${money(N(a.assessed_land_value) + N(a.assessed_improvement_value))} (${a.closed_roll_year})`]);
+  if (a && N(a.homeowner_exemption_value) > 0) rows.push(["Owner lives here", "Yes, the owner claims the homeowner's exemption"]);
+  if (h && h.ceqacode) rows.push(["Historic status", h.ceqacode.startsWith("A") ? `Historic resource${h.name ? ` (${titleCase(h.name)})` : ""}` : h.ceqacode.startsWith("B") ? "Not yet evaluated (older building)" : "Not a historic resource"]);
+  if (a && a.zoning_code) rows.push(["Zoning", a.zoning_code]);
+  const rpp = R.raw.rpp.ok && R.raw.rpp.rows[0] && String(R.raw.rpp.rows[0].rppeligib || "").trim();
+  rows.push(["Residential parking", rpp && /^[A-Z]{1,2}$/.test(rpp) ? `Eligible for permit area ${rpp}` : R.raw.rpp.ok ? "Not in a residential permit area" : "Couldn't check"]);
+  return `<section class="sec" id="prop">
+    <h2>The property</h2>
+    ${rows.length ? `<dl class="kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : `<p>No tax roll record for this parcel.</p>`}
+    ${a && a.current_sales_date && within(a.current_sales_date, yearsAgo(2, R.now)) ? `<p><b>This property sold in the past 2 years.</b> New owners sometimes renovate, pass costs through or offer buyouts. Ask what's planned.</p>` : ""}
+    ${a && N(a.homeowner_exemption_value) > 0 && R.units >= 2 && R.units <= 4 ? `<p class="note">An owner living in a small building can sometimes evict for an owner or relative move-in. Ask how long they plan to stay.</p>` : ""}
+    ${R.place.parcelByMap ? `<p class="note">The city's address list doesn't tie this address to a parcel, so records come from parcel ${esc(R.place.block)}/${esc(R.place.lot)}, the lot under its map point.</p>` : ""}
+    <p class="note">San Francisco doesn't publish owner names in its open data. The Planning Department's property map shows permits, complaints and zoning for the parcel.</p>
+    ${R.place.blklot ? `<div class="links"><a href="https://sfplanninggis.org/pim/?search=${esc(R.place.blklot)}" target="_blank" rel="noopener">Property information map ↗</a></div>` : ""}
+  </section>`;
+}
+
+function secBuild(R) {
+  const B = R.build;
+  if (!B) return errSec("build", "Construction nearby", R.raw.permits, true);
+  if (B.noGeo) return `<section class="sec wide" id="build"><h2>Construction nearby ${pill("none")}</h2><p class="err">No map location for this address, so nearby permits can't be checked.</p></section>`;
+  const tag = k => HEAVY.has(k) ? "C" : k === "Major renovation" || k === "Seismic retrofit" ? "B" : "x";
+  const rowsH = B.list.slice(0, 8).map(x => `<li><span class="tagc wide ${tag([...x.kinds].find(k => HEAVY.has(k)) || [...x.kinds][0])}">${x.here ? "HERE" : esc(dist(x.d).replace(" away", ""))}</span><span><b>${esc(x.addr)}</b>: ${esc([...x.kinds].join(", ").toLowerCase().replace(/^\w/, c => c.toUpperCase()))}</span><span class="meta">${x.status === "issued" ? `Permit issued ${x.since ? mfmt(x.since) : ""}` : "Permit applied for, not yet issued"}</span></li>`);
+  return `<section class="sec wide" id="build">
+    <h2>Construction nearby ${pill(B.s)}</h2>
+    <p>DBI permits within about 150 meters filed or issued in the past 2 years for new buildings, demolition, excavation, seismic retrofits, added units and renovations over $1 million.</p>
+    ${rowsH.length ? `<ul class="list">${rowsH.join("")}</ul>${B.list.length > 8 ? `<p class="note">Plus ${plural(B.list.length - 8, "more project")}.</p>` : ""}` : `<p class="note">No major construction permits nearby.</p>`}
+    ${B.night.length ? `<p><b>Night work:</b> ${B.night.slice(0, 3).map(n => `${esc(n.addr)} (${esc(String(n.work || "").toLowerCase())}, through ${dfmt(n.until)})`).join(" · ")}. Night noise permits allow work after 8 pm.</p>` : ""}
+    <p class="note">Big projects in San Francisco often take years from permit to finish.</p>
+  </section>`;
+}
+
+function secBlock(R) {
+  if (isPending(R, "noise") || isPending(R, "brk")) return `<section class="sec wide" id="block"><h2>The block</h2><p class="loading">Checking reports within 150 meters…</p><div class="skel" style="width:70%"></div></section>`;
+  const n = R.noise, b = R.brk;
+  const noiseCol = n ? `<div>
+      <h3>Noise ${pill(n.s)}</h3>
+      <p><b class="num">${fmt(n.total)}</b> noise reports to 311 within 150 m in the past year. ${cmpBlock(n.below, n.above, "Louder than", "Quieter than")}; a typical one gets about ${medianOf(BASE.NOISE)}.</p>
+      ${n.top.length ? hbars(n.top) : ""}
+    </div>` : `<div><h3>Noise ${pill("none")}</h3><p class="err">${esc(R.nearbyError || "Couldn't load 311 records nearby.")}</p></div>`;
+  const brkCol = b ? `<div>
+      <h3>Car break-ins ${pill(b.s)}</h3>
+      <p><b class="num">${fmt(b.total)}</b> thefts from cars reported to police within 150 m in the past year. ${cmpBlock(b.below, b.above, "More than", "Fewer than")}; a typical one sees about ${medianOf(BASE.BRK)}.</p>
+      <p class="note">Police map each report to the nearest intersection, and many break-ins are never reported. If you'll park on the street, don't leave anything visible in the car.</p>
+    </div>` : `<div><h3>Car break-ins ${pill("none")}</h3><p class="err">Couldn't load police reports.</p></div>`;
+  const types = n && n.types.length ? `<p class="note"><b>Most common 311 reports within 150 m:</b> ${n.types.map(([k, v]) => `${esc(k)} (${fmt(v)})`).join(" · ")}</p>` : "";
+  return `<section class="sec wide" id="block">
+    <h2>The block</h2>
+    <p>What neighbors reported within about a block in every direction, compared with the blocks around ${BASE.NOISE.n} randomly chosen San Francisco rental buildings.</p>
+    <div class="cols">${noiseCol}${brkCol}</div>
+    ${types}
+  </section>`;
+}
+
+function secRights(R) {
+  const allow = R.allow;
+  return `<section class="sec wide" id="rights">
+    <h2>Your rights when you rent in San Francisco</h2>
+    <ul class="ask">
+      <li><b>Rent increases:</b> rent-controlled units can go up once a year by the Rent Board's allowable increase${allow ? ` (${allow.pct}% from ${dfmt(allow.from)})` : ""}. Most other buildings over 15 years old are capped by state law at ${AB1482.pct}% (${AB1482.from} to ${AB1482.to}).</li>
+      <li><b>Evictions:</b> nearly every rental in the city is covered by just-cause rules, so a landlord needs one of the reasons in the Rent Ordinance to end your tenancy. No-fault evictions come with relocation payments.</li>
+      <li><b>Application fee:</b> at most $${SCREENING_FEE.toFixed(2)} per adult in 2026, and none if there's no unit available. You can offer a reusable screening report instead.</li>
+      <li><b>Security deposit:</b> no more than one month's rent (two from small landlords), returned within 21 days with an itemized list. Landlords must pay ${DEPOSIT_INTEREST.pct}% interest each year on deposits held a year or more (${DEPOSIT_INTEREST.from} to ${DEPOSIT_INTEREST.to}), and must photograph the unit at move-in and move-out.</li>
+      <li><b>Buyouts:</b> before offering you money to move out, a landlord must give you the Rent Board's disclosure form. You can cancel a signed buyout agreement within 45 days.</li>
+    </ul>
+    <p class="note">This is general information, not legal advice. The Rent Board's counselors answer questions for free.</p>
+  </section>`;
+}
+
+function questions(R) {
+  const q = [];
+  if (R.apt && R.apt.listed === false) q.push(`Unit ${R.apt.label} isn't in the city's address list. Is it a permitted unit, and does it have a second way out?`);
+  if (R.rentctl && R.rentctl.level === "likely") q.push("Is this unit under rent control? Ask what the last tenant paid and whether any passthroughs are in effect.");
+  if (R.rentctl && (R.rentctl.level === "none" || R.rentctl.level === "partial")) q.push("This unit likely isn't rent controlled. Ask how much the rent went up at the last few renewals.");
+  if (R.viol && R.viol.open.length) q.push(`DBI shows ${plural(R.viol.open.length, "open notice")} of violation. What's still being fixed, and when will it be done?`);
+  if (R.repairs && R.repairs.mold) q.push("Tenants complained about mold. Has the source (a leak, poor ventilation) been fixed, or just painted over?");
+  if (R.repairs && R.repairs.heat) q.push("Tenants complained about heat or hot water. What heats the unit, and is it a permanent heater (space heaters don't count)?");
+  if (R.pests && R.pests.bed) q.push("Bedbugs were reported here. Was this unit or its neighbors treated, and when?");
+  if (R.evict && R.evict.bo5.length) q.push(`There ${R.evict.bo5.length === 1 ? "was a buyout" : `were ${R.evict.bo5.length} buyouts`} at this address recently. Why did the previous tenants leave?`);
+  if (R.evict && R.evict.ellis) q.push("There were Ellis Act evictions on this block. Has this building ever been withdrawn from the rental market?");
+  if (R.petit && R.petit.ci.length) q.push("Landlords on this block sought capital improvement passthroughs. Will any be added to this unit's rent?");
+  if (R.quake && R.quake.soft && !R.quake.softDone) q.push("The building is on the soft-story list. When will the retrofit be finished, and will it bring a passthrough?");
+  if (R.quake && R.quake.liq) q.push("The building is in a liquefaction zone. Has the foundation been evaluated? Consider earthquake coverage for your things.");
+  if (R.legal && R.legal.flags.length) q.push("The city's unit counts don't line up. Is this apartment one of the building's permitted units?");
+  if (R.flood && R.flood.s !== "ok" && R.flood.s !== "none") q.push("Ask for the flood disclosure: has the unit or the garage flooded before?");
+  if (R.build && !R.build.noGeo && R.build.s !== "ok") q.push(`There's construction ${R.build.here.length ? "at this building" : "nearby"}. How long will it last, and what hours do crews work?`);
+  if (R.noise && R.noise.s !== "ok") q.push("The block gets a lot of noise reports. Visit on a Friday or Saturday night before you sign.");
+  if (R.brk && R.brk.s !== "ok") q.push("Car break-ins are common here. Is there a garage spot or bike storage, and what does it cost?");
+  q.push("Ask a current tenant what living there is like, and how the building does in a wet winter.");
+  return q;
+}
+function secAsk(R) {
+  return `<section class="sec wide" id="ask">
+    <h2>Questions to ask before you sign</h2>
+    <ol class="ask">${questions(R).map(x => `<li>${x}</li>`).join("")}</ol>
+  </section>`;
+}
+
+/* ---------- share ---------- */
+function summaryText(R, place) {
+  const [h1, sub] = headline(R);
+  const line = (t, k, v) => R[k] ? `• ${t}: ${v()} (${STATUS[R[k].s]})` : null;
+  const out = [
+    `SF Rent: ${titleCase(place.street)}${place.apt ? ", Apt " + normApt(place.apt) : ""}, San Francisco${place.blklot ? ` (parcel ${place.block}/${place.lot})` : ""}`,
+    `${h1}. ${sub}`, "",
+    R.rentctl ? `• Rent control: ${R.rentctl.chip}` : null,
+    line("Code violations", "viol", () => `${plural(R.viol.open.length, "open DBI notice")}${R.viol.fireOpen.length ? `, ${plural(R.viol.fireOpen.length, "open fire violation")}` : ""}`),
+    line("Repairs", "repairs", () => `${plural(R.repairs.list.length, "housing complaint")} in 2 years`),
+    line("Bedbugs & pests", "pests", () => `${plural(R.pests.total, "report")} in 2 years`),
+    line("Evictions", "evict", () => `${plural(R.evict.recent.length, "notice")} on the block in 2 years${R.evict.bo5.length ? `, ${plural(R.evict.bo5.length, "buyout")} here` : ""}`),
+    line("Rent Board petitions", "petit", () => `${plural(R.petit.ten.length, "tenant petition")} on the block in 3 years`),
+    line("Earthquake", "quake", () => `${R.quake.level}${R.quake.reasons.length ? ": " + R.quake.reasons.join(", ") : ""}`),
+    line("Legal units", "legal", () => `${plural(R.units, "unit")}${R.legal.flags.length ? `, ${R.legal.flags.length} concern${R.legal.flags.length > 1 ? "s" : ""}` : ""}`),
+    line("Flood risk", "flood", () => `${R.flood.level}${R.flood.reasons.length ? ": " + R.flood.reasons.join(", ") : ""}`),
+    line("Construction nearby", "build", () => R.build.noGeo ? "not checked" : `${plural(R.build.list.length, "project")} within 150 m${R.build.here.length ? ", including this building" : ""}`),
+    line("Noise on the block", "noise", () => `${fmt(R.noise.total)} reports in a year`),
+    line("Car break-ins", "brk", () => `${fmt(R.brk.total)} within 150 m in a year`),
+  ].filter(x => x !== null);
+  if (R.apt) out.push(`• Apartment ${R.apt.label}: ${plural(R.apt.novOpen.length, "open notice")}, ${plural(R.apt.comps.length, "complaint")} to DBI`);
+  if (/^https?:$/.test(location.protocol)) out.push("", location.href);
+  out.push("", "Source: DataSF");
+  return out.join("\n");
+}
+let toastT;
+function toast(msg) {
+  let t = $(".toast"); if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 1800);
+}
+function copyText(text, ok) {
+  const fallback = () => { const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); let done = false; try { done = document.execCommand("copy"); } catch {} ta.remove(); toast(done ? ok : "Couldn't copy. Select the text and copy it yourself."); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => toast(ok), fallback);
+  else fallback();
+}
+/* Shareable link: #EAS-APT-STREET (plain token: letters, digits, _ and -) */
+function hashFor(place) {
+  const street = String(place.street || "").toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_|_$/g, "");
+  return `${place.eas}-${normApt(place.apt).replace(/[^A-Z0-9]/g, "")}${street ? "-" + street : ""}`;
+}
+function setHash(place) { try { history.replaceState(null, "", "#" + hashFor(place)); } catch {} }
+
+/* ---------- search (the city's Enterprise Addressing System) ---------- */
+const sug = $("#sug"), input = $("#q"), aptIn = $("#apt");
+let items = [], active = -1, timer, ctl, lookupSeq = 0;
+const ABBR = { STREET: "ST", STR: "ST", AVENUE: "AVE", AV: "AVE", BOULEVARD: "BLVD", DRIVE: "DR", PLACE: "PL", TERRACE: "TER", COURT: "CT", LANE: "LN", ROAD: "RD", ALLEY: "ALY", CIRCLE: "CIR", HIGHWAY: "HWY", PLAZA: "PLZ", CENTER: "CTR", CENTRE: "CTR" };
+const SUFFIXES = ["ST", "AVE", "CTR", "BLVD", "DR", "PL", "TER", "CT", "LN", "RD", "WAY", "ALY", "CIR", "HWY", "PLZ", "WALK", "PARK", "ROW", "LOOP"];
+/* "825 Bush Street, Apt 4" → { num: "825", rest: "BUSH ST", apt: "4" } */
+function parseAddress(t) {
+  let s = String(t || "").toUpperCase().replace(/[.]/g, "").replace(/\s+/g, " ").trim();
+  s = s.replace(/,?\s*(SAN FRANCISCO|SF)\b.*$/, "").replace(/,?\s*CA\b.*$/, "").replace(/\b9\d{4}\b/, "").trim();
+  let apt = "";
+  const am = s.match(/(?:,\s*|\s+)(?:APT|APARTMENT|UNIT|STE|SUITE|#)\s*#?\s*([A-Z0-9-]+)$/) || s.match(/\s*#\s*([A-Z0-9-]+)$/);
+  if (am) { apt = am[1]; s = s.slice(0, am.index).trim(); }
+  s = s.replace(/,/g, " ").replace(/\s+/g, " ").trim();
+  const m = s.match(/^(\d+)([A-Z])?\s*(.*)$/);
+  if (!m) return null;
+  let words = m[3].split(" ").filter(Boolean).map(x => ABBR[x] || x);
+  if (words.length) words[0] = words[0].replace(/^(\d)(ST|ND|RD|TH)$/, "0$1$2");
+  return { num: m[1], sfx: m[2] || "", words, apt };
+}
+/* assessor parcel "0440A008A" = block 0440A + lot 008A */
+function splitBlklot(pn) { const m = String(pn || "").match(/^(\d{4}[A-Z]?)(\d{3}[A-Z]?)$/); return m ? [m[1], m[2]] : [String(pn || "").slice(0, 4), String(pn || "").slice(4)]; }
+function placeFromEas(r) {
+  const pn = String(r.parcel_number || ""), [block, lot] = splitBlklot(pn);
+  return { street: r.address, eas: r.eas_baseid, blklot: pn, block, lot, lat: r.latitude ? +r.latitude : null, lon: r.longitude ? +r.longitude : null,
+    hood: r.nhood, zip: r.zip_code, num: r.address_number, st: r.street_name, type: r.street_type };
+}
+async function easSearch(text) {
+  const p = parseAddress(text);
+  if (!p) return [];
+  if (ctl) ctl.abort();
+  ctl = new AbortController();
+  const tries = [];
+  const full = p.words.join(" ");
+  if (full) tries.push(full);
+  // a half-typed last word ("bush str") shouldn't block a match, but a complete suffix ("dolores st") should count
+  if (p.words.length > 1 && !SUFFIXES.includes(p.words[p.words.length - 1])) tries.push(p.words.slice(0, -1).join(" "));
+  if (!tries.length) tries.push("");
+  for (const rest of tries) {
+    const prefix = `${p.num}${p.sfx} ${rest}`.trim();
+    const u = new URL(SODA + "3mea-di5p.json");
+    u.searchParams.set("$where", rest ? `address_number='${sq(p.num)}' AND starts_with(address,'${sq(prefix)}')` : `address_number='${sq(p.num)}'`);
+    u.searchParams.set("$select", "address,address_number,street_name,street_type,eas_baseid,parcel_number,latitude,longitude,nhood,zip_code");
+    u.searchParams.set("$order", "address");
+    u.searchParams.set("$limit", "6");
+    const r = await fetch(u, { signal: ctl.signal });
+    if (!r.ok) throw new Error("Address search returned " + r.status);
+    const res = (await r.json()).map(placeFromEas);
+    if (res.length) return res.map(x => ({ ...x, apt: p.apt }));
+  }
+  // San Francisco buildings often span a range of numbers (1381–1385); offer the nearest address on the same street
+  const words = p.words.slice(); const last = words[words.length - 1];
+  const type = SUFFIXES.includes(last) ? words.pop() : null;
+  if (!words.length) return [];
+  const n0 = +p.num, near = []; for (let d = -10; d <= 10; d++) if (n0 + d > 0 && d) near.push(String(n0 + d));
+  const u = new URL(SODA + "3mea-di5p.json");
+  u.searchParams.set("$where", `street_name='${sq(words.join(" "))}'${type ? ` AND street_type='${sq(type)}'` : ""} AND address_number in(${sqlList(near)})`);
+  u.searchParams.set("$select", "address,address_number,street_name,street_type,eas_baseid,parcel_number,latitude,longitude,nhood,zip_code");
+  u.searchParams.set("$limit", "20");
+  const r = await fetch(u, { signal: ctl.signal });
+  if (!r.ok) return [];
+  return (await r.json()).map(placeFromEas).sort((x, y) => Math.abs(+x.num - n0) - Math.abs(+y.num - n0)).slice(0, 4).map(x => ({ ...x, apt: p.apt, near: true }));
+}
+function showSug() {
+  sug.hidden = !items.length;
+  sug.innerHTML = items.map((x, i) => `<li role="option" id="o${i}" aria-selected="${i === active}" data-i="${i}"><span>${esc(titleCase(x.street))}</span><small>${x.near ? "Nearest address · " : ""}${esc(x.hood || "")}</small></li>`).join("");
+}
+input.addEventListener("input", () => {
+  clearTimeout(timer);
+  const t = input.value.trim();
+  if (t.length < 3 || !/^\d+\S*\s+\S/.test(t)) { items = []; showSug(); return; }
+  timer = setTimeout(async () => { try { items = await easSearch(t); active = -1; showSug(); } catch (e) { if (e.name !== "AbortError") { items = []; showSug(); } } }, 200);
+});
+input.addEventListener("keydown", e => {
+  if (sug.hidden) return;
+  if (e.key === "ArrowDown") { active = Math.min(items.length - 1, active + 1); showSug(); e.preventDefault(); }
+  else if (e.key === "ArrowUp") { active = Math.max(0, active - 1); showSug(); e.preventDefault(); }
+  else if (e.key === "Escape") { items = []; showSug(); }
+});
+sug.addEventListener("mousedown", e => { const li = e.target.closest("li"); if (li) { e.preventDefault(); const x = items[+li.dataset.i]; choose({ ...x, apt: aptIn.value.trim() || x.apt }); } });
+document.addEventListener("click", e => {
+  if (!e.target.closest(".search")) { items = []; showSug(); }
+  const j = e.target.closest("[data-jump]");
+  if (j) { e.preventDefault(); const t = document.getElementById(j.dataset.jump); if (t) t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
+});
+$("#form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const apt = aptIn.value.trim();
+  if (active >= 0 && items[active]) return choose({ ...items[active], apt: apt || items[active].apt });
+  const t = input.value.trim();
+  if (!t) { if (apt && current) choose({ ...current, apt, example: false }); return; }
+  if (current && t === displayName(current)) return choose({ ...current, apt, example: false });
+  try {
+    const res = await easSearch(t);
+    if (res.length && res[0].near) { items = res; active = -1; showSug(); $("#out").innerHTML = `<p class="note">There's no ${esc(t)} in the city's address list. Pick the nearest address above; buildings often span several numbers.</p>`; }
+    else if (res.length) choose({ ...res[0], apt: apt || res[0].apt });
+    else $("#out").innerHTML = `<p class="err">Couldn't find “${esc(t)}” in San Francisco's address list. Start with the house number and street, like “825 Bush St”.</p>`;
+  } catch (err) { if (err.name !== "AbortError") $("#out").innerHTML = `<p class="err">Address search isn't responding (${esc(err.message)}). Check your connection and try again.</p>`; }
+});
+
+let current = null;
+function displayName(place) { return titleCase(place.street); }
+
+async function choose(place) {
+  items = []; showSug();
+  current = place;
+  if (!place.example) { input.value = displayName(place); remember(place); setHash(place); }
+  aptIn.value = place.apt ? normApt(place.apt) : "";
+  const seq = ++lookupSeq, now = new Date();
+  renderLoading(place);
+  if (!place.blklot && place.lat) { place = await parcelAt(place); current = place; }
+  if (seq !== lookupSeq) return;
+  const formTop = $("#form").getBoundingClientRect().top;
+  if (formTop > 120) $("#form").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  const draw = R => { if (seq !== lookupSeq) return; const y = window.scrollY; render(R, place); if (window.scrollY !== y) window.scrollTo(0, y); };
+  try { draw(await fetchReport(place, now, draw)); }
+  catch (e) { if (seq === lookupSeq) $("#out").innerHTML = `<p class="err">Something went wrong pulling records: ${esc(e.message)}</p>`; }
+}
+
+/* Some addresses in the city's list aren't tied to a parcel; find the parcel under the map point instead */
+async function parcelAt(place) {
+  try {
+    const r = (await soda("acdm-wktn", { $where: `active='true' AND intersects(shape,'POINT(${place.lon} ${place.lat})')`, $select: "blklot", $limit: 1 }, 15000))[0];
+    if (r && r.blklot) { const [block, lot] = splitBlklot(r.blklot); return { ...place, blklot: r.blklot, block, lot, parcelByMap: true }; }
+  } catch {}
+  return place;
+}
+
+async function fromHash() {
+  const m = decodeURIComponent(location.hash.slice(1)).match(/^(\d+)-([A-Za-z0-9]{0,8})(?:-([A-Za-z0-9_]+))?$/);
+  if (!m) return false;
+  const [, eas, apt] = m;
+  try {
+    const r = (await soda("3mea-di5p", { $where: `eas_baseid='${sq(eas)}'`, $select: "address,address_number,street_name,street_type,eas_baseid,parcel_number,latitude,longitude,nhood,zip_code", $limit: 1 }, 20000))[0];
+    if (r) { choose({ ...placeFromEas(r), apt: apt || "" }); return true; }
+  } catch {}
+  $("#out").innerHTML = `<p class="err">Couldn't open that link. Search for the address instead.</p>`;
+  return false;
+}
+
+/* recent lookups (this browser only) + examples */
+const EXAMPLES = [{"street":"825 BUSH ST","eas":"281107","blklot":"0283020","block":"0283","lot":"020","lat":37.789607,"lon":-122.410881,"hood":"Nob Hill","zip":"94108","num":"825","st":"BUSH","type":"ST","example":true},{"street":"1830 BEACH ST","eas":"282384","blklot":"0440A008A","block":"0440A","lot":"008A","lat":37.804164,"lon":-122.440245,"hood":"Marina","zip":"94123","num":"1830","st":"BEACH","type":"ST","example":true},{"street":"780 CAPP ST","eas":"496829","blklot":"3637019","block":"3637","lot":"019","lat":37.754309,"lon":-122.417684,"hood":"Mission","zip":"94110","num":"780","st":"CAPP","type":"ST","example":true}];
+function recent() { try { return JSON.parse(localStorage.getItem("sfr-recent") || "[]"); } catch { return []; } }
+function remember(p) {
+  if (p.example) return;
+  try {
+    const r = recent().filter(x => !(x.eas === p.eas && (x.apt || "") === (p.apt || "")));
+    const { example, ...keep } = p;
+    r.unshift({ ...keep, apt: p.apt || "" });
+    localStorage.setItem("sfr-recent", JSON.stringify(r.slice(0, 5)));
+  } catch {}
+  drawChips();
+}
+function drawChips() {
+  const r = recent();
+  const list = r.length ? r : EXAMPLES;
+  $("#chips").innerHTML = `<span>${r.length ? "Recent:" : "Try:"}</span>` + list.map((x, i) => `<button type="button" data-i="${i}">${esc(titleCase(x.street))}${x.apt ? " · " + esc(x.apt) : ""}</button>`).join("");
+  $("#chips").onclick = e => { const b = e.target.closest("button"); if (b) choose({ ...list[+b.dataset.i], example: false }); };
+}
+window.addEventListener("hashchange", fromHash);
+/* the street tree and window boxes follow the season */
+(() => {
+  const m = new Date().getMonth();
+  const season = m <= 1 || m === 11 ? "winter" : m <= 4 ? "spring" : m <= 7 ? "summer" : "fall";
+  const art = document.querySelector(".block-art");
+  if (art) art.setAttribute("class", "block-art season-" + season);
+})();
+if (typeof window !== "undefined" && !window.__BYS_TEST__) {
+  drawChips();
+  fromHash();
+}
+</script>
+</body>
+</html>
