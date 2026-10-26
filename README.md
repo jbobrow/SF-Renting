@@ -25,6 +25,23 @@ Plus an apartment view (DBI complaints and notices that name the unit, and wheth
 
 Comparisons use a random sample of 213 San Francisco buildings with three or more units (88 for the block checks), drawn in October 2026.
 
+## Oakland and Berkeley (partial report)
+
+Oakland and Berkeley addresses get a partial report, because neither city publishes the building records San Francisco does (code violations, permits, eviction notices, a soft-story list). What's public:
+
+| Check | Oakland | Berkeley |
+| --- | --- | --- |
+| Complaints about the address | OAK 311 code enforcement reports | 311 housing inspection requests |
+| Illegal dumping, pests nearby | OAK 311 | Berkeley 311 |
+| Car break-ins | CrimeWatch, within 150 m | Police cases, on the block |
+| Noise | — (not published by location) | Police noise calls on the block + 311 |
+| Earthquake | State Alquist-Priolo fault, liquefaction and landslide zones | same |
+| Wildfire | CAL FIRE 2025 fire hazard severity zones | same |
+| Flood | State tsunami area, 311 storm drain flooding | State tsunami area |
+| Rent rules | Rent Adjustment Program rules and 2.3% cap | Rent Board rules, 1.0% AGA, link to the Rent Registry lookup |
+
+Each East Bay report ends with **Help the city track more**: a list of what's missing and a ready-to-send note asking the councilmember and mayor to publish it. Addresses are found with Esri's World Geocoder. Comparisons use 90 random Oakland parcels and 90 random Berkeley apartment buildings.
+
 ## How it works
 
 One static `index.html`. The browser queries DataSF's Socrata API (`data.sf.gov`) directly; addresses come from the city's Enterprise Addressing System. There's no server and nothing is stored except recent lookups in your own browser.

@@ -216,6 +216,8 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .links { display: flex; flex-wrap: wrap; gap: 8px; }
 .links a { display: inline-block; padding: 7px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); text-decoration: none; font-weight: 600; font-size: 0.88rem; }
 .links a:hover { border-color: var(--accent); }
+.linkbtn { font: 600 0.88rem var(--body); color: var(--paper); background: var(--ink); border: 1px solid var(--ink); border-radius: 4px; padding: 7px 12px; cursor: pointer; }
+.note-msg { margin: 0; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; font: 0.86rem/1.55 var(--body); color: var(--ink); white-space: pre-wrap; max-width: 70ch; }
 .ask { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
 .ask li { max-width: 70ch; }
 .watch { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
@@ -495,7 +497,7 @@ footer p { margin: 0; max-width: 90ch; }
     <div class="field">
       <div class="addrbox">
         <label for="q">Building address</label>
-        <input id="q" type="text" placeholder="e.g. 825 Bush St" aria-autocomplete="list" aria-controls="sug" spellcheck="false">
+        <input id="q" type="text" placeholder="e.g. 825 Bush St, or an Oakland or Berkeley address" aria-autocomplete="list" aria-controls="sug" spellcheck="false">
         <ul class="suggest" id="sug" role="listbox" hidden></ul>
       </div>
       <div class="aptbox">
@@ -512,6 +514,7 @@ footer p { margin: 0; max-width: 90ch; }
   <footer>
     <p>Data comes live from DataSF: Department of Building Inspection complaints, notices of violation and building permits; Fire Department violations; Rent Board eviction notices, buyout agreements, petitions, the housing inventory and allowable increases; the soft-story program; 311 cases; police incident reports; the Assessor's secured roll; historic resource status; residential parking permit eligibility; the 100-year storm flood map, sea level rise maps and state seismic hazard zones; night noise permits; and the city's Enterprise Addressing System.</p>
     <p>Comparisons use a random sample of 213 San Francisco buildings with three or more units (88 for noise and car break-ins), drawn in October 2026. “The block” means everything within 150 meters, about a block in each direction; Rent Board eviction notices and petitions are published by street block, so those cover both sides of the 100-block the building is on.</p>
+    <p>Oakland and Berkeley addresses get a partial report: OAK 311, Oakland CrimeWatch and parking permit zones; Berkeley 311 and police cases and calls for service; the state's Alquist-Priolo fault, liquefaction, landslide and tsunami maps; CAL FIRE's 2025 fire hazard zones; and Esri's geocoder. Those comparisons use 90 random Oakland parcels and 90 random Berkeley apartment buildings.</p>
     <p>Rent control here is an estimate from the building's age and type; only the Rent Board can say for sure. A clean record is a good sign, not a guarantee.</p>
     <div class="sig">
       <span class="src"><a href="mailto:jbobrow+sfrent@gmail.com?subject=SF%20Rent%20feedback"><svg class="ico" viewBox="0 0 15 15" aria-hidden="true"><path d="M1 2C0.447715 2 0 2.44772 0 3V12C0 12.5523 0.447715 13 1 13H14C14.5523 13 15 12.5523 15 12V3C15 2.44772 14.5523 2 14 2H1ZM1 3L14 3V3.92494C13.9174 3.92486 13.8338 3.94751 13.7589 3.99505L7.5 7.96703L1.24112 3.99505C1.16621 3.94751 1.0826 3.92486 1 3.92494V3ZM1 4.90797V12H14V4.90797L7.74112 8.87995C7.59394 8.97335 7.40606 8.97335 7.25888 8.87995L1 4.90797Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/></svg>Send feedback</a></span>
@@ -538,8 +541,8 @@ const SCREENING_FEE = 65.86;  // California cap for 2026, Civil Code 1950.6
 /* ---------- data layer ---------- */
 const SODA = "https://data.sf.gov/resource/";
 
-async function soda(id, params, timeoutMs = 45000) {
-  const u = new URL(SODA + id + ".json");
+async function soda(id, params, timeoutMs = 45000, base = SODA) {
+  const u = new URL(base + id + ".json");
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
   let lastErr;
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -987,7 +990,7 @@ function cmpBldg(v, b, s) {
 }
 function cmpBlock(below, above, more, fewer, what = "rental blocks", v) {
   if (v === 0) return `None, like ${pct(1 - above)} of ${what}`;
-  if (below >= 0.5) return `${more} ${pct(below)} of ${what}`;
+  if (below >= 0.5) return `${more} ${pct(Math.min(below, 0.99))} of ${what}`;
   return `${fewer} ${pct(above)} of ${what}`;
 }
 function cleanNov(t) {
@@ -1172,7 +1175,7 @@ function S(k, id, title, wide, fn) {
   return `<section class="sec${wide ? " wide" : ""}" id="${id}"><h2>${title}<span class="pill s-none">Loading</span></h2><div class="skel" style="width:80%"></div><div class="skel" style="width:55%"></div></section>`;
 }
 let CUR_R = null;
-function errSec(id, title, raw, wide) { return `<section class="sec${wide ? " wide" : ""}" id="${id}"><h2>${title}${pill("none")}</h2><p class="err">${raw && raw.skipped ? "This address has no parcel number in the city's address system, so building records can't be matched to it." : `Couldn't load this from DataSF. ${esc(raw && raw.error || "")} Try again in a minute.`}</p></section>`; }
+function errSec(id, title, raw, wide) { return `<section class="sec${wide ? " wide" : ""}" id="${id}"><h2>${title}${pill("none")}</h2><p class="err">${raw && raw.skipped ? "This address has no parcel number in the city's address system, so building records can't be matched to it." : `Couldn't load this record. ${esc(raw && raw.error || "")} Try again in a minute.`}</p></section>`; }
 
 function secApt(R) {
   if (!R.place.apt) return "";
@@ -1475,12 +1478,406 @@ function copyText(text, ok) {
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => toast(ok), fallback);
   else fallback();
 }
-/* Shareable link: #EAS-APT-STREET (plain token: letters, digits, _ and -) */
+/* Shareable link: #EAS-APT-STREET in San Francisco, #oakland~APT~STREET in the East Bay */
 function hashFor(place) {
   const street = String(place.street || "").toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_|_$/g, "");
-  return `${place.eas}-${normApt(place.apt).replace(/[^A-Z0-9]/g, "")}${street ? "-" + street : ""}`;
+  const apt = normApt(place.apt).replace(/[^A-Z0-9]/g, "");
+  if (place.city) return `${place.city}~${apt}~${street}`;
+  return `${place.eas}-${apt}${street ? "-" + street : ""}`;
 }
 function setHash(place) { try { history.replaceState(null, "", "#" + hashFor(place)); } catch {} }
+
+/* ---------- Oakland and Berkeley: a partial report from what those cities publish ----------
+   Neither city publishes code violations, permits, eviction notices or a soft-story list as open data,
+   so this covers what is public: 311 reports, police data, and state hazard maps. */
+/* Baselines, Oct 2026: 90 random Oakland parcels and 90 random Berkeley apartment buildings. DUMP / PEST / FLOOD: 311 reports within 150 m;
+   BRK: car break-ins within 150 m (Oakland) or on the block (Berkeley); NOISE: police noise calls on the block plus 311 noise reports. Past year. */
+const EBBASE = {"oakland":{"DUMP":{"n":90,"v":[1,1,1,2,2,2,2,3,3,3,4,4,4,5,5,6,6,6,7,7,8,8,8,9,9,10,10,10,10,11,12,13,13,15,15,15,16,17,21,22,23,26,26,27,28,28,29,30,32,32,34,36,36,36,37,38,42,46,46,49,50,52,55,56,59,64,67,67,69,73,74,92,92,94,94,95,102,105,105,108,116,121,139,156]},"PEST":{"n":90,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3]},"BRK":{"n":90,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,5,6,13,32,38,45,50]},"FLOOD":{"n":90,"v":[1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,4,5,6,6,8]}},"berkeley":{"DUMP":{"n":90,"v":[4,6,7,7,7,7,8,9,10,10,10,11,11,12,12,13,13,14,14,14,16,16,16,16,17,20,20,21,21,21,22,22,23,23,24,24,24,25,25,25,26,26,27,28,28,28,29,29,30,30,30,31,32,32,32,32,34,35,35,36,36,38,38,38,38,39,40,42,44,47,47,47,49,49,52,54,57,62,76,90,99,101,102,104,108,112,121,124,150,172]},"PEST":{"n":90,"v":[1,1,1,1,1,1,1,1,1,1,1]},"BRK":{"n":90,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,4,4,7]},"NOISE":{"n":90,"v":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,6,7,7,8,10,11,12,51]}}};
+const STATE_GIS = "https://services2.arcgis.com/zr3KAIbsRSUyARHG/ArcGIS/rest/services/";
+const HAZ = {
+  ap: STATE_GIS + "CGS_Alquist_Priolo_Fault_Zones/FeatureServer/0",
+  liq: STATE_GIS + "CGS_Liquefaction_Zones/FeatureServer/0",
+  slide: STATE_GIS + "CGS_Landslide_Zones/FeatureServer/0",
+  tsunami: STATE_GIS + "CA_Tsunami_Hazard_Area/FeatureServer/0",
+  fire: "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/FHSALRA25_v1_All/FeatureServer/0",  // CAL FIRE 2025 zones, local responsibility areas
+};
+const BPD = "https://services7.arcgis.com/vIHhVXjE1ToSg0Fz/arcgis/rest/services/";
+const CITY = {
+  oakland: {
+    name: "Oakland", soda: "https://data.oaklandca.gov/resource/", portal: "https://data.oaklandca.gov",
+    council: "https://oaklandca.gov/services/look-up-your-city-council-district-and-representative",
+    rent: { cap: 2.3, from: "Aug 1, 2026", to: "Jul 31, 2027", url: "https://www.oaklandca.gov/Community/Housing-Programs-Support/Rent-Adjustment-Program-RAP", label: "Rent Adjustment Program" },
+    missing: ["code enforcement cases and violations", "building permits", "eviction notices filed with the Rent Adjustment Program", "rent registry data (registered units and rents)", "the soft-story retrofit list", "Rent Adjustment Program petitions"],
+  },
+  berkeley: {
+    name: "Berkeley", soda: "https://data.cityofberkeley.info/resource/", portal: "https://data.cityofberkeley.info",
+    council: "https://berkeleyca.gov/your-government/city-council/council-roster",
+    rent: { cap: 1.0, from: "Jan 1, 2026", url: "https://rentboard.berkeleyca.gov", label: "Rent Board", lookup: "https://rentregistry.cityofberkeley.info/#/homepage" },
+    missing: ["rental housing inspection results and code violations", "building permits", "eviction notices (termination notices filed with the Rent Board)", "the soft-story retrofit list", "Rent Board petitions", "rent registry data as a dataset, not just a lookup tool"],
+  },
+};
+
+async function arcQuery(url, params, timeoutMs = 30000) {
+  const u = new URL(url + "/query");
+  for (const [k, v] of Object.entries({ f: "json", ...params })) u.searchParams.set(k, v);
+  const ac = new AbortController(), t = setTimeout(() => ac.abort(), timeoutMs);
+  try {
+    const r = await fetch(u, { signal: ac.signal });
+    if (!r.ok) throw new Error("Map service returned " + r.status);
+    const d = await r.json();
+    if (d.error) throw new Error(d.error.message || "Map service error");
+    return d;
+  } catch (e) { throw e.name === "AbortError" ? new Error("The map service took too long to answer.") : e; }
+  finally { clearTimeout(t); }
+}
+const arcAt = (url, c, fields = "*") => arcQuery(url, { geometry: `${c.lon},${c.lat}`, geometryType: "esriGeometryPoint", inSR: "4326", spatialRel: "esriSpatialRelIntersects", outFields: fields, returnGeometry: "false" }).then(d => (d.features || []).map(f => f.attributes));
+const arcDate = d => `DATE '${d.toISOString().slice(0, 10)}'`;
+function bbox(c, m = 150) { const dLat = m / 111320, dLon = m / (111320 * Math.cos(c.lat * Math.PI / 180)); return { la0: (c.lat - dLat).toFixed(6), la1: (c.lat + dLat).toFixed(6), lo0: (c.lon - dLon).toFixed(6), lo1: (c.lon + dLon).toFixed(6) }; }
+
+const EB_NEEDS = {
+  code: ["here311"], dump: ["near311"], pests: ["near311"], brk: ["brk"], noise: ["near311", "noisePD"],
+  quake: ["ap", "liq", "slide"], fire: ["fire"], flood: ["tsunami", "near311"], gaps: [],
+};
+const EB_ORDER = { oakland: ["code", "dump", "pests", "brk", "quake", "fire", "flood", "gaps"], berkeley: ["code", "noise", "brk", "dump", "pests", "quake", "fire", "flood", "gaps"] };
+
+function fetchEB(place, now, onUpdate) {
+  const city = CITY[place.city], c = { lat: place.lat, lon: place.lon };
+  const S = (id, p, t) => soda(id, p, t || 45000, city.soda);
+  const y1 = iso(yearsAgo(1, now)), y3 = iso(yearsAgo(3, now));
+  const b = bbox(c);
+  const ST = sq(String(place.stName || "").toUpperCase());
+  const blk = `${Math.floor(N(place.num) / 100) * 100} ${ST}`;
+  const q = {
+    ap: arcAt(HAZ.ap, c, "QUAD_NAME"), liq: arcAt(HAZ.liq, c, "QUAD_NAME"), slide: arcAt(HAZ.slide, c, "QUAD_NAME"),
+    tsunami: arcAt(HAZ.tsunami, c, "Evacuate"), fire: arcAt(HAZ.fire, c, "FHSZ_Description,SRA"),
+  };
+  if (place.city === "oakland") {
+    q.here311 = S("quth-gb8e", { $where: `upper(probaddress) like '${sq(place.num)} ${ST} %' AND datetimeinit>='${y3}'`, $select: "description,datetimeinit,status,councildistrict", $order: "datetimeinit DESC", $limit: 500 });
+    q.near311 = S("quth-gb8e", { $where: `srx between ${b.lo0} and ${b.lo1} AND sry between ${b.la0} and ${b.la1} AND datetimeinit>='${y1}'`, $select: "description,councildistrict,count(*) as n", $group: "description,councildistrict", $order: "n DESC", $limit: 1000 }, 60000);
+    q.brk = S("ppgh-7dqv", { $where: `within_circle(location,${c.lat},${c.lon},150) AND datetime>='${y1}' AND crimetype='BURG - AUTO'`, $select: "casenumber", $limit: 5000 });
+    q.rpp = S("su5x-2u99", { $where: `intersects(the_geom,'POINT(${c.lon} ${c.lat})')`, $select: "rpp_zone", $limit: 1 });
+  } else {
+    q.here311 = S("p88g-6gs2", { $where: `upper(street_address) like '${sq(place.num)} ${ST}%' AND date_opened>='${y3}'`, $select: "case_request,date_opened,case_status", $order: "date_opened DESC", $limit: 500 });
+    q.near311 = S("p88g-6gs2", { $where: `latitude between ${b.la0} and ${b.la1} AND longitude between ${b.lo0} and ${b.lo1} AND date_opened>='${y1}'`, $select: "case_request,count(*) as n", $group: "case_request", $order: "n DESC", $limit: 500 }, 60000);
+    // Berkeley police publish by block ("2000 DWIGHT WAY"), not exact address
+    q.brk = arcQuery(BPD + "Berkeley_PD_Cases_2016_to_Current/FeatureServer/0", { where: `Block_Address LIKE '${blk}%' AND Incident_Type IN ('Burglary Auto','Theft from Auto') AND Occurred_Datetime > ${arcDate(yearsAgo(1, now))}`, returnCountOnly: "true" }).then(d => d.count);
+    q.noisePD = arcQuery(BPD + "callsforservice_csv/FeatureServer/0", { where: `Block_Address LIKE '${blk}%' AND Call_Type LIKE '%Noise%' AND CreateDatetime > ${arcDate(yearsAgo(1, now))}`, returnCountOnly: "true" }).then(d => d.count);
+  }
+  const raw = {};
+  const keys = Object.keys(q);
+  keys.forEach(k => raw[k] = { ok: false, pending: true });
+  let timer = null;
+  const flush = () => { timer = null; onUpdate(analyzeEB(raw, now, place)); };
+  const schedule = () => { if (!timer) timer = setTimeout(flush, 200); };
+  return Promise.all(keys.map(k => q[k].then(v => { raw[k] = { ok: true, rows: v }; }, e => { raw[k] = { ok: false, error: String(e && e.message || e) }; }).then(schedule)))
+    .then(() => { clearTimeout(timer); timer = null; return analyzeEB(raw, now, place); });
+}
+
+const ebPending = (R, k) => (EB_NEEDS[k] || []).some(x => R.raw[x] && R.raw[x].pending);
+function blockCheck(total, base) {
+  if (!base) return { s: "ok", below: 0, above: 0 };
+  const below = shareBelow(total, base), above = shareAbove(total, base);
+  return { below, above, s: below >= 0.9 ? "bad" : below >= 0.75 ? "warn" : "ok" };
+}
+function analyzeEB(raw, now, place) {
+  const R = { raw, now, place, eb: true, city: CITY[place.city] };
+  const oak = place.city === "oakland";
+  const BB = EBBASE[place.city] || {};
+  const two = yearsAgo(2, now);
+  const near = raw.near311.ok ? raw.near311.rows : null;
+  const sumNear = f => near ? near.filter(r => f(oak ? r.description : r.case_request)).reduce((t, r) => t + N(r.n), 0) : null;
+
+  // Complaints filed about this address
+  if (raw.here311.ok) {
+    const rows = raw.here311.rows.map(r => ({ what: oak ? r.description : r.case_request, d: new Date(oak ? r.datetimeinit : r.date_opened), status: r.status || r.case_status }));
+    const code = oak ? rows.filter(r => /code enforcement|blight/i.test(r.what)) : rows.filter(r => /housing inspection|code|blight|vector|leak|plumbing/i.test(r.what));
+    const recent = code.filter(r => r.d >= two);
+    const by = {}; rows.filter(r => !/^(Parking|TE -|ROW -|Traffic|Street Light|Abandoned Vehicle)/i.test(r.what || "")).forEach(r => { by[r.what] = (by[r.what] || 0) + 1; });
+    let s = "ok";
+    if (recent.length >= 3) s = "bad"; else if (recent.length) s = "warn";
+    R.code = { rows, code, recent, by: Object.entries(by).sort((x, y) => y[1] - x[1]), s };
+    if (oak) { const d = raw.here311.rows.map(r => r.councildistrict).filter(Boolean); if (d.length) R.district = d[0]; }
+  }
+  if (oak && !R.district && near) { const tally = {}; near.forEach(r => { if (r.councildistrict) tally[r.councildistrict] = (tally[r.councildistrict] || 0) + N(r.n); }); const top = Object.entries(tally).sort((x, y) => y[1] - x[1])[0]; if (top) R.district = top[0]; }
+
+  if (near) {
+    const dump = sumNear(d => /dumping|mattress/i.test(d || ""));
+    R.dump = { total: dump, ...blockCheck(dump, BB.DUMP) };
+    const pests = sumNear(d => oak ? d === "Animal and Insect Control" : d === "Vector Control");
+    R.pests = { total: pests, ...blockCheck(pests, BB.PEST) };
+    // pest reports are rare, so one or two shouldn't sound an alarm
+    R.pests.s = pests >= 5 && R.pests.below >= 0.9 ? "bad" : pests >= 2 && R.pests.below >= 0.75 ? "warn" : "ok";
+    // leave out requests about city facilities and parking meters, which say nothing about the block
+    const by = {}; near.forEach(r => { const k = oak ? r.description : r.case_request; if (k && !/^City Bldg|Meter|^Facilities|^Direct Line|^Miscellaneous/i.test(k)) by[k] = (by[k] || 0) + N(r.n); });
+    R.near = Object.entries(by).sort((x, y) => y[1] - x[1]);
+  }
+  R.nearError = raw.near311.error || null;
+  if (raw.brk.ok) { const total = oak ? new Set(raw.brk.rows.map(r => r.casenumber)).size : N(raw.brk.rows); R.brk = { total, ...blockCheck(total, BB.BRK) }; }
+  if (!oak && (raw.noisePD.ok || near)) {
+    const n311 = near ? sumNear(d => d === "Noise Complaint") : 0, pd = raw.noisePD.ok ? N(raw.noisePD.rows) : 0;
+    R.noise = { n311, pd, total: n311 + pd, ...blockCheck(n311 + pd, BB.NOISE) };
+  }
+  if (raw.ap.ok || raw.liq.ok || raw.slide.ok) {
+    const ap = raw.ap.ok ? raw.ap.rows.length > 0 : null, liq = raw.liq.ok ? raw.liq.rows.length > 0 : null, slide = raw.slide.ok ? raw.slide.rows.length > 0 : null;
+    const reasons = []; if (ap) reasons.push("On the Hayward Fault zone"); if (liq) reasons.push("Liquefaction zone"); if (slide) reasons.push("Landslide zone");
+    R.quake = { ap, liq, slide, reasons, s: ap ? "bad" : (liq || slide) ? "warn" : "ok", level: ap ? "Fault zone" : (liq || slide) ? "Higher" : "Typical" };
+  }
+  if (raw.fire.ok) {
+    const z = raw.fire.rows.map(r => r.FHSZ_Description).find(Boolean) || null;
+    const level = z && /very high/i.test(z) ? "Very high" : z && /^high/i.test(z) ? "High" : z && /moderate/i.test(z) ? "Moderate" : "Low";
+    R.fire = { zone: z, level, s: level === "Very high" ? "bad" : level === "High" ? "warn" : "ok" };
+  }
+  if (raw.tsunami.ok || near) {
+    const ts = raw.tsunami.ok ? raw.tsunami.rows.some(r => /^yes/i.test(r.Evacuate || "")) : null;
+    const streetN = near ? sumNear(d => oak ? /flooding\)/i.test(d || "") : false) : 0;
+    const reasons = []; if (ts) reasons.push("Tsunami evacuation area"); if (streetN >= 3) reasons.push(`${plural(streetN, "flooding report")} to 311`);
+    R.flood = { ts, streetN, reasons, s: ts || streetN >= 3 ? "warn" : "ok", level: ts || streetN >= 3 ? "Some" : "Low" };
+  }
+  R.rpp = raw.rpp && raw.rpp.ok && raw.rpp.rows[0] ? raw.rpp.rows[0].rpp_zone : null;
+  const order = EB_ORDER[place.city].filter(k => k !== "gaps");
+  R.counts = { bad: 0, warn: 0, ok: 0, none: 0 };
+  R.pendingChecks = order.filter(k => ebPending(R, k)).length;
+  order.forEach(k => { if (ebPending(R, k)) return; R.counts[R[k] ? R[k].s : "none"]++; });
+  return R;
+}
+
+function cardsEB(R) {
+  const C = [], city = R.city, oak = R.place.city === "oakland";
+  const card = (id, title, s, big, line, cmp) => C.push(`<a class="check s-${s}" href="#${id}" data-jump="${id}"><h3>${title}</h3><span class="big num">${big}</span><p>${line}</p>${cmp ? `<p class="cmp">${cmp}</p>` : "<span></span>"}${pill(s)}</a>`);
+  const na = (id, title, why) => card(id, title, "none", "—", why || "Couldn't load this record.");
+  const P = (k, id, title) => ebPending(R, k) ? (C.push(`<a class="check s-none" href="#${id}" data-jump="${id}"><h3>${title}</h3><span class="big">…</span><p>Loading records…</p><span></span><span class="pill s-none">Loading</span></a>`), true) : false;
+  const cmp = (x, more, fewer) => x.below != null && EBBASE[R.place.city] ? cmpBlock(x.below, x.above, more, fewer, `${city.name} blocks`, x.total) : "";
+  EB_ORDER[R.place.city].forEach(k => {
+    if (k === "code") P(k, "code", oak ? "Code complaints" : "Housing complaints") || (R.code ? card("code", oak ? "Code complaints" : "Housing complaints", R.code.s, fmt(R.code.recent.length), oak ? `code enforcement ${w(R.code.recent.length, "report", "reports")} to OAK 311 at this address in 2 years` : `housing inspection or code ${w(R.code.recent.length, "request", "requests")} to 311 at this address in 2 years`, R.code.code.length > R.code.recent.length ? `${fmt(R.code.code.length)} in 3 years` : "") : na("code", oak ? "Code complaints" : "Housing complaints"));
+    if (k === "dump") P(k, "block", "Illegal dumping") || (R.dump ? card("block", "Illegal dumping", R.dump.s, fmt(R.dump.total), `311 ${w(R.dump.total, "report", "reports")} within 150 m, past year`, cmp(R.dump, "More than", "Fewer than")) : na("block", "Illegal dumping"));
+    if (k === "pests") P(k, "block", "Pests nearby") || (R.pests ? card("block", "Pests nearby", R.pests.s, fmt(R.pests.total), `${oak ? "animal and insect" : "vector control"} ${w(R.pests.total, "report", "reports")} within 150 m, past year`, cmp(R.pests, "More than", "Fewer than")) : na("block", "Pests nearby"));
+    if (k === "noise") P(k, "block", "Noise on the block") || (R.noise ? card("block", "Noise on the block", R.noise.s, fmt(R.noise.total), `noise calls to police on the block and 311 reports within 150 m, past year`, cmp(R.noise, "Louder than", "Quieter than")) : na("block", "Noise on the block"));
+    if (k === "brk") P(k, "block", "Car break-ins") || (R.brk ? card("block", "Car break-ins", R.brk.s, fmt(R.brk.total), oak ? "auto burglaries reported within 150 m, past year" : "car break-ins reported on this block, past year", cmp(R.brk, "More than", "Fewer than")) : na("block", "Car break-ins"));
+    if (k === "quake") P(k, "quake", "Earthquake") || (R.quake ? card("quake", "Earthquake", R.quake.s, R.quake.level, R.quake.reasons.length ? esc(R.quake.reasons.join(" · ")) : "Outside the state's fault, liquefaction and landslide zones") : na("quake", "Earthquake"));
+    if (k === "fire") P(k, "fire", "Wildfire") || (R.fire ? card("fire", "Wildfire", R.fire.s, R.fire.level, R.fire.zone && R.fire.level !== "Low" ? `${esc(R.fire.zone)} fire hazard severity zone` : "Not in a mapped fire hazard zone") : na("fire", "Wildfire"));
+    if (k === "flood") P(k, "flood", "Flood & tsunami") || (R.flood ? card("flood", "Flood & tsunami", R.flood.s, R.flood.level, R.flood.reasons.length ? R.flood.reasons.join(" · ") : "Outside the tsunami area · no recent flooding reports") : na("flood", "Flood & tsunami"));
+    if (k === "gaps") card("gaps", "Not published", "none", fmt(city.missing.length), `kinds of records ${city.name} keeps but doesn't share as open data`, "Ask the city to publish them");
+  });
+  return C.join("");
+}
+
+function renderEB(R, place) {
+  const city = R.city, oak = place.city === "oakland";
+  const [h1, sub] = headline(R);
+  const facts = [`<li>${esc(city.name)}, CA${place.zip ? " " + esc(place.zip) : ""}</li>`];
+  if (R.rpp) facts.push(`<li class="stab"><a href="#rent" data-jump="rent">Parking permit area ${esc(R.rpp)}</a></li>`);
+  facts.push(`<li class="stab"><a href="#gaps" data-jump="gaps">Partial report</a></li>`);
+  $("#out").innerHTML = `
+    <section class="bldg">
+      <p class="eyebrow">${esc(place.hood || city.name)}</p>
+      <h1 class="addr">${placeTitle(place)}</h1>
+      <ul class="facts">${facts.join("")}</ul>
+    </section>
+    <section class="verdict" aria-label="Summary">
+      <div class="verdict-head">
+        <div class="vt"><h2>${h1}</h2><p>${sub}</p></div>
+        <div class="actions">
+          <button type="button" id="copySum">Copy summary</button>
+          ${/^https?:$/.test(location.protocol) ? '<button type="button" id="copyLink">Copy link</button>' : ""}
+          <button type="button" id="printBtn">Print</button>
+        </div>
+      </div>
+      <div class="aptline"><b>A partial report.</b> ${esc(city.name)} doesn't publish the building records San Francisco does, so this covers what's public: 311 reports, police data and state hazard maps. <a href="#gaps" data-jump="gaps">What's missing</a></div>
+      <div class="checks">${cardsEB(R)}</div>
+    </section>
+    <div class="grid">
+      ${secRentEB(R)}
+      ${ebPending(R, "code") ? `<section class="sec" id="code"><h2>Complaints about this address<span class="pill s-none">Loading</span></h2><div class="skel"></div></section>` : secCodeEB(R)}
+      ${ebPending(R, "quake") ? `<section class="sec" id="quake"><h2>Earthquake safety<span class="pill s-none">Loading</span></h2><div class="skel"></div></section>` : secQuakeEB(R)}
+      ${ebPending(R, "fire") || ebPending(R, "flood") ? `<section class="sec" id="fire"><h2>Wildfire and flood<span class="pill s-none">Loading</span></h2><div class="skel"></div></section>` : secFireEB(R)}
+      ${secBlockEB(R)}
+      ${secGaps(R)}
+      ${secRightsEB(R)}
+      <section class="sec wide" id="ask"><h2>Questions to ask before you sign</h2><ol class="ask">${questionsEB(R).map(x => `<li>${x}</li>`).join("")}</ol></section>
+    </div>`;
+  $("#copySum").onclick = () => copyText(summaryEB(R, place), "Summary copied");
+  const cl = $("#copyLink"); if (cl) cl.onclick = () => copyText(location.href, "Link copied");
+  $("#printBtn").onclick = () => window.print();
+  const cm = $("#copyNote"); if (cm) cm.onclick = () => copyText(cityNote(R), "Message copied");
+}
+
+function secRentEB(R) {
+  const r = R.city.rent, oak = R.place.city === "oakland";
+  return `<section class="sec wide" id="rent">
+    <h2>Rent control</h2>
+    ${oak ? `<p>Most Oakland apartments in buildings that got their certificate of occupancy before January 1, 1983 are covered by the Rent Adjustment Program: rent can go up once a year, by at most <b>${r.cap}%</b> (${r.from} to ${r.to}) plus approved extras. Newer buildings fall under the state cap of ${AB1482.pct}% if they're over 15 years old. Most rentals are also protected by Oakland's just-cause eviction rules.</p>`
+          : `<p>Most Berkeley apartments in multi-unit buildings with a certificate of occupancy from before June 1980 are fully covered: they have a legal rent ceiling, which rose <b>${r.cap}%</b> from ${r.from}. Newer buildings, most single-family homes and most condos are partly covered: no rent ceiling, but you can only be evicted for a just cause. The state cap of ${AB1482.pct}% may still apply.</p>`}
+    <p class="note">${R.place.city === "oakland" ? "Oakland doesn't publish when each building was built or which units are registered, so this can't tell you whether this unit is covered. Ask the landlord for the RAP notice, which covered units must receive." : "Berkeley's Rent Registry lets anyone look up a unit's legal rent ceiling and coverage. Search for the address there."}</p>
+    <div class="links">${r.lookup ? `<a href="${r.lookup}" target="_blank" rel="noopener">Rent Registry lookup ↗</a>` : ""}<a href="${r.url}" target="_blank" rel="noopener">${esc(r.label)} ↗</a></div>
+  </section>`;
+}
+
+function secCodeEB(R) {
+  const oak = R.place.city === "oakland", c = R.code;
+  const title = "Complaints about this address";
+  if (!c) return errSec("code", title, R.raw.here311);
+  return `<section class="sec" id="code">
+    <h2>${title} ${pill(c.s)}</h2>
+    <p>${oak ? "Reports to OAK 311 that name this address in the past 3 years. Code enforcement reports cover blight and conditions inside and outside the building; the city doesn't publish what inspectors found." : "Requests to Berkeley's 311 that name this address in the past 3 years, including tenants asking for a housing inspection. The city doesn't publish inspection results."}</p>
+    ${c.by.length ? hbars(c.by.slice(0, 6)) : `<p class="note">No 311 reports name this address.</p>`}
+    ${c.code.length ? `<p class="note">Latest: ${esc(c.code[0].what)}, ${dfmt(c.code[0].d)}.</p>` : ""}
+  </section>`;
+}
+
+function secQuakeEB(R) {
+  const Q = R.quake;
+  if (!Q) return errSec("quake", "Earthquake safety", R.raw.ap);
+  const yn = (v, y, n) => v == null ? "Couldn't check" : v ? y : n;
+  return `<section class="sec" id="quake">
+    <h2>Earthquake safety ${pill(Q.s)}</h2>
+    <dl class="kv">
+      <dt>Fault zone</dt><dd>${yn(Q.ap, "<b>Inside an Alquist-Priolo fault zone</b>, along an active fault that can rupture the ground surface", "Outside the state's fault rupture zones")}</dd>
+      <dt>Liquefaction</dt><dd>${yn(Q.liq, "Inside a liquefaction zone, where loose, wet soil can give way in a strong quake", "Outside the state's liquefaction zones")}</dd>
+      <dt>Landslide</dt><dd>${yn(Q.slide, "Inside an earthquake-induced landslide zone", "Outside the state's landslide zones")}</dd>
+    </dl>
+    <p class="note">The Hayward Fault runs under both cities and is expected to produce a major earthquake. Oakland and Berkeley both required soft-story apartment buildings to be retrofitted but don't publish the list, so ask whether this building was. Renters insurance doesn't cover earthquakes unless you add it.</p>
+  </section>`;
+}
+
+function secFireEB(R) {
+  const F = R.fire, L = R.flood;
+  return `<section class="sec" id="fire">
+    <h2>Wildfire and flood ${pill(worst([F ? F.s : "ok", L ? L.s : "ok"]))}</h2>
+    <dl class="kv">
+      <dt>Fire hazard</dt><dd>${F ? (F.level === "Low" ? "Not in a state fire hazard severity zone" : `<b>${esc(F.zone)}</b> fire hazard severity zone (CAL FIRE, 2025)`) : "Couldn't check"}</dd>
+      <dt>Tsunami</dt><dd>${L && L.ts != null ? (L.ts ? "Inside the state's tsunami evacuation area" : "Outside the tsunami evacuation area") : "Couldn't check"}</dd>
+      ${R.place.city === "oakland" ? `<dt>Street flooding</dt><dd>${L ? (L.streetN ? `${plural(L.streetN, "report")} of flooding storm drains within 150 m in the past year` : "No flooding storm drain reports within 150 m in the past year") : "Couldn't check"}</dd>` : ""}
+    </dl>
+    <p class="note">${F && F.s !== "ok" ? "In a fire hazard zone, ask about evacuation routes and whether the building has defensible space. " : ""}This is the state's 2025 map; ${esc(R.city.name)}'s own hill-area fire rules can reach further. California landlords must tell you before you sign if the unit is in a flood hazard area.</p>
+  </section>`;
+}
+
+function secBlockEB(R) {
+  const oak = R.place.city === "oakland";
+  if (ebPending(R, "dump") || ebPending(R, "brk")) return `<section class="sec wide" id="block"><h2>The block</h2><p class="loading">Checking reports within 150 meters…</p><div class="skel" style="width:70%"></div></section>`;
+  const BB = EBBASE[R.place.city];
+  const col = (title, x, text) => x ? `<div><h3>${title} ${pill(x.s)}</h3><p>${text}</p></div>` : `<div><h3>${title} ${pill("none")}</h3><p class="err">Couldn't load these records.</p></div>`;
+  const typ = (x, base) => base ? ` A typical ${R.city.name} block gets about ${medianOf(base)}.` : "";
+  return `<section class="sec wide" id="block">
+    <h2>The block</h2>
+    <p>What neighbors reported within about a block in every direction${BB ? `, compared with ${BB.DUMP.n} random ${oak ? "Oakland parcels" : "Berkeley apartment buildings"}` : ""}.</p>
+    <div class="cols">
+      ${col("Car break-ins", R.brk, R.brk ? `<b class="num">${fmt(R.brk.total)}</b> ${oak ? "auto burglaries reported to police within 150 m" : "car break-ins and thefts from cars reported on this block"} in the past year.${typ(R.brk, BB && BB.BRK)}` : "")}
+      ${!oak ? col("Noise", R.noise, R.noise ? `<b class="num">${fmt(R.noise.pd)}</b> noise calls to police on this block and <b class="num">${fmt(R.noise.n311)}</b> noise reports to 311 within 150 m in the past year.${typ(R.noise, BB && BB.NOISE)}` : "") : ""}
+      ${col("Illegal dumping", R.dump, R.dump ? `<b class="num">${fmt(R.dump.total)}</b> reports to 311 within 150 m in the past year.${typ(R.dump, BB && BB.DUMP)}` : "")}
+      ${col("Pests", R.pests, R.pests ? `<b class="num">${fmt(R.pests.total)}</b> ${oak ? "animal and insect control" : "vector control"} ${w(R.pests.total, "report", "reports")} within 150 m in the past year.` : "")}
+    </div>
+    ${R.near && R.near.length ? `<p class="note"><b>Most common 311 reports within 150 m:</b> ${R.near.slice(0, 8).map(([k, v]) => `${esc(k)} (${fmt(v)})`).join(" · ")}</p>` : ""}
+    ${oak ? `<p class="note">Oakland's 311 data has no noise category; noise goes to the police, whose calls aren't published by location.</p>` : ""}
+  </section>`;
+}
+
+/* A ready-to-send note asking the city to publish what renters need */
+function cityNote(R) {
+  const c = R.city;
+  return `Hello,
+
+I'm ${/^[AEIOU]/.test(c.name) ? "an" : "a"} ${c.name} renter. Before signing a lease, I tried to look up a building's record and found that ${c.name} doesn't publish these as open data:
+
+${c.missing.map(x => "- " + x).join("\n")}
+
+San Francisco publishes all of these on DataSF, so renters there can check a building before they sign. Please ask city staff to add them to ${c.portal.replace("https://", "")}, updated regularly and searchable by address.
+
+Thank you.`;
+}
+function secGaps(R) {
+  const c = R.city;
+  return `<section class="sec wide" id="gaps">
+    <h2>Help ${esc(c.name)} track more</h2>
+    <p>${esc(c.name)} keeps these records but doesn't publish them, so this report can't show them. San Francisco does, which is why an SF address gets a full report.</p>
+    <ul class="ask">${c.missing.map(x => `<li>${esc(x.charAt(0).toUpperCase() + x.slice(1))}</li>`).join("")}</ul>
+    <p><b>Ask for them.</b> A short note to your councilmember and the mayor's office is how open data gets prioritized. Here's one you can copy, edit and send:</p>
+    <pre class="note-msg">${esc(cityNote(R))}</pre>
+    <div class="links">
+      <button type="button" class="linkbtn" id="copyNote">Copy the message</button>
+      <a href="${c.council}" target="_blank" rel="noopener">Find your councilmember ↗</a>
+      <a href="${c.portal}" target="_blank" rel="noopener">${esc(c.name)} open data ↗</a>
+    </div>
+    ${R.district ? `<p class="note">This address is in council district ${esc(String(R.district).replace(/^CCD/, ""))}.</p>` : ""}
+  </section>`;
+}
+
+function secRightsEB(R) {
+  return `<section class="sec wide" id="rights">
+    <h2>Your rights when you rent in California</h2>
+    <ul class="ask">
+      <li><b>Rent increases:</b> covered units follow ${esc(R.city.name)}'s rules above. Most other buildings over 15 years old are capped by state law at ${AB1482.pct}% a year (${AB1482.from} to ${AB1482.to}).</li>
+      <li><b>Application fee:</b> at most $${SCREENING_FEE.toFixed(2)} per adult in 2026, and none if there's no unit available.</li>
+      <li><b>Security deposit:</b> no more than one month's rent (two from small landlords), returned within 21 days with an itemized list. Landlords must photograph the unit at move-in and move-out.</li>
+      <li><b>Disclosures:</b> the landlord must tell you if the unit is in a flood hazard area, give you the state's bedbug notice, and disclose known lead paint in buildings from before 1978.</li>
+    </ul>
+    <p class="note">This is general information, not legal advice. ${R.place.city === "oakland" ? "Oakland's Rent Adjustment Program" : "Berkeley's Rent Board"} counsels tenants for free.</p>
+  </section>`;
+}
+
+function questionsEB(R) {
+  const q = [];
+  q.push(R.place.city === "oakland" ? "Is this unit covered by the Rent Adjustment Program? Ask for the RAP notice and the rent history." : "Look the unit up in Berkeley's Rent Registry. Does the rent you're quoted match the legal ceiling?");
+  q.push("Has the building had any code violations or open inspection cases? The city doesn't publish them, so ask, and look for the permit history at the city's permit counter.");
+  q.push("Is this a soft-story building, and if so, has it been retrofitted?");
+  if (R.code && R.code.recent.length) q.push(`There ${R.code.recent.length === 1 ? "was a complaint" : `were ${R.code.recent.length} complaints`} to 311 about this address recently. What were they about, and were they fixed?`);
+  if (R.quake && R.quake.ap) q.push("The building sits in an earthquake fault zone. Ask what seismic work has been done.");
+  if (R.fire && R.fire.s !== "ok") q.push("The address is in a fire hazard zone. What are the evacuation routes, and is brush cleared around the building?");
+  if (R.brk && R.brk.s !== "ok") q.push("Car break-ins are common here. Is there off-street parking or a locked garage?");
+  if (R.noise && R.noise.s !== "ok") q.push("The block gets a lot of noise calls. Visit on a weekend night before you sign.");
+  if (R.dump && R.dump.s !== "ok") q.push("Illegal dumping is common nearby. How does the building handle trash and bulky items?");
+  q.push("Ask a current tenant what living there is like.");
+  return q;
+}
+
+function summaryEB(R, place) {
+  const [h1, sub] = headline(R);
+  const line = (t, k, v) => R[k] ? `• ${t}: ${v()} (${STATUS[R[k].s]})` : null;
+  const out = [
+    `SF Rent (partial report): ${titleCase(place.street)}${place.apt ? ", Apt " + normApt(place.apt) : ""}, ${R.city.name}, CA`, `${h1}. ${sub}`, "",
+    line("Complaints about this address", "code", () => `${plural(R.code.recent.length, "report")} in 2 years`),
+    line("Noise on the block", "noise", () => `${fmt(R.noise.total)} in a year`),
+    line("Car break-ins", "brk", () => `${fmt(R.brk.total)} in a year`),
+    line("Illegal dumping", "dump", () => `${fmt(R.dump.total)} reports in a year`),
+    line("Pests nearby", "pests", () => `${fmt(R.pests.total)} reports in a year`),
+    line("Earthquake", "quake", () => R.quake.reasons.join(", ") || "outside mapped zones"),
+    line("Wildfire", "fire", () => R.fire.level),
+    line("Flood & tsunami", "flood", () => R.flood.reasons.join(", ") || "low"),
+    "", `${R.city.name} doesn't publish code violations, permits or eviction notices, so this report is partial.`,
+  ].filter(x => x !== null);
+  if (/^https?:$/.test(location.protocol)) out.push("", location.href);
+  return out.join("\n");
+}
+
+/* ---------- East Bay address search (Esri's World Geocoder; Oakland and Berkeley only) ---------- */
+const GEOCODER = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/";
+let ctl2;
+async function ebSearch(text) {
+  if (!/^\s*\d+\S*\s+\S/.test(text)) return [];
+  if (ctl2) ctl2.abort();
+  ctl2 = new AbortController();
+  const u = new URL(GEOCODER + "suggest");
+  Object.entries({ text, searchExtent: "-122.36,37.69,-122.11,37.91", category: "Address", countryCode: "USA", maxSuggestions: "8", f: "json" }).forEach(([k, v]) => u.searchParams.set(k, v));
+  let r = await fetch(u, { signal: ctl2.signal }).catch(e => { if (e.name === "AbortError") throw e; return null; });
+  if (!r || !r.ok) r = await fetch(u, { signal: ctl2.signal });  // the geocoder sometimes drops a request; try once more
+  if (!r.ok) return [];
+  const apt = (parseAddress(text) || {}).apt || "";
+  return ((await r.json()).suggestions || []).map(s => {
+    const m = s.text.match(/^(.+?), (Oakland|Berkeley), CA/);
+    // only real street addresses: "Mendoza Dr" alone is a whole street, not a building
+    return m && /^\d+/.test(m[1]) ? { street: m[1], city: m[2].toLowerCase(), hood: m[2], magicKey: s.magicKey, label: s.text, apt } : null;
+  }).filter(Boolean).slice(0, 4);
+}
+async function resolveEB(x) {
+  const u = new URL(GEOCODER + "findAddressCandidates");
+  Object.entries({ SingleLine: x.label || `${x.street}, ${CITY[x.city].name}, CA`, outFields: "AddNum,StName,StType,StAddr,City,Postal,Nbrhd", maxLocations: "1", f: "json", ...(x.magicKey ? { magicKey: x.magicKey } : {}) }).forEach(([k, v]) => u.searchParams.set(k, v));
+  const r = await fetch(u);
+  const c = r.ok ? ((await r.json()).candidates || [])[0] : null;
+  if (!c || !/^(Oakland|Berkeley)$/.test(c.attributes.City) || !c.attributes.AddNum) return null;
+  const at = c.attributes;
+  return { city: at.City.toLowerCase(), street: at.StAddr || x.street, num: at.AddNum, stName: String(at.StName || "").trim(), stType: String(at.StType || "").trim(),
+    lat: c.location.y, lon: c.location.x, zip: at.Postal, hood: at.Nbrhd || at.City, apt: x.apt || "" };
+}
 
 /* ---------- search (the city's Enterprise Addressing System) ---------- */
 const sug = $("#sug"), input = $("#q"), aptIn = $("#apt");
@@ -1546,13 +1943,18 @@ async function easSearch(text) {
 }
 function showSug() {
   sug.hidden = !items.length;
-  sug.innerHTML = items.map((x, i) => `<li role="option" id="o${i}" aria-selected="${i === active}" data-i="${i}"><span>${esc(titleCase(x.street))}</span><small>${x.near ? "Nearest address · " : ""}${esc(x.hood || "")}</small></li>`).join("");
+  sug.innerHTML = items.map((x, i) => `<li role="option" id="o${i}" aria-selected="${i === active}" data-i="${i}"><span>${esc(titleCase(x.street))}</span><small>${x.city ? `${CITY[x.city].name} · partial report` : `${x.near ? "Nearest address · " : ""}${esc(x.hood || "")}`}</small></li>`).join("");
 }
 input.addEventListener("input", () => {
   clearTimeout(timer);
   const t = input.value.trim();
   if (t.length < 3 || !/^\d+\S*\s+\S/.test(t)) { items = []; showSug(); return; }
-  timer = setTimeout(async () => { try { items = await easSearch(t); active = -1; showSug(); } catch (e) { if (e.name !== "AbortError") { items = []; showSug(); } } }, 200);
+  timer = setTimeout(async () => {
+    const [sf, eb] = await Promise.all([easSearch(t).catch(e => e.name === "AbortError" ? null : []), ebSearch(t).catch(e => e.name === "AbortError" ? null : [])]);
+    if (sf === null || eb === null) return;
+    const east = /\b(oakland|berkeley)\b/i.test(t);
+    items = east ? [...eb, ...sf] : [...sf.filter(x => !x.near), ...eb, ...sf.filter(x => x.near)]; items = items.slice(0, 8); active = -1; showSug();
+  }, 200);
 });
 input.addEventListener("keydown", e => {
   if (sug.hidden) return;
@@ -1574,10 +1976,12 @@ $("#form").addEventListener("submit", async e => {
   if (!t) { if (apt && current) choose({ ...current, apt, example: false }); return; }
   if (current && t === displayName(current)) return choose({ ...current, apt, example: false });
   try {
-    const res = await easSearch(t);
+    const [res, eb] = await Promise.all([easSearch(t), ebSearch(t).catch(() => [])]);
+    const east = /\b(oakland|berkeley)\b/i.test(t);
+    if (eb.length && (east || !res.length || res[0].near)) return choose({ ...eb[0], apt: apt || eb[0].apt });
     if (res.length && res[0].near) { items = res; active = -1; showSug(); $("#out").innerHTML = `<p class="note">There's no ${esc(t)} in the city's address list. Pick the nearest address above; buildings often span several numbers.</p>`; }
     else if (res.length) choose({ ...res[0], apt: apt || res[0].apt });
-    else $("#out").innerHTML = `<p class="err">Couldn't find “${esc(t)}” in San Francisco's address list. Start with the house number and street, like “825 Bush St”.</p>`;
+    else $("#out").innerHTML = `<p class="err">Couldn't find “${esc(t)}” in San Francisco, Oakland or Berkeley. Start with the house number and street, like “825 Bush St” or “2000 Dwight Way, Berkeley”.</p>`;
   } catch (err) { if (err.name !== "AbortError") $("#out").innerHTML = `<p class="err">Address search isn't responding (${esc(err.message)}). Check your connection and try again.</p>`; }
 });
 
@@ -1587,16 +1991,25 @@ function displayName(place) { return titleCase(place.street); }
 async function choose(place) {
   items = []; showSug();
   current = place;
-  if (!place.example) { input.value = displayName(place); remember(place); setHash(place); }
+  if (!place.example && !(place.city && !place.lat)) { input.value = displayName(place); remember(place); setHash(place); }
   aptIn.value = place.apt ? normApt(place.apt) : "";
   const seq = ++lookupSeq, now = new Date();
+  if (place.city && !place.lat) {
+    $("#out").innerHTML = `<p class="loading">Finding ${esc(titleCase(place.street))}…</p>`;
+    const r = await resolveEB(place).catch(() => null);
+    if (seq !== lookupSeq) return;
+    if (!r) { $("#out").innerHTML = `<p class="err">Couldn't find that address. Try the house number, street and city.</p>`; return; }
+    place = { ...r, apt: place.apt || r.apt }; current = place;
+    if (!place.example) { input.value = displayName(place); remember(place); setHash(place); }
+  }
   renderLoading(place);
-  if (!place.blklot && place.lat) { place = await parcelAt(place); current = place; }
+  if (!place.city && !place.blklot && place.lat) { place = await parcelAt(place); current = place; }
   if (seq !== lookupSeq) return;
   const formTop = $("#form").getBoundingClientRect().top;
   if (formTop > 120) $("#form").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  const draw = R => { if (seq !== lookupSeq) return; const y = window.scrollY; render(R, place); if (window.scrollY !== y) window.scrollTo(0, y); };
-  try { draw(await fetchReport(place, now, draw)); }
+  const paint = place.city ? renderEB : render, fetcher = place.city ? fetchEB : fetchReport;
+  const draw = R => { if (seq !== lookupSeq) return; const y = window.scrollY; paint(R, place); if (window.scrollY !== y) window.scrollTo(0, y); };
+  try { draw(await fetcher(place, now, draw)); }
   catch (e) { if (seq === lookupSeq) $("#out").innerHTML = `<p class="err">Something went wrong pulling records: ${esc(e.message)}</p>`; }
 }
 
@@ -1610,6 +2023,8 @@ async function parcelAt(place) {
 }
 
 async function fromHash() {
+  const e = decodeURIComponent(location.hash.slice(1)).match(/^(oakland|berkeley)~([A-Za-z0-9]{0,8})~([A-Za-z0-9_]+)$/);
+  if (e) { choose({ city: e[1], street: e[3].replace(/_/g, " "), apt: e[2] || "" }); return true; }
   const m = decodeURIComponent(location.hash.slice(1)).match(/^(\d+)-([A-Za-z0-9]{0,8})(?:-([A-Za-z0-9_]+))?$/);
   if (!m) return false;
   const [, eas, apt] = m;
@@ -1627,7 +2042,8 @@ function recent() { try { return JSON.parse(localStorage.getItem("sfr-recent") |
 function remember(p) {
   if (p.example) return;
   try {
-    const r = recent().filter(x => !(x.eas === p.eas && (x.apt || "") === (p.apt || "")));
+    const key = x => x.eas || `${x.city}:${String(x.street).toUpperCase()}`;
+    const r = recent().filter(x => !(key(x) === key(p) && (x.apt || "") === (p.apt || "")));
     const { example, ...keep } = p;
     r.unshift({ ...keep, apt: p.apt || "" });
     localStorage.setItem("sfr-recent", JSON.stringify(r.slice(0, 5)));
